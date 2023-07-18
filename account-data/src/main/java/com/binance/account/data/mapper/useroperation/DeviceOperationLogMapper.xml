@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.useroperation.DeviceOperationLogMapper" >
+
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.log.DeviceOperationLog">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="device_pk" property="devicePk" jdbcType="BIGINT" />
+        <result column="operation" property="operation" jdbcType="VARCHAR" />
+        <result column="ip" property="ip" jdbcType="VARCHAR" />
+        <result column="time" property="time" jdbcType="TIMESTAMP" />
+        <result column="note" property="note" jdbcType="VARCHAR" />
+        <result column="score" property="score" jdbcType="VARCHAR" />
+        <result column="device_info" property="deviceInfo" jdbcType="VARCHAR" />
+        <result column="user_operation_log_uuid" property="userOperationLogUuid" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, device_pk, user_id, operation, ip, `time`, note, score, device_info, user_operation_log_uuid
+    </sql>
+
+    <insert id="insert" parameterType="com.binance.account.data.entity.log.DeviceOperationLog"  keyProperty="id" useGeneratedKeys="true">
+        insert into device_operation_log
+         (operation, user_id, device_pk, ip, time, note, score, device_info, user_operation_log_uuid)
+        values (
+                #{operation,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT},  #{devicePk,jdbcType=BIGINT},
+                #{ip,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR},
+                #{score,jdbcType=VARCHAR}, #{deviceInfo,jdbcType=VARCHAR}, #{userOperationLogUuid,jdbcType=VARCHAR}
+                )
+    </insert>
+
+    <select id="queryDeviceOperationLogPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from device_operation_log
+        <trim prefixOverrides="and" prefix="where">
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId}
+            </if>
+            <if test="devicePks != null and devicePks.size() > 0">
+                AND device_pk in
+                <foreach collection="devicePks" item="devicePk" open="(" close=")" separator=",">
+                        #{devicePk}
+                    </foreach>
+            </if>
+            <if test="operation != null and operation != ''">
+                and operation = #{operation}
+            </if>
+            <if test="timeFrom != null">
+                and `time`  <![CDATA[ >= ]]> #{timeFrom,jdbcType=TIMESTAMP}
+            </if>
+            <if test="timeTo != null">
+                and `time`  <![CDATA[ <= ]]> #{timeTo,jdbcType=TIMESTAMP}
+            </if>
+            <if test="userOperationLogUuid != null">
+                and user_operation_log_uuid = #{userOperationLogUuid}
+            </if>
+        </trim>
+        order by `time` desc
+        <if test="limit>0">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="queryDeviceOperationLogPageCount" resultType="java.lang.Long">
+        select count(1)
+        from device_operation_log
+        <trim prefixOverrides="and" prefix="where">
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId}
+            </if>
+            <if test="devicePks != null and devicePks.size() > 0">
+                AND device_pk in
+                <foreach collection="devicePks" item="devicePk" open="(" close=")" separator=",">
+                    #{devicePk}
+                </foreach>
+            </if>
+            <if test="operation != null and operation != ''">
+                and operation = #{operation}
+            </if>
+            <if test="timeFrom != null">
+                and `time`  <![CDATA[ >= ]]> #{timeFrom,jdbcType=TIMESTAMP}
+            </if>
+            <if test="timeTo != null">
+                and `time`  <![CDATA[ <= ]]> #{timeTo,jdbcType=TIMESTAMP}
+            </if>
+            <if test="userOperationLogUuid != null">
+                and user_operation_log_uuid = #{userOperationLogUuid}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

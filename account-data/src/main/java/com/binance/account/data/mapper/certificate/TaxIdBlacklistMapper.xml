@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.TaxIdBlacklistMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.TaxIdBlacklist">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tax_id" jdbcType="VARCHAR" property="taxId"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, tax_id, creator, remark, create_time, update_time
+    </sql>
+
+    <insert id="insertSelective" parameterType="com.binance.account.data.entity.certificate.TaxIdBlacklist">
+        insert into tax_id_blacklist
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="taxId != null">
+                tax_id,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="taxId != null">
+                #{taxId,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="queryList" resultMap="BaseResultMap" parameterType="com.binance.account.common.query.TaxIdBlacklistQuery">
+        select
+        <include refid="Base_Column_List" />
+        from
+            tax_id_blacklist
+        <where>
+            <if test="taxId != null">
+                tax_id = #{taxId, jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by id desc
+        limit #{start},#{rows}
+    </select>
+
+    <select id="queryCount" resultType="int" parameterType="com.binance.account.common.query.TaxIdBlacklistQuery">
+        select
+            count(1)
+        from
+        tax_id_blacklist
+        <where>
+            <if test="taxId != null">
+                tax_id = #{taxId, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="getBlacklistByTaxId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from
+            tax_id_blacklist
+        where
+            tax_id = #{taxId, jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByTaxId">
+        delete from
+            tax_id_blacklist
+        where
+        tax_id = #{taxId, jdbcType=VARCHAR}
+    </delete>
+
+</mapper>

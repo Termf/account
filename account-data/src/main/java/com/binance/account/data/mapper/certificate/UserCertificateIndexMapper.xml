@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+        namespace="com.binance.account.data.mapper.certificate.UserCertificateIndexMapper">
+    <resultMap id="BaseResultMap"
+               type="com.binance.account.data.entity.certificate.UserCertificateIndex">
+        <id column="number" jdbcType="VARCHAR" property="number"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="certificate_type" jdbcType="INTEGER" property="certificateType"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        number,country, user_id, type, certificate_type, create_time
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_certificate_index
+        where number = #{number,jdbcType=VARCHAR}
+        <if test="type != null">
+            and type =  #{type,jdbcType=VARCHAR}
+        </if>
+        <if test="type == null">
+            and type is null
+        </if>
+        <if test="country != null">
+            and country = #{country,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <delete id="deleteByPrimaryKey">
+        delete from
+        user_certificate_index
+        where number = #{number,jdbcType=VARCHAR}
+        and type =  #{type,jdbcType=VARCHAR}
+        <if test="country != null">
+            and country = #{country,jdbcType=VARCHAR}
+        </if>
+        <if test="country == null">
+            and (country is null or trim(country) = '') 
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=BIGINT}
+        </if>
+    </delete>
+    <delete id="deleteConsiderTypeNull">
+        delete from
+        user_certificate_index
+        where number = #{number,jdbcType=VARCHAR} and user_id = #{userId,jdbcType=BIGINT}
+        <if test="type != null">
+            and type =  #{type,jdbcType=VARCHAR}
+        </if>
+        <if test="type == null">
+            and (type is null)
+        </if>
+        <if test="country != null">
+            and country = #{country,jdbcType=VARCHAR}
+        </if>
+        <if test="country == null">
+            and (country is null or trim(country) = '')
+        </if>
+    </delete>
+    <insert id="insertIgnore"
+            parameterType="com.binance.account.data.entity.certificate.UserCertificateIndex">
+        insert ignore into user_certificate_index (number,country,
+        user_id,type,certificate_type,create_time)
+        values (#{number,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR},#{userId,jdbcType=BIGINT},#{type,jdbcType=VARCHAR},#{certificateType,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.binance.account.data.entity.certificate.UserCertificateIndex">
+        update user_certificate_index
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where number = #{number,jdbcType=VARCHAR}
+        and type = #{type,jdbcType=VARCHAR}
+        <if test="country != null">
+            and country = #{country,jdbcType=VARCHAR}
+        </if>
+        <if test="country == null">
+            and (country is null or trim(country) = '') 
+        </if>
+    </update>
+    
+    <select id="selectCertificate" resultMap="BaseResultMap">
+        select
+        *
+        from user_certificate_index
+        where number = #{number,jdbcType=VARCHAR}
+        <if test="type != null">
+            and type =  #{type,jdbcType=VARCHAR}
+        </if>
+        <if test="type == null">
+            and type is null
+        </if>
+        <if test="country != null">
+            and country = #{country,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="selectCertificateByNumber" resultMap="BaseResultMap">
+        select
+        *
+        from user_certificate_index
+        where number = #{number,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateCertificateType"
+            parameterType="com.binance.account.data.entity.certificate.UserCertificateIndex">
+        update user_certificate_index set certificate_type=#{certificateType,jdbcType=INTEGER},create_time = #{createTime,jdbcType=TIMESTAMP}
+        where number = #{number,jdbcType=VARCHAR}
+        and type = #{type,jdbcType=VARCHAR}
+        <if test="country != null">
+            and country = #{country,jdbcType=VARCHAR}
+        </if>
+        <if test="country == null">
+            and (country is null or trim(country) = '')
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=BIGINT}
+        </if>
+    </update>
+
+</mapper>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.UserWckAuditMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.UserWckAudit">
+    <id column="kyc_id" jdbcType="BIGINT" property="kycId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="case_system_id" jdbcType="VARCHAR" property="caseSystemId" />
+    <result column="status" jdbcType="TINYINT" property="status" typeHandler="com.binance.account.data.entity.CodeEnumHandler"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_del" jdbcType="BIT" property="isDel" />
+    <result column="issuing_country" jdbcType="VARCHAR" property="issuingCountry"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    kyc_id, user_id, case_system_id, status, create_time, update_time, is_del,issuing_country
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_wck_audit
+    where kyc_id = #{kycId,jdbcType=BIGINT}
+  </select>
+  <select id="selectInitialRows" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_wck_audit
+    where is_del=false and status = 1
+    <if test="createTimeStart">
+      and create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+    </if>
+    <if test="createTimeEnd">
+      and create_time &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+    </if>
+    limit 0, 1000
+  </select>
+  <select id="selectByAdmin" resultType="java.util.Map">
+    select
+    t1.kyc_id, t1.user_id, t1.case_system_id, t1.status, t1.create_time, t1.update_time,t1.issuing_country,
+    GROUP_CONCAT(CONCAT(t2.auditor_seq, '##', t2.auditor_id,'##', t2.is_valid,'##', t2.memo,'##',IFNULL(t2.is_pep,'2'),'##',IFNULL(t2.is_adverse,'2')) SEPARATOR '$$') AS raw_logs
+    from user_wck_audit t1 left join user_wck_audit_log t2 ON t1.kyc_id=t2.kyc_id
+    where is_del = false
+    <if test="status != null">
+      and t1.status = #{status,jdbcType=TINYINT,typeHandler=com.binance.account.data.entity.CodeEnumHandler}
+    </if>
+    <if test="userId != null">
+      and t1.user_id = #{userId,jdbcType=BIGINT}
+    </if>
+    <if test="auditorId != null">
+      and t2.auditor_id = #{auditorId,jdbcType=BIGINT}
+    </if>
+    <if test="auditorSeq != null">
+      and t2.auditor_seq = #{auditorSeq,jdbcType=INTEGER}
+    </if>
+    GROUP BY t1.kyc_id
+    ORDER BY t1.update_time desc
+  </select>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.certificate.UserWckAudit">
+    insert into user_wck_audit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="kycId != null">
+        kyc_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="caseSystemId != null">
+        case_system_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="issuingCountry != null and issuingCountry != ''">
+      issuing_country,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="kycId != null">
+        #{kycId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="caseSystemId != null">
+        #{caseSystemId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT,typeHandler=com.binance.account.data.entity.CodeEnumHandler},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=BIT},
+      </if>
+      <if test="issuingCountry != null and issuingCountry != ''">
+      	#{issuingCountry,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.certificate.UserWckAudit">
+    update user_wck_audit
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="caseSystemId != null">
+        case_system_id = #{caseSystemId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT,typeHandler=com.binance.account.data.entity.CodeEnumHandler},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=BIT},
+      </if>
+      <if test="issuingCountry != null and issuingCountry != ''">
+      	issuing_country = #{issuingCountry,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where kyc_id = #{kycId,jdbcType=BIGINT}
+  </update>
+  <delete id="deleteByKycId" parameterType="java.lang.Long">
+    delete from user_wck_audit
+    where kyc_id = #{kycId,jdbcType=BIGINT}
+  </delete>
+
+  <select id="selectByKycIds" parameterType="map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from user_wck_audit
+    where kyc_id in
+    <foreach collection="kycIds" item="item" open="(" close=")" separator=",">
+      #{item}
+    </foreach>
+  </select>
+  
+  <select id="selectWckAuditInfo" parameterType="map" resultType="java.util.Map">
+	select
+    t1.kyc_id, t1.user_id, t1.issuing_country, t1.case_system_id, t1.status, t1.create_time, t1.update_time,
+    GROUP_CONCAT(CONCAT(t2.auditor_seq, '##', t2.auditor_id,'##', t2.is_valid,'##', t2.memo,'##',IFNULL(t2.is_pep,'2'),'##',IFNULL(t2.is_adverse,'2')) SEPARATOR '$$') AS raw_logs
+    from user_wck_audit t1 left join user_wck_audit_log t2 ON t1.kyc_id=t2.kyc_id
+    where t1.is_del = false
+    <if test="status != null">
+      and t1.status = #{status,jdbcType=TINYINT,typeHandler=com.binance.account.data.entity.CodeEnumHandler}
+    </if>
+    <if test="userId != null">
+      and t1.user_id = #{userId,jdbcType=BIGINT}
+    </if>
+    <if test="country != null and country != ''">
+      and t1.issuing_country = #{country,jdbcType=VARCHAR}
+    </if>
+    <if test="auditorId != null">
+      and t2.auditor_id = #{auditorId,jdbcType=BIGINT}
+    </if>
+    <if test="auditorSeq != null">
+      and t2.auditor_seq = #{auditorSeq,jdbcType=INTEGER}
+    </if> 
+    GROUP BY t1.kyc_id
+    ORDER BY t1.update_time desc
+  </select>
+
+  <select id="selectWckAuditInfoByPage" parameterType="map" resultType="java.util.Map">
+    select
+    kyc_id, user_id, issuing_country, case_system_id, status, create_time, update_time
+    from user_wck_audit
+    where is_del = false
+    <if test="status != null">
+      and status = #{status,jdbcType=TINYINT,typeHandler=com.binance.account.data.entity.CodeEnumHandler}
+    </if>
+    <if test="userId != null">
+      and user_id = #{userId,jdbcType=BIGINT}
+    </if>
+    <if test="country != null and country != ''">
+      and issuing_country = #{country,jdbcType=VARCHAR}
+    </if>
+    <if test="auditorId != null">
+      and auditor_id = #{auditorId,jdbcType=BIGINT}
+    </if>
+    <if test="auditorSeq != null">
+      and auditor_seq = #{auditorSeq,jdbcType=INTEGER}
+    </if>
+    order by create_time desc
+    <if test="start != null and offset != null">
+      limit #{start},#{offset}
+    </if>
+  </select>
+
+  <select id="countWckAuditInfo" parameterType="map"  resultType="java.lang.Integer">
+    select
+    count(*)
+    from user_wck_audit
+    where is_del = false
+    <if test="status != null">
+      and status = #{status,jdbcType=TINYINT,typeHandler=com.binance.account.data.entity.CodeEnumHandler}
+    </if>
+    <if test="userId != null">
+      and user_id = #{userId,jdbcType=BIGINT}
+    </if>
+    <if test="country != null and country != ''">
+      and issuing_country = #{country,jdbcType=VARCHAR}
+    </if>
+    <if test="auditorId != null">
+      and auditor_id = #{auditorId,jdbcType=BIGINT}
+    </if>
+    <if test="auditorSeq != null">
+      and auditor_seq = #{auditorSeq,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="selectCountsByStatus" parameterType="map" resultType="java.lang.Integer">
+  	select count(*) from user_wck_audit
+  	<where>
+  	    <if test="status != null">
+	      and status = #{status,jdbcType=TINYINT,typeHandler=com.binance.account.data.entity.CodeEnumHandler}
+	    </if>
+	    <if test="country != null and country != ''">
+	      and issuing_country = #{country,jdbcType=VARCHAR}
+	    </if>
+	    <if test="auditorId != null">
+	      and auditor_id = #{auditorId,jdbcType=BIGINT}
+	    </if>
+	    <if test="auditorSeq != null">
+	      and auditor_seq = #{auditorSeq,jdbcType=INTEGER}
+	    </if> 
+  	</where>
+  </select>
+</mapper>

@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.AccUserKycMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.AccUserKyc">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="jumio_id" jdbcType="VARCHAR" property="jumioId" />
+    <result column="scan_reference" jdbcType="VARCHAR" property="scanReference" />
+    <result column="front" jdbcType="VARCHAR" property="front" />
+    <result column="back" jdbcType="VARCHAR" property="back" />
+    <result column="face" jdbcType="VARCHAR" property="face" />
+    <result column="fill_first_name" jdbcType="VARCHAR" property="fillFirstName" />
+    <result column="fill_middle_name" jdbcType="VARCHAR" property="fillMiddleName" />
+    <result column="fill_last_name" jdbcType="VARCHAR" property="fillLastName" />
+    <result column="fill_dob" jdbcType="DATE" property="fillDob" />
+    <result column="fill_address" jdbcType="VARCHAR" property="fillAddress" />
+    <result column="fill_postal_code" jdbcType="VARCHAR" property="fillPostalCode" />
+    <result column="fill_city" jdbcType="VARCHAR" property="fillCity" />
+    <result column="fill_country" jdbcType="VARCHAR" property="fillCountry" />
+    <result column="former_first_name" jdbcType="VARCHAR" property="formerFirstName" />
+    <result column="former_middle_name" jdbcType="VARCHAR" property="formerMiddleName" />
+    <result column="former_last_name" jdbcType="VARCHAR" property="formerLastName" />
+    <result column="nationality" jdbcType="VARCHAR" property="nationality" />
+    <result column="check_first_name" jdbcType="VARCHAR" property="checkFirstName" />
+    <result column="check_last_name" jdbcType="VARCHAR" property="checkLastName" />
+    <result column="check_dob" jdbcType="VARCHAR" property="checkDob" />
+    <result column="check_address" jdbcType="VARCHAR" property="checkAddress" />
+    <result column="check_postal_code" jdbcType="VARCHAR" property="checkPostalCode" />
+    <result column="check_city" jdbcType="VARCHAR" property="checkCity" />
+    <result column="check_issuing_country" jdbcType="VARCHAR" property="checkIssuingCountry" />
+    <result column="check_expiry_date" jdbcType="VARCHAR" property="checkExpiryDate" />
+    <result column="check_number" jdbcType="VARCHAR" property="checkNumber" />
+    <result column="check_type" jdbcType="VARCHAR" property="checkType" />
+    <result column="check_status" jdbcType="VARCHAR" property="checkStatus" />
+    <result column="check_source" jdbcType="VARCHAR" property="checkSource" />
+    <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="face_status" jdbcType="VARCHAR" property="faceStatus" />
+    <result column="face_remark" jdbcType="VARCHAR" property="faceRemark" />
+    <result column="trans_face_log_id" jdbcType="VARCHAR" property="transFaceLogId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, status, create_time, update_time, jumio_id, scan_reference, front, back, 
+    face, fill_first_name, fill_middle_name, fill_last_name, fill_dob, fill_address, 
+    fill_postal_code, fill_city, fill_country, former_first_name, former_middle_name, 
+    former_last_name, nationality, check_first_name, check_last_name, check_dob, check_address, 
+    check_postal_code, check_city, check_issuing_country, check_expiry_date, check_number, 
+    check_type, check_status, check_source, fail_reason, memo, face_status, face_remark, 
+    trans_face_log_id
+  </sql>
+  <select id="selectByExample" parameterType="com.binance.account.data.entity.certificate.AccUserKycExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from user_kyc
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_kyc
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user_kyc
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.certificate.AccUserKyc">
+    insert into user_kyc (id, user_id, status, 
+      create_time, update_time, jumio_id, 
+      scan_reference, front, back, 
+      face, fill_first_name, fill_middle_name, 
+      fill_last_name, fill_dob, fill_address, 
+      fill_postal_code, fill_city, fill_country, 
+      former_first_name, former_middle_name, former_last_name, 
+      nationality, check_first_name, check_last_name, 
+      check_dob, check_address, check_postal_code, 
+      check_city, check_issuing_country, check_expiry_date, 
+      check_number, check_type, check_status, 
+      check_source, fail_reason, memo, 
+      face_status, face_remark, trans_face_log_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{jumioId,jdbcType=VARCHAR}, 
+      #{scanReference,jdbcType=VARCHAR}, #{front,jdbcType=VARCHAR}, #{back,jdbcType=VARCHAR}, 
+      #{face,jdbcType=VARCHAR}, #{fillFirstName,jdbcType=VARCHAR}, #{fillMiddleName,jdbcType=VARCHAR}, 
+      #{fillLastName,jdbcType=VARCHAR}, #{fillDob,jdbcType=DATE}, #{fillAddress,jdbcType=VARCHAR}, 
+      #{fillPostalCode,jdbcType=VARCHAR}, #{fillCity,jdbcType=VARCHAR}, #{fillCountry,jdbcType=VARCHAR}, 
+      #{formerFirstName,jdbcType=VARCHAR}, #{formerMiddleName,jdbcType=VARCHAR}, #{formerLastName,jdbcType=VARCHAR}, 
+      #{nationality,jdbcType=VARCHAR}, #{checkFirstName,jdbcType=VARCHAR}, #{checkLastName,jdbcType=VARCHAR}, 
+      #{checkDob,jdbcType=VARCHAR}, #{checkAddress,jdbcType=VARCHAR}, #{checkPostalCode,jdbcType=VARCHAR}, 
+      #{checkCity,jdbcType=VARCHAR}, #{checkIssuingCountry,jdbcType=VARCHAR}, #{checkExpiryDate,jdbcType=VARCHAR}, 
+      #{checkNumber,jdbcType=VARCHAR}, #{checkType,jdbcType=VARCHAR}, #{checkStatus,jdbcType=VARCHAR}, 
+      #{checkSource,jdbcType=VARCHAR}, #{failReason,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
+      #{faceStatus,jdbcType=VARCHAR}, #{faceRemark,jdbcType=VARCHAR}, #{transFaceLogId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.certificate.AccUserKyc">
+    insert into user_kyc
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="jumioId != null">
+        jumio_id,
+      </if>
+      <if test="scanReference != null">
+        scan_reference,
+      </if>
+      <if test="front != null">
+        front,
+      </if>
+      <if test="back != null">
+        back,
+      </if>
+      <if test="face != null">
+        face,
+      </if>
+      <if test="fillFirstName != null">
+        fill_first_name,
+      </if>
+      <if test="fillMiddleName != null">
+        fill_middle_name,
+      </if>
+      <if test="fillLastName != null">
+        fill_last_name,
+      </if>
+      <if test="fillDob != null">
+        fill_dob,
+      </if>
+      <if test="fillAddress != null">
+        fill_address,
+      </if>
+      <if test="fillPostalCode != null">
+        fill_postal_code,
+      </if>
+      <if test="fillCity != null">
+        fill_city,
+      </if>
+      <if test="fillCountry != null">
+        fill_country,
+      </if>
+      <if test="formerFirstName != null">
+        former_first_name,
+      </if>
+      <if test="formerMiddleName != null">
+        former_middle_name,
+      </if>
+      <if test="formerLastName != null">
+        former_last_name,
+      </if>
+      <if test="nationality != null">
+        nationality,
+      </if>
+      <if test="checkFirstName != null">
+        check_first_name,
+      </if>
+      <if test="checkLastName != null">
+        check_last_name,
+      </if>
+      <if test="checkDob != null">
+        check_dob,
+      </if>
+      <if test="checkAddress != null">
+        check_address,
+      </if>
+      <if test="checkPostalCode != null">
+        check_postal_code,
+      </if>
+      <if test="checkCity != null">
+        check_city,
+      </if>
+      <if test="checkIssuingCountry != null">
+        check_issuing_country,
+      </if>
+      <if test="checkExpiryDate != null">
+        check_expiry_date,
+      </if>
+      <if test="checkNumber != null">
+        check_number,
+      </if>
+      <if test="checkType != null">
+        check_type,
+      </if>
+      <if test="checkStatus != null">
+        check_status,
+      </if>
+      <if test="checkSource != null">
+        check_source,
+      </if>
+      <if test="failReason != null">
+        fail_reason,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+      <if test="faceStatus != null">
+        face_status,
+      </if>
+      <if test="faceRemark != null">
+        face_remark,
+      </if>
+      <if test="transFaceLogId != null">
+        trans_face_log_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jumioId != null">
+        #{jumioId,jdbcType=VARCHAR},
+      </if>
+      <if test="scanReference != null">
+        #{scanReference,jdbcType=VARCHAR},
+      </if>
+      <if test="front != null">
+        #{front,jdbcType=VARCHAR},
+      </if>
+      <if test="back != null">
+        #{back,jdbcType=VARCHAR},
+      </if>
+      <if test="face != null">
+        #{face,jdbcType=VARCHAR},
+      </if>
+      <if test="fillFirstName != null">
+        #{fillFirstName,jdbcType=VARCHAR},
+      </if>
+      <if test="fillMiddleName != null">
+        #{fillMiddleName,jdbcType=VARCHAR},
+      </if>
+      <if test="fillLastName != null">
+        #{fillLastName,jdbcType=VARCHAR},
+      </if>
+      <if test="fillDob != null">
+        #{fillDob,jdbcType=DATE},
+      </if>
+      <if test="fillAddress != null">
+        #{fillAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="fillPostalCode != null">
+        #{fillPostalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fillCity != null">
+        #{fillCity,jdbcType=VARCHAR},
+      </if>
+      <if test="fillCountry != null">
+        #{fillCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="formerFirstName != null">
+        #{formerFirstName,jdbcType=VARCHAR},
+      </if>
+      <if test="formerMiddleName != null">
+        #{formerMiddleName,jdbcType=VARCHAR},
+      </if>
+      <if test="formerLastName != null">
+        #{formerLastName,jdbcType=VARCHAR},
+      </if>
+      <if test="nationality != null">
+        #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="checkFirstName != null">
+        #{checkFirstName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkLastName != null">
+        #{checkLastName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDob != null">
+        #{checkDob,jdbcType=VARCHAR},
+      </if>
+      <if test="checkAddress != null">
+        #{checkAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="checkPostalCode != null">
+        #{checkPostalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="checkCity != null">
+        #{checkCity,jdbcType=VARCHAR},
+      </if>
+      <if test="checkIssuingCountry != null">
+        #{checkIssuingCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="checkExpiryDate != null">
+        #{checkExpiryDate,jdbcType=VARCHAR},
+      </if>
+      <if test="checkNumber != null">
+        #{checkNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="checkType != null">
+        #{checkType,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null">
+        #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checkSource != null">
+        #{checkSource,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="faceStatus != null">
+        #{faceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="faceRemark != null">
+        #{faceRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="transFaceLogId != null">
+        #{transFaceLogId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.binance.account.data.entity.certificate.AccUserKycExample" resultType="java.lang.Long">
+    select count(*) from user_kyc
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update user_kyc
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.jumioId != null">
+        jumio_id = #{record.jumioId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scanReference != null">
+        scan_reference = #{record.scanReference,jdbcType=VARCHAR},
+      </if>
+      <if test="record.front != null">
+        front = #{record.front,jdbcType=VARCHAR},
+      </if>
+      <if test="record.back != null">
+        back = #{record.back,jdbcType=VARCHAR},
+      </if>
+      <if test="record.face != null">
+        face = #{record.face,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fillFirstName != null">
+        fill_first_name = #{record.fillFirstName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fillMiddleName != null">
+        fill_middle_name = #{record.fillMiddleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fillLastName != null">
+        fill_last_name = #{record.fillLastName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fillDob != null">
+        fill_dob = #{record.fillDob,jdbcType=DATE},
+      </if>
+      <if test="record.fillAddress != null">
+        fill_address = #{record.fillAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fillPostalCode != null">
+        fill_postal_code = #{record.fillPostalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fillCity != null">
+        fill_city = #{record.fillCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fillCountry != null">
+        fill_country = #{record.fillCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="record.formerFirstName != null">
+        former_first_name = #{record.formerFirstName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.formerMiddleName != null">
+        former_middle_name = #{record.formerMiddleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.formerLastName != null">
+        former_last_name = #{record.formerLastName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nationality != null">
+        nationality = #{record.nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkFirstName != null">
+        check_first_name = #{record.checkFirstName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkLastName != null">
+        check_last_name = #{record.checkLastName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkDob != null">
+        check_dob = #{record.checkDob,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkAddress != null">
+        check_address = #{record.checkAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkPostalCode != null">
+        check_postal_code = #{record.checkPostalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkCity != null">
+        check_city = #{record.checkCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkIssuingCountry != null">
+        check_issuing_country = #{record.checkIssuingCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkExpiryDate != null">
+        check_expiry_date = #{record.checkExpiryDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkNumber != null">
+        check_number = #{record.checkNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkType != null">
+        check_type = #{record.checkType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkStatus != null">
+        check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkSource != null">
+        check_source = #{record.checkSource,jdbcType=VARCHAR},
+      </if>
+      <if test="record.failReason != null">
+        fail_reason = #{record.failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null">
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.faceStatus != null">
+        face_status = #{record.faceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.faceRemark != null">
+        face_remark = #{record.faceRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transFaceLogId != null">
+        trans_face_log_id = #{record.transFaceLogId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update user_kyc
+    set id = #{record.id,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      status = #{record.status,jdbcType=TINYINT},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      jumio_id = #{record.jumioId,jdbcType=VARCHAR},
+      scan_reference = #{record.scanReference,jdbcType=VARCHAR},
+      front = #{record.front,jdbcType=VARCHAR},
+      back = #{record.back,jdbcType=VARCHAR},
+      face = #{record.face,jdbcType=VARCHAR},
+      fill_first_name = #{record.fillFirstName,jdbcType=VARCHAR},
+      fill_middle_name = #{record.fillMiddleName,jdbcType=VARCHAR},
+      fill_last_name = #{record.fillLastName,jdbcType=VARCHAR},
+      fill_dob = #{record.fillDob,jdbcType=DATE},
+      fill_address = #{record.fillAddress,jdbcType=VARCHAR},
+      fill_postal_code = #{record.fillPostalCode,jdbcType=VARCHAR},
+      fill_city = #{record.fillCity,jdbcType=VARCHAR},
+      fill_country = #{record.fillCountry,jdbcType=VARCHAR},
+      former_first_name = #{record.formerFirstName,jdbcType=VARCHAR},
+      former_middle_name = #{record.formerMiddleName,jdbcType=VARCHAR},
+      former_last_name = #{record.formerLastName,jdbcType=VARCHAR},
+      nationality = #{record.nationality,jdbcType=VARCHAR},
+      check_first_name = #{record.checkFirstName,jdbcType=VARCHAR},
+      check_last_name = #{record.checkLastName,jdbcType=VARCHAR},
+      check_dob = #{record.checkDob,jdbcType=VARCHAR},
+      check_address = #{record.checkAddress,jdbcType=VARCHAR},
+      check_postal_code = #{record.checkPostalCode,jdbcType=VARCHAR},
+      check_city = #{record.checkCity,jdbcType=VARCHAR},
+      check_issuing_country = #{record.checkIssuingCountry,jdbcType=VARCHAR},
+      check_expiry_date = #{record.checkExpiryDate,jdbcType=VARCHAR},
+      check_number = #{record.checkNumber,jdbcType=VARCHAR},
+      check_type = #{record.checkType,jdbcType=VARCHAR},
+      check_status = #{record.checkStatus,jdbcType=VARCHAR},
+      check_source = #{record.checkSource,jdbcType=VARCHAR},
+      fail_reason = #{record.failReason,jdbcType=VARCHAR},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      face_status = #{record.faceStatus,jdbcType=VARCHAR},
+      face_remark = #{record.faceRemark,jdbcType=VARCHAR},
+      trans_face_log_id = #{record.transFaceLogId,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.certificate.AccUserKyc">
+    update user_kyc
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jumioId != null">
+        jumio_id = #{jumioId,jdbcType=VARCHAR},
+      </if>
+      <if test="scanReference != null">
+        scan_reference = #{scanReference,jdbcType=VARCHAR},
+      </if>
+      <if test="front != null">
+        front = #{front,jdbcType=VARCHAR},
+      </if>
+      <if test="back != null">
+        back = #{back,jdbcType=VARCHAR},
+      </if>
+      <if test="face != null">
+        face = #{face,jdbcType=VARCHAR},
+      </if>
+      <if test="fillFirstName != null">
+        fill_first_name = #{fillFirstName,jdbcType=VARCHAR},
+      </if>
+      <if test="fillMiddleName != null">
+        fill_middle_name = #{fillMiddleName,jdbcType=VARCHAR},
+      </if>
+      <if test="fillLastName != null">
+        fill_last_name = #{fillLastName,jdbcType=VARCHAR},
+      </if>
+      <if test="fillDob != null">
+        fill_dob = #{fillDob,jdbcType=DATE},
+      </if>
+      <if test="fillAddress != null">
+        fill_address = #{fillAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="fillPostalCode != null">
+        fill_postal_code = #{fillPostalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fillCity != null">
+        fill_city = #{fillCity,jdbcType=VARCHAR},
+      </if>
+      <if test="fillCountry != null">
+        fill_country = #{fillCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="formerFirstName != null">
+        former_first_name = #{formerFirstName,jdbcType=VARCHAR},
+      </if>
+      <if test="formerMiddleName != null">
+        former_middle_name = #{formerMiddleName,jdbcType=VARCHAR},
+      </if>
+      <if test="formerLastName != null">
+        former_last_name = #{formerLastName,jdbcType=VARCHAR},
+      </if>
+      <if test="nationality != null">
+        nationality = #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="checkFirstName != null">
+        check_first_name = #{checkFirstName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkLastName != null">
+        check_last_name = #{checkLastName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDob != null">
+        check_dob = #{checkDob,jdbcType=VARCHAR},
+      </if>
+      <if test="checkAddress != null">
+        check_address = #{checkAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="checkPostalCode != null">
+        check_postal_code = #{checkPostalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="checkCity != null">
+        check_city = #{checkCity,jdbcType=VARCHAR},
+      </if>
+      <if test="checkIssuingCountry != null">
+        check_issuing_country = #{checkIssuingCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="checkExpiryDate != null">
+        check_expiry_date = #{checkExpiryDate,jdbcType=VARCHAR},
+      </if>
+      <if test="checkNumber != null">
+        check_number = #{checkNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="checkType != null">
+        check_type = #{checkType,jdbcType=VARCHAR},
+      </if>
+      <if test="checkStatus != null">
+        check_status = #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checkSource != null">
+        check_source = #{checkSource,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        fail_reason = #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="faceStatus != null">
+        face_status = #{faceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="faceRemark != null">
+        face_remark = #{faceRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="transFaceLogId != null">
+        trans_face_log_id = #{transFaceLogId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.certificate.AccUserKyc">
+    update user_kyc
+    set user_id = #{userId,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      jumio_id = #{jumioId,jdbcType=VARCHAR},
+      scan_reference = #{scanReference,jdbcType=VARCHAR},
+      front = #{front,jdbcType=VARCHAR},
+      back = #{back,jdbcType=VARCHAR},
+      face = #{face,jdbcType=VARCHAR},
+      fill_first_name = #{fillFirstName,jdbcType=VARCHAR},
+      fill_middle_name = #{fillMiddleName,jdbcType=VARCHAR},
+      fill_last_name = #{fillLastName,jdbcType=VARCHAR},
+      fill_dob = #{fillDob,jdbcType=DATE},
+      fill_address = #{fillAddress,jdbcType=VARCHAR},
+      fill_postal_code = #{fillPostalCode,jdbcType=VARCHAR},
+      fill_city = #{fillCity,jdbcType=VARCHAR},
+      fill_country = #{fillCountry,jdbcType=VARCHAR},
+      former_first_name = #{formerFirstName,jdbcType=VARCHAR},
+      former_middle_name = #{formerMiddleName,jdbcType=VARCHAR},
+      former_last_name = #{formerLastName,jdbcType=VARCHAR},
+      nationality = #{nationality,jdbcType=VARCHAR},
+      check_first_name = #{checkFirstName,jdbcType=VARCHAR},
+      check_last_name = #{checkLastName,jdbcType=VARCHAR},
+      check_dob = #{checkDob,jdbcType=VARCHAR},
+      check_address = #{checkAddress,jdbcType=VARCHAR},
+      check_postal_code = #{checkPostalCode,jdbcType=VARCHAR},
+      check_city = #{checkCity,jdbcType=VARCHAR},
+      check_issuing_country = #{checkIssuingCountry,jdbcType=VARCHAR},
+      check_expiry_date = #{checkExpiryDate,jdbcType=VARCHAR},
+      check_number = #{checkNumber,jdbcType=VARCHAR},
+      check_type = #{checkType,jdbcType=VARCHAR},
+      check_status = #{checkStatus,jdbcType=VARCHAR},
+      check_source = #{checkSource,jdbcType=VARCHAR},
+      fail_reason = #{failReason,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      face_status = #{faceStatus,jdbcType=VARCHAR},
+      face_remark = #{faceRemark,jdbcType=VARCHAR},
+      trans_face_log_id = #{transFaceLogId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

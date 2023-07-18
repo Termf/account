@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.KycFillInfoMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.KycFillInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="fill_type" jdbcType="VARCHAR" property="fillType" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="first_name" jdbcType="VARCHAR" property="firstName" />
+    <result column="middle_name" jdbcType="VARCHAR" property="middleName" />
+    <result column="last_name" jdbcType="VARCHAR" property="lastName" />
+    <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="birthday" jdbcType="VARCHAR" property="birthday" />
+    <result column="id_type" jdbcType="VARCHAR" property="idType" />
+    <result column="id_number" jdbcType="VARCHAR" property="idNumber" />
+    <result column="tax_id" jdbcType="VARCHAR" property="taxId" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="residence_country" property="residenceCountry" jdbcType="VARCHAR" />
+    <result column="region_state" jdbcType="VARCHAR" property="regionState" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="postal_code" jdbcType="VARCHAR" property="postalCode" />
+    <result column="nationality" jdbcType="VARCHAR" property="nationality" />
+    <result column="bill_file" jdbcType="VARCHAR" property="billFile" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_address" jdbcType="VARCHAR" property="companyAddress" />
+    <result column="contact_number" jdbcType="VARCHAR" property="contactNumber" />
+    <result column="register_name" jdbcType="VARCHAR" property="registerName" />
+    <result column="register_email" jdbcType="VARCHAR" property="registerEmail" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="idm_tid" jdbcType="VARCHAR" property="idmTid" />
+    <result column="ref_type" jdbcType="VARCHAR" property="refType" />
+    <result column="ref_id" jdbcType="VARCHAR" property="refId" />
+    <result column="issuing_authority" jdbcType="VARCHAR" property="issuingAuthority" />
+    <result column="expiry_date" jdbcType="VARCHAR" property="expiryDate" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="ext" jdbcType="VARCHAR" property="ext" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, fill_type, status, create_time, update_time, first_name, middle_name,
+    last_name, gender, birthday,id_type,id_number, tax_id, country, residence_country, region_state, city, address, postal_code,
+    nationality, bill_file, company_name, company_address, contact_number, register_name,
+    register_email, source, idm_tid, ref_type, ref_id, issuing_authority,expiry_date,operator,ext
+  </sql>
+  <delete id="deleteByUk">
+    delete from kyc_fill_info
+    where user_id = #{userId,jdbcType=BIGINT} and fill_type = #{fillType,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.certificate.KycFillInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into kyc_fill_info (user_id, fill_type,
+      status, create_time, update_time,
+      first_name, middle_name, last_name,
+      gender, birthday, tax_id,
+      country, residence_country, region_state, city,
+      address, postal_code, nationality,
+      bill_file, company_name, company_address,
+      contact_number, register_name, register_email,
+      source, idm_tid, ref_type,
+      ref_id, issuing_authority, expiry_date,ext)
+    values (#{userId,jdbcType=BIGINT}, #{fillType,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{firstName,jdbcType=VARCHAR}, #{middleName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR},
+      #{gender,jdbcType=TINYINT}, #{birthday,jdbcType=VARCHAR}, #{taxId,jdbcType=VARCHAR},
+      #{country,jdbcType=VARCHAR}, #{residenceCountry,jdbcType=VARCHAR}, #{regionState,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+      #{address,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, #{nationality,jdbcType=VARCHAR},
+      #{billFile,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, #{companyAddress,jdbcType=VARCHAR},
+      #{contactNumber,jdbcType=VARCHAR}, #{registerName,jdbcType=VARCHAR}, #{registerEmail,jdbcType=VARCHAR},
+      #{source,jdbcType=VARCHAR}, #{idmTid,jdbcType=VARCHAR}, #{refType,jdbcType=VARCHAR},
+      #{refId,jdbcType=VARCHAR}, #{issuingAuthority,jdbcType=VARCHAR}, #{expiryDate,jdbcType=VARCHAR},#{ext,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.certificate.KycFillInfo">
+    insert into kyc_fill_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="fillType != null">
+        fill_type,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="firstName != null">
+        first_name,
+      </if>
+      <if test="middleName != null">
+        middle_name,
+      </if>
+      <if test="lastName != null">
+        last_name,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="taxId != null">
+        tax_id,
+      </if>
+      <if test="country != null">
+        country,
+      </if>
+      <if test="residenceCountry != null" >
+        residence_country,
+      </if>
+      <if test="regionState != null">
+        region_state,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="postalCode != null">
+        postal_code,
+      </if>
+      <if test="nationality != null">
+        nationality,
+      </if>
+      <if test="billFile != null">
+        bill_file,
+      </if>
+      <if test="companyName != null">
+        company_name,
+      </if>
+      <if test="companyAddress != null">
+        company_address,
+      </if>
+      <if test="contactNumber != null">
+        contact_number,
+      </if>
+      <if test="registerName != null">
+        register_name,
+      </if>
+      <if test="registerEmail != null">
+        register_email,
+      </if>
+      <if test="source != null">
+        source,
+      </if>
+      <if test="idmTid != null">
+        idm_tid,
+      </if>
+      <if test="refType != null">
+        ref_type,
+      </if>
+      <if test="refId != null">
+        ref_id,
+      </if>
+      <if test="issuingAuthority != null">
+        issuing_authority,
+      </if>
+      <if test="expiryDate != null">
+        expiry_date,
+      </if>
+      <if test="ext != null">
+        ext,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="fillType != null">
+        #{fillType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstName != null">
+        #{firstName,jdbcType=VARCHAR},
+      </if>
+      <if test="middleName != null">
+        #{middleName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastName != null">
+        #{lastName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="taxId != null">
+        #{taxId,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="residenceCountry != null" >
+        #{residenceCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="regionState != null">
+        #{regionState,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null">
+        #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nationality != null">
+        #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="billFile != null">
+        #{billFile,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null">
+        #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="contactNumber != null">
+        #{contactNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="registerName != null">
+        #{registerName,jdbcType=VARCHAR},
+      </if>
+      <if test="registerEmail != null">
+        #{registerEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="idmTid != null">
+        #{idmTid,jdbcType=VARCHAR},
+      </if>
+      <if test="refType != null">
+        #{refType,jdbcType=VARCHAR},
+      </if>
+      <if test="refId != null">
+        #{refId,jdbcType=VARCHAR},
+      </if>
+      <if test="issuingAuthority != null">
+        #{issuingAuthority,jdbcType=VARCHAR},
+      </if>
+      <if test="expiryDate != null">
+        #{expiryDate,jdbcType=VARCHAR},
+      </if>
+      <if test="ext != null">
+        #{ext,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectByUserIdFillType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from kyc_fill_info
+    where user_id = #{userId,jdbcType=BIGINT} and fill_type = #{fillType,jdbcType=VARCHAR}
+  </select>
+  <update id="updateByUkSelective" parameterType="com.binance.account.data.entity.certificate.KycFillInfo">
+    update kyc_fill_info
+    <set>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstName != null">
+        first_name = #{firstName,jdbcType=VARCHAR},
+      </if>
+      <if test="middleName != null">
+        middle_name = #{middleName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastName != null">
+        last_name = #{lastName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="taxId != null">
+        tax_id = #{taxId,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="residenceCountry != null" >
+        residence_country = #{residenceCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="regionState != null">
+        region_state = #{regionState,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null">
+        postal_code = #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="nationality != null">
+        nationality = #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="billFile != null">
+        bill_file = #{billFile,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null">
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null">
+        company_address = #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="contactNumber != null">
+        contact_number = #{contactNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="registerName != null">
+        register_name = #{registerName,jdbcType=VARCHAR},
+      </if>
+      <if test="registerEmail != null">
+        register_email = #{registerEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="idmTid != null">
+        idm_tid = #{idmTid,jdbcType=VARCHAR},
+      </if>
+      <if test="refType != null">
+        ref_type = #{refType,jdbcType=VARCHAR},
+      </if>
+      <if test="refId != null">
+        ref_id = #{refId,jdbcType=VARCHAR},
+      </if>
+      <if test="issuingAuthority != null">
+        issuing_authority = #{issuingAuthority,jdbcType=VARCHAR},
+      </if>
+      <if test="expiryDate != null">
+        expiry_date = #{expiryDate,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR}
+      </if>
+      <if test="ext != null">
+        ext = #{ext,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT} and fill_type = #{fillType,jdbcType=VARCHAR}
+  </update>
+
+  <select id="kycRefQueryCount" parameterType="com.binance.account.common.query.KycRefQuery" resultType="java.lang.Long">
+    select count(1) from kyc_fill_info
+    where fill_type = 'BASE'
+    <if test="firstName != null" >
+      and LOWER(first_name) like CONCAT('%',#{firstName},'%')
+    </if>
+    <if test="lastName != null" >
+      and LOWER(last_name) like CONCAT('%',#{lastName},'%')
+    </if>
+    <if test="countryCode != null" >
+      and country = #{countryCode}
+    </if>
+    <if test="companyName != null">
+      and LOWER(company_name) like CONCAT('%',#{companyName},'%')
+    </if>
+    <if test="startTime != null" >
+      and create_time >= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and create_time &lt;= #{endTime}
+    </if>
+    <if test="taxId != null">
+      and tax_id = #{taxId}
+    </if>
+    <if test="regionState != null">
+      and region_state = #{regionState}
+    </if>
+    <if test="birthday != null">
+      and birthday like concat(#{birthday}, '%')
+    </if>
+  </select>
+
+  <select id="kycRefQueryList" parameterType="com.binance.account.common.query.KycRefQuery" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from kyc_fill_info
+    where fill_type = 'BASE'
+    <if test="firstName != null" >
+      and LOWER(first_name) like CONCAT('%',#{firstName},'%')
+    </if>
+    <if test="lastName != null" >
+      and LOWER(last_name) like CONCAT('%',#{lastName},'%')
+    </if>
+    <if test="countryCode != null" >
+      and country = #{countryCode}
+    </if>
+    <if test="companyName != null">
+      and LOWER(company_name) like CONCAT('%',#{companyName},'%')
+    </if>
+    <if test="startTime != null" >
+      and create_time >= #{startTime}
+    </if>
+    <if test="endTime != null">
+      and create_time &lt;= #{endTime}
+    </if>
+    <if test="taxId != null">
+      and tax_id = #{taxId}
+    </if>
+    <if test="regionState != null">
+      and region_state = #{regionState}
+    </if>
+    <if test="birthday != null">
+      and birthday like concat(#{birthday}, '%')
+    </if>
+    order by create_time desc
+    <if test="start!=null">
+      LIMIT #{start},#{rows}
+    </if>
+  </select>
+
+  <update id="updateNameByUk" parameterType="com.binance.account.data.entity.certificate.KycFillInfo">
+    update kyc_fill_info set
+    first_name = #{firstName,jdbcType=VARCHAR},
+    middle_name = #{middleName,jdbcType=VARCHAR},
+    last_name = #{lastName,jdbcType=VARCHAR},
+    birthday = #{birthday,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT} and fill_type = #{fillType,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateFillName" parameterType="com.binance.account.data.entity.certificate.KycFillInfo">
+    update kyc_fill_info set
+        first_name = #{firstName,jdbcType=VARCHAR},
+        middle_name = #{middleName,jdbcType=VARCHAR},
+        last_name = #{lastName,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT} and fill_type = #{fillType,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateAdditionalByUk" parameterType="com.binance.account.data.entity.certificate.KycFillInfo">
+    update kyc_fill_info
+        set
+        <if test="postalCode != null">
+          postal_code = #{postalCode,jdbcType=VARCHAR},
+        </if>
+        <if test="issuingAuthority != null">
+          issuing_authority = #{issuingAuthority,jdbcType=VARCHAR},
+        </if>
+        <if test="expiryDate != null">
+          expiry_date = #{expiryDate,jdbcType=VARCHAR},
+        </if>
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT} and fill_type = #{fillType,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.withdraw.UserWithdrawLockLogMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.withdraw.UserWithdrawLockLog">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="tran_id" jdbcType="BIGINT" property="tranId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="is_manual" jdbcType="VARCHAR" property="isManual" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  <sql id="Base_Column_List">
+        id,user_id, tran_id, type, is_manual,amount, insert_time, operator
+  </sql>
+  <insert id="insert" parameterType="com.binance.account.data.entity.withdraw.UserWithdrawLockLog">
+    insert into user_withdraw_lock_log (id, user_id, tran_id, 
+      type, is_manual, amount, insert_time, 
+      operator)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{tranId,jdbcType=BIGINT}, 
+      #{type,jdbcType=VARCHAR}, #{isManual,jdbcType=VARCHAR},#{amount,jdbcType=DECIMAL}, #{insertTime,jdbcType=TIMESTAMP}, 
+      #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.withdraw.UserWithdrawLockLog">
+    insert ignore into user_withdraw_lock_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="tranId != null">
+        tran_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="isManual != null">
+        is_manual,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="insertTime != null">
+        insert_time,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="tranId != null">
+        #{tranId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="isManual != null">
+        #{isManual,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="insertTime != null">
+        #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectByUniqueKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_withdraw_lock_log
+        where tran_id = #{tranId} and type = #{type} and user_id = #{userId}
+  </select>
+
+  <select id="sumLockWithOperator" resultType="java.math.BigDecimal">
+    select
+    sum(amount)
+    from user_withdraw_lock_log
+    where user_id = #{userId} and operator = #{operator}
+  </select>
+  
+</mapper>

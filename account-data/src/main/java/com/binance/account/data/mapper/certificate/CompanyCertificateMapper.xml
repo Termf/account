@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.CompanyCertificateMapper">
+    <resultMap id="BaseResultMap"
+               type="com.binance.account.data.entity.certificate.CompanyCertificate">
+        <result column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+        <result column="company_address" jdbcType="VARCHAR" property="companyAddress"/>
+        <result column="company_country" jdbcType="VARCHAR" property="companyCountry"/>
+        <result column="applyer_name" jdbcType="VARCHAR" property="applyerName"/>
+        <result column="applyer_email" jdbcType="VARCHAR" property="applyerEmail"/>
+        <result column="contact_number" jdbcType="VARCHAR" property="contactNumber"/>
+        <result column="status" property="status" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+        <result column="info" jdbcType="VARCHAR" property="info"/>
+        <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="jumio_id" jdbcType="VARCHAR" property="jumioId"/>
+        <result column="redo_jumio" jdbcType="INTEGER" property="redoJumio"/>
+        <result column="scan_reference" jdbcType="VARCHAR" property="scanReference"/>
+        <result column="jumio_status" jdbcType="VARCHAR" property="jumioStatus" />
+        <result column="face_status" jdbcType="VARCHAR" property="faceStatus" />
+        <result column="face_remark" jdbcType="VARCHAR" property="faceRemark" />
+        <result column="trans_face_log_id" jdbcType="VARCHAR" property="transFaceLogId" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id, company_name, company_address, company_country,applyer_name, applyer_email, status,
+        info,
+        insert_time, update_time, jumio_id, redo_jumio, scan_reference, jumio_status,
+        face_status, face_remark, trans_face_log_id
+    </sql>
+
+    <sql id="Base_SortByWhere_List">
+        <if test="sort =='updateTime'">
+            update_time
+        </if>
+        <if test="sort =='insertTime'">
+            insert_time
+        </if>
+        <if test="sort != 'updateTime' and sort != 'insertTime'">
+            insert_time
+        </if>
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT * from company_certificate where user_id = #{userId,jdbcType=BIGINT} and id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="getIncompleteCount" parameterType="java.lang.Long"
+            resultType="java.lang.Integer">
+        SELECT count(*) from company_certificate where user_id = #{userId,jdbcType=BIGINT}
+		and status != 1 and status != 2 and status != 5 and status != 6
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from company_certificate
+        where user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert"
+            parameterType="com.binance.account.data.entity.certificate.CompanyCertificate" keyProperty="id" useGeneratedKeys="true">
+        insert into company_certificate (user_id, company_name, company_address,company_country,
+        applyer_name, applyer_email, status, info, insert_time, update_time,contact_number,jumio_id,
+        redo_jumio, scan_reference, jumio_status, face_status, face_remark, trans_face_log_id
+        )
+        values (#{userId,jdbcType=BIGINT}, #{companyName,jdbcType=VARCHAR},
+        #{companyAddress,jdbcType=VARCHAR},#{companyCountry,jdbcType=VARCHAR},
+        #{applyerName,jdbcType=VARCHAR}, #{applyerEmail,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+        #{info,jdbcType=VARCHAR}, #{insertTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP},
+        #{contactNumber,jdbcType=VARCHAR}, #{jumioId,jdbcType=VARCHAR},
+        #{redoJumio,jdbcType=INTEGER},
+        #{scanReference,jdbcType=VARCHAR}, #{jumioStatus,jdbcType=VARCHAR},
+        #{faceStatus,jdbcType=VARCHAR}, #{faceRemark,jdbcType=VARCHAR},
+        #{transFaceLogId,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertIgnore"
+            parameterType="com.binance.account.data.entity.certificate.CompanyCertificate">
+        insert ignore into company_certificate (user_id, company_name, company_address,company_country,
+        applyer_name, applyer_email, status,
+        info, insert_time, update_time, jumio_id, redo_jumio, scan_reference, jumio_status,
+        face_status, face_remark, trans_face_log_id
+        )
+        values (#{userId,jdbcType=BIGINT}, #{companyName,jdbcType=VARCHAR},
+        #{companyAddress,jdbcType=VARCHAR},#{companyCountry,jdbcType=VARCHAR},
+        #{applyerName,jdbcType=VARCHAR}, #{applyerEmail,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+        #{info,jdbcType=VARCHAR}, #{insertTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP},
+        #{jumioId,jdbcType=VARCHAR}, #{redoJumio,jdbcType=INTEGER},
+        #{scanReference,jdbcType=VARCHAR}, #{jumioStatus,jdbcType=VARCHAR},
+        #{faceStatus,jdbcType=VARCHAR}, #{faceRemark,jdbcType=VARCHAR},
+        #{transFaceLogId,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.binance.account.data.entity.certificate.CompanyCertificate">
+        update company_certificate
+        <set>
+            <if test="companyName != null">
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyAddress != null">
+                company_address = #{companyAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="companyCountry != null">
+                company_country = #{companyCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="applyerName != null">
+                applyer_name = #{applyerName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyerEmail != null">
+                applyer_email = #{applyerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="contactNumber != null">
+                contact_number = #{contactNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status=#{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+            </if>
+            <if test="info != null">
+                info = #{info,jdbcType=VARCHAR},
+            </if>
+            <if test="insertTime != null">
+                insert_time = #{insertTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="redoJumio != null">
+                redo_jumio = #{redoJumio,jdbcType=INTEGER},
+            </if>
+            <if test="scanReference != null" >
+                scan_reference = #{scanReference,jdbcType=VARCHAR},
+            </if>
+            <if test="jumioStatus != null">
+                jumio_status = #{jumioStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="faceStatus != null" >
+                face_status = #{faceStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="faceRemark != null">
+                face_remark = #{faceRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="transFaceLogId != null and transFaceLogId != ''">
+                trans_face_log_id = #{transFaceLogId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+        and id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.binance.account.data.entity.certificate.CompanyCertificate">
+        update company_certificate
+        set company_name = #{companyName,jdbcType=VARCHAR},
+        company_address = #{companyAddress,jdbcType=VARCHAR},
+        company_country = #{companyCountry,jdbcType=VARCHAR},
+        applyer_name = #{applyerName,jdbcType=VARCHAR},
+        applyer_email = #{applyerEmail,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+        info = #{info,jdbcType=VARCHAR},
+        scan_reference = #{scanReference,jdbcType=VARCHAR},
+        jumio_status = #{jumioStatus,jdbcType=VARCHAR},
+        insert_time = #{insertTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+        <if test="faceStatus != null" >
+            ,face_status = #{faceStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="faceRemark != null">
+            ,face_remark = #{faceRemark,jdbcType=VARCHAR}
+        </if>
+        <if test="redoJumio != null">
+            ,redo_jumio = #{redoJumio,jdbcType=INTEGER}
+        </if>
+        <if test="transFaceLogId != null and transFaceLogId != ''">
+            , trans_face_log_id = #{transFaceLogId,jdbcType=VARCHAR}
+        </if>
+        where user_id = #{userId,jdbcType=BIGINT}
+        and id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="getLast" resultMap="BaseResultMap">
+		SELECT * from company_certificate where user_id = #{userId,jdbcType=BIGINT} and status != 5 order by insert_time desc limit 1
+	</select>
+
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT * from company_certificate t
+        left join jumio t1 on t.jumio_id=t1.id
+        <where>
+            <if test="userId !=null">
+                and t.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="id !=null">
+                and t.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="companyCountry !=null and companyCountry !=''">
+                and t.company_country = #{companyCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="applyerName != null  and applyerName !=''">
+                <bind name="applyerNameValue" value="'%' + applyerName + '%'"/>
+                and t.applyer_name like  #{applyerNameValue,jdbcType=VARCHAR}
+            </if>
+            <if test="companyName != null and companyName !=''">
+                <bind name="companyNameValue" value="'%' + companyName + '%'"/>
+                and t.company_name like #{companyNameValue,jdbcType=VARCHAR}
+            </if>
+            <if test="status !=null and status !=''">
+                and t.status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="firstName !=null and firstName !=''">
+                or t1.first_name = #{firstName,jdbcType=VARCHAR}
+            </if>
+            <if test="lastName !=null and lastName !=''">
+                or t1.last_name = #{lastName,jdbcType=VARCHAR}
+            </if>
+            <if test="country !=null and country !=''">
+                and t.fill_country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="issuingCountry !=null and issuingCountry !=''">
+                and t1.issuing_country = #{issuingCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="documentType !=null and documentType !=''">
+                and t1.document_type = #{documentType,jdbcType=VARCHAR}
+            </if>
+            <if test="source !=null and source !=''">
+                and t1.source = #{source,jdbcType=VARCHAR}
+            </if>
+            <if test="number !=null and number !=''">
+                and t1.number = #{number,jdbcType=VARCHAR}
+            </if>
+            <if test="startCreateTime!=null">
+                and t.create_time &gt;= #{startCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endCreateTime!=null">
+                and t.create_time &lt;=#{endCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="scanReference!=null and scanReference !=''">
+                and t1.scan_reference =#{scanReference,jdbcType=VARCHAR}
+            </if>
+            <if test="faceStatus != null and faceStatus != ''">
+                and t1.face_status = #{faceStatus,jdbcType=VARCHAR}
+            </if>
+        </where>
+        <if test="sort != null and sort != '' and order == 'desc'">
+            order by
+            <include refid="Base_SortByWhere_List"/>
+            desc
+        </if>
+        <if test="sort != null and sort != '' and order == 'asc'">
+            order by
+            <include refid="Base_SortByWhere_List"/>
+            asc
+        </if>
+        <if test="sort==null or sort==''">
+            ORDER BY t.insert_time desc
+        </if>
+        <if test="start!=null">
+            LIMIT #{start},#{rows}
+        </if>
+    </select>
+
+    <select id="getListCount" resultType="java.lang.Long">
+        SELECT count(*) from company_certificate t
+        left join jumio t1 on t.jumio_id=t1.id
+        <where>
+            <if test="userId !=null">
+                and t.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="id !=null">
+                and t.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="companyCountry !=null and companyCountry !=''">
+                and t.company_country = #{companyCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="applyerName != null  and applyerName !=''">
+                <bind name="applyerNameValue" value="'%' + applyerName + '%'"/>
+                and t.applyer_name like  #{applyerNameValue,jdbcType=VARCHAR}
+            </if>
+            <if test="companyName != null and companyName !=''">
+                <bind name="companyNameValue" value="'%' + companyName + '%'"/>
+                and t.company_name like #{companyNameValue,jdbcType=VARCHAR}
+            </if>
+            <if test="status !=null and status !=''">
+                and t.status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="firstName !=null and firstName !=''">
+                or t1.first_name = #{firstName,jdbcType=VARCHAR}
+            </if>
+            <if test="lastName !=null and lastName !=''">
+                or t1.last_name = #{lastName,jdbcType=VARCHAR}
+            </if>
+            <if test="country !=null and country !=''">
+                and t.fill_country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="issuingCountry !=null and issuingCountry !=''">
+                and t1.issuing_country = #{issuingCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="documentType !=null and documentType !=''">
+                and t1.document_type = #{documentType,jdbcType=VARCHAR}
+            </if>
+            <if test="source !=null and source !=''">
+                and t1.source = #{source,jdbcType=VARCHAR}
+            </if>
+            <if test="number !=null and number !=''">
+                and t1.number = #{number,jdbcType=VARCHAR}
+            </if>
+            <if test="startCreateTime!=null">
+                and t.create_time &gt;= #{startCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endCreateTime!=null">
+                and t.create_time &lt;=#{endCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="scanReference!=null and scanReference !=''">
+                and t1.scan_reference =#{scanReference,jdbcType=VARCHAR}
+            </if>
+            <if test="faceStatus != null and faceStatus != ''">
+                and t1.face_status = #{faceStatus,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="getByJumioId" resultMap="BaseResultMap">
+	  	SELECT * from company_certificate where user_id = #{userId,jdbcType=BIGINT} and jumio_id = #{jumioId,jdbcType=VARCHAR}
+	</select>
+
+    <update id="saveJumioId" parameterType="com.binance.account.data.entity.certificate.CompanyCertificate">
+        update company_certificate
+          set jumio_id = #{jumioId,jdbcType=VARCHAR},
+              scan_reference = #{scanReference,jdbcType=VARCHAR},
+              jumio_status = #{jumioStatus,jdbcType=VARCHAR},
+              update_time = #{updateTime,jdbcType=TIMESTAMP}
+              <if test="info != null and info != ''" >
+                  , info = #{info,jdbcType=VARCHAR}
+              </if>
+        where user_id = #{userId, jdbcType=BIGINT}
+          and id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <update id="updateFaceStatus" parameterType="com.binance.account.data.entity.certificate.CompanyCertificate">
+        update company_certificate
+          set face_status = #{faceStatus,jdbcType=VARCHAR},
+              face_remark = #{faceRemark,jdbcType=VARCHAR},
+              update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where user_id = #{userId,jdbcType=BIGINT}
+          and id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="getExpiredCheckData" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List" />
+        from company_certificate
+        where insert_time > #{startCreateTime}
+        and update_time &lt; #{endUpdateTime}
+        and status = 0
+    </select>
+
+</mapper>

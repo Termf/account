@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.device.UserDevicePropertyMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.device.UserDeviceProperty">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="agent_type" jdbcType="VARCHAR" property="agentType" />
+    <result column="property_name" jdbcType="VARCHAR" property="propertyName" />
+    <result column="property_key" jdbcType="VARCHAR" property="propertyKey" />
+    <result column="property_weight" jdbcType="INTEGER" property="propertyWeight" />
+    <result column="property_rule" jdbcType="VARCHAR" property="propertyRule" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_del" jdbcType="TINYINT" property="isDel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, status, agent_type, property_name, property_key, property_weight, property_rule, create_time,
+    update_time, is_del
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_device_property
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user_device_property
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.device.UserDeviceProperty"  keyProperty="id" useGeneratedKeys="true">
+    insert into user_device_property
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="agentType != null">
+        agent_type,
+      </if>
+      <if test="propertyName != null">
+        property_name,
+      </if>
+      <if test="propertyKey != null">
+        property_key,
+      </if>
+      <if test="propertyWeight != null">
+        property_weight,
+      </if>
+      <if test="propertyRule != null">
+        property_rule,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="agentType != null">
+        #{agentType,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyName != null">
+        #{propertyName,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyKey != null">
+        #{propertyKey,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyWeight != null">
+        #{propertyWeight,jdbcType=INTEGER},
+      </if>
+      <if test="propertyRule != null">
+        #{propertyRule,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.device.UserDeviceProperty">
+    update user_device_property
+    <set>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="agentType != null">
+        agent_type = #{agentType,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyName != null">
+        property_name = #{propertyName,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyKey != null">
+        property_key = #{propertyKey,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyWeight != null">
+        property_weight = #{propertyWeight,jdbcType=INTEGER},
+      </if>
+      <if test="propertyRule != null">
+        property_rule = #{propertyRule,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByTypeAndStatus" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_device_property
+    where is_del=0
+    <if test="agentType != null">
+        and agent_type = #{agentType,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null">
+        and `status` = #{status,jdbcType=TINYINT}
+    </if>
+  </select>
+</mapper>

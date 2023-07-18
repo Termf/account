@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<processFlow>
+	<atom name="base-info-submit" executor="baseInfoSubmitExecutor" />
+
+	<!-- 最终全部迁入到 jumioInitExecutor -->
+	<atom name="kyc-jumio-init" executor="jumioInitMasterExecutor" />
+
+	<atom name="face-ocr-submit" executor="faceOcrSubmitExecutor" />
+
+	<compose name="base-info-submit-with-jumio">
+		<executors>
+			<executor name="baseInfoSubmitExecutor" />
+			<executor name="jumioInitMasterExecutor" />
+		</executors>
+	</compose>
+
+	<atom name="kyc-face-init" executor="faceInitExecutor"/>
+
+	<atom name="jumio-auth-result" executor="jumioAuthResultExecutor"/>
+	
+	<atom name="current-kyc-status" executor="currentKycStatusExecutor" />
+	
+	<atom name="kyc-face-auth-result" executor="faceAuthResultExecutor"/>
+	
+	<global-end isSync="fasle">
+		<executors>
+			<executor name="masterDegradeEndHandler" />
+			<executor name="masterEqualExchangeEndHandler" />
+			<executor name="masterUpgradeEndHandler" />
+		</executors>
+	</global-end>
+</processFlow>

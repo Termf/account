@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.apimanage.ApiModelMapper">
+	<resultMap id="BaseResultMap"
+		type="com.binance.account.data.entity.apimanage.ApiModel">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="api_key" property="apiKey" jdbcType="VARCHAR" />
+		<result column="key_id" property="keyId" jdbcType="INTEGER" />
+		<result column="api_name" property="apiName" jdbcType="VARCHAR" />
+		<result column="secret_key" property="secretKey"
+			jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="trade_ip" property="tradeIp" jdbcType="VARCHAR" />
+		<result column="withdraw_ip" property="withdrawIp"
+			jdbcType="VARCHAR" />
+		<result column="rule_id" property="ruleId" jdbcType="VARCHAR" />
+		<result column="info" property="info" jdbcType="VARCHAR" />
+		<result column="disable_status" property="disableStatus"
+			jdbcType="TINYINT" />
+		<result column="create_time" property="createTime"
+			jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime"
+			jdbcType="TIMESTAMP" />
+		<result column="enable_withdraw_status"
+			property="enableWithdrawStatus" jdbcType="TINYINT" />
+		<result column="withdraw_verifycode"
+			property="withdrawVerifycode" jdbcType="VARCHAR" />
+		<result column="withdraw_verifycode_time"
+			property="withdrawVerifycodeTime" jdbcType="TIMESTAMP" />
+		<result column="api_email_verify" property="apiEmailVerify"
+			jdbcType="TIMESTAMP" />
+		<result column="create_email_send_time"
+			property="createEmailSendTime" jdbcType="TIMESTAMP" />
+		<result column="small_enforced_limit" property="smallEnforcedLimit" jdbcType="INTEGER" />
+		<result column="big_enforced_limit" property="bigEnforcedLimit" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_OrderBy_List">
+		<if test="sort=='userId'">
+			<if test="order =='desc'">
+				am.user_id desc
+			</if>
+			<if test="order =='asc'">
+				am.user_id asc
+			</if>
+		</if>
+		<if test="sort=='email'">
+			<if test="order =='desc'">
+				u.email desc
+			</if>
+			<if test="order =='asc'">
+				u.email asc
+			</if>
+		</if>
+		<if test="sort=='apiName'">
+			<if test="order =='desc'">
+				am.api_name desc
+			</if>
+			<if test="order =='asc'">
+				am.api_name asc
+			</if>
+		</if>
+		<if test="sort=='createTime'">
+			<if test="order =='desc'">
+				am.create_time desc
+			</if>
+			<if test="order =='asc'">
+				am.create_time asc
+			</if>
+		</if>
+		<if test="sort=='updateTime'">
+			<if test="order =='desc'">
+				am.update_time desc
+			</if>
+			<if test="order =='asc'">
+				am.update_time asc
+			</if>
+		</if>
+	</sql>
+	<sql id="Base_Column_List">
+		id, user_id, api_key,
+		key_id,api_name,status,trade_ip,withdraw_ip,rule_id,
+		secret_key,info,disable_status,create_time,enable_withdraw_status,withdraw_verifycode_time,api_email_verify,create_email_send_time,
+		small_enforced_limit, big_enforced_limit, type
+	</sql>
+	<select id="selectApiList" parameterType="java.util.Map"
+			resultMap="BaseResultMap">
+		SELECT am.*  from api_manage am
+		<where>
+			<if test="userId!=null and userId!=''">
+				and am.user_id=#{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="userIds != null and userIds.size() > 0">
+				AND am.user_id in
+				<foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+					#{userId}
+				</foreach>
+			</if>
+			<if test="apiKey != null and apiKey != ''">
+				and am.api_key =#{apiKey,jdbcType=VARCHAR}
+			</if>
+			<if test="apiName != null and apiName != ''">
+				and am.api_name like CONCAT('%',#{apiName},'%')
+			</if>
+			<if test="ip != null and ip != ''">
+				and am.trade_ip like CONCAT('%',#{ip},'%')
+			</if>
+			<if test="ip != null and ip != ''">
+				and am.withdraw_ip like CONCAT('%',#{ip},'%')
+			</if>
+			<if test="ruleId != null and ruleId != ''">
+				and am.rule_id = #{ruleId}
+			</if>
+			<if test="startTime != null">
+				and am.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime != null">
+				and am.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if
+				test="enableWithdrawStatus != null and enableWithdrawStatus != ''">
+				and am.enable_withdraw_status = #{enableWithdrawStatus}
+			</if>
+			<if test="includeUnconfirmed != null and !includeUnconfirmed">
+				and (am.status != 1 or am.api_email_verify = 1) 
+			</if>
+		</where>
+		<if test="sort != null and sort != ''">
+			ORDER BY
+			<include refid="Base_OrderBy_List" />
+		</if>
+		<if test="offset>0">
+			LIMIT #{start},#{offset}
+		</if>
+	</select>
+	<select id="selectApiListCount" parameterType="java.util.Map"
+		resultType="java.lang.Long">
+		SELECT count(1)
+		FROM api_manage am
+		<where>
+			<if test="userId!=null and userId!=''">
+				and am.user_id=#{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="userIds != null and userIds.size() > 0">
+				AND am.user_id in
+				<foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+					#{userId}
+				</foreach>
+			</if>
+			<if test="apiKey != null and apiKey != ''">
+				and am.api_key =#{apiKey,jdbcType=VARCHAR}
+			</if>
+			<if test="ruleId != null and ruleId != ''">
+				and am.rule_id = #{ruleId}
+			</if>
+			<if test="apiName != null and apiName != ''">
+				and am.api_name like CONCAT('%',#{apiName},'%')
+			</if>
+			<if test="ip != null and ip != ''">
+				and am.trade_ip like CONCAT('%',#{ip},'%')
+			</if>
+			<if test="ip != null and ip != ''">
+				and am.withdraw_ip like CONCAT('%',#{ip},'%')
+			</if>
+			<if test="startTime != null">
+				and am.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="endTime != null">
+				and am.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="includeUnconfirmed != null and !includeUnconfirmed">
+				and (am.status != 1 or am.api_email_verify = 1)
+			</if>
+		</where>
+	</select>
+	<select id="selectModelByUuid" resultMap="BaseResultMap">
+		select * from api_manage where
+		uuid=#{uuid,jdbcType=VARCHAR}
+		and user_id=#{userId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectByUserIds" resultMap="BaseResultMap" parameterType="java.util.List">
+		select * from api_manage where
+		user_id in
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="selectByWithdrawVerifycode" resultMap="BaseResultMap">
+		select *
+		from api_manage
+		where
+		withdraw_verifycode = #{withdrawVerifycode}
+		and user_id=#{userId,jdbcType=VARCHAR}
+	</select>
+
+	<insert id="insertWithId" useGeneratedKeys="true" keyProperty="id" parameterType="com.binance.account.data.entity.apimanage.ApiModel">
+		insert into
+		api_manage(id,user_id,api_key,key_id,api_name,secret_key,rule_id,status,enable_withdraw_status,trade_ip,withdraw_ip,info,create_time,uuid,api_email_verify,create_email_send_time,type)
+		values(#{id,jdbcType=BIGINT},#{userId,jdbcType=VARCHAR},#{apiKey,jdbcType=VARCHAR},#{keyId,jdbcType=INTEGER},#{apiName,jdbcType=VARCHAR},#{secretKey,jdbcType=VARCHAR},#{ruleId,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{enableWithdrawStatus},#{tradeIp,jdbcType=VARCHAR},#{withdrawIp,jdbcType=VARCHAR},#{info,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{uuid,jdbcType=VARCHAR},#{apiEmailVerify},#{createEmailSendTime,jdbcType=TIMESTAMP},#{type,jdbcType=VARCHAR});
+	</insert>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from api_manage
+		where id=#{id}
+	</delete>
+	<select id="getApiByMap" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from api_manage
+		<where>
+			<if test="id!=null and id!=''">
+				and id=#{id,jdbcType=BIGINT}
+			</if>
+			<if test="userId!=null and userId!=''">
+				and user_id=#{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="apiKey!=null and apiKey!=''">
+				and api_key=#{apiKey,jdbcType=VARCHAR}
+			</if>
+			<if test="apiName!=null and apiName!=''">
+				and api_name=#{apiName,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<update id="updateByPrimaryKey"
+		parameterType="com.binance.account.data.entity.apimanage.ApiModel">
+		UPDATE api_manage
+		SET
+		rule_id=#{ruleId,jdbcType=VARCHAR},status=#{status,jdbcType=VARCHAR},trade_ip=#{tradeIp,jdbcType=VARCHAR},
+		withdraw_ip=#{withdrawIp,jdbcType=VARCHAR}, withdraw_verifycode = #{withdrawVerifycode},
+		enable_withdraw_status = #{enableWithdrawStatus},withdraw_verifycode_time = #{withdrawVerifycodeTime}, update_time = #{updateTime}
+		WHERE
+		id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateApikeyVerifyCode">
+		update api_manage set
+		withdraw_verifycode = #{withdrawVerifycode, jdbcType=VARCHAR}
+		WHERE id=#{id,jdbcType=BIGINT}
+	</update>
+
+	<update id="updateEmailVerifyStatus">
+		update api_manage set
+		api_email_verify=#{apiEmailVerify}
+		WHERE id=#{id,jdbcType=BIGINT} and
+		user_id=#{userId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateForApiWithdraw" parameterType="java.util.Map">
+		UPDATE api_manage
+		<set>
+			<if
+				test="enableWithdrawStatus != null and enableWithdrawStatus != ''">
+				enable_withdraw_status = #{enableWithdrawStatus},
+			</if>
+			<if
+				test="withdrawVerifycodeTime != null and withdrawVerifycodeTime != ''">
+				withdraw_verifycode_time = #{withdrawVerifycodeTime},
+			</if>
+			<if test="withdrawVerifycode != null and withdrawVerifycode != ''">
+				withdraw_verifycode = #{withdrawVerifycode},
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+				update_time = #{updateTime},
+			</if>
+		</set>
+		WHERE id = #{id,jdbcType=BIGINT} and enable_withdraw_status =
+		#{preEnableWithdrawStatus} and disable_status = #{disableStatus}
+	</update>
+
+	<select id="loadAllApikey" resultMap="BaseResultMap">
+		SELECT id, api_key  from api_manage
+	</select>
+
+	<update id="updateApikey" parameterType="com.binance.account.data.entity.apimanage.ApiModel">
+		UPDATE api_manage
+		SET
+		api_key=#{apiKey,jdbcType=VARCHAR},
+		secret_key=#{secretKey,jdbcType=VARCHAR}
+		WHERE
+		id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<select id="loadApikeyWhichisTradeEnabled" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		 from api_manage
+		<![CDATA[
+			where
+			db_create_time >= '2019-08-20 00:00:00'
+			and  db_create_time!=db_modify_time
+			and  rule_id=1
+		]]>
+	</select>
+
+
+	<update id="updateRuleIdByPrimaryKey"
+			parameterType="com.binance.account.data.entity.apimanage.ApiModel">
+		UPDATE api_manage
+		SET
+		rule_id=#{ruleId,jdbcType=VARCHAR }
+		WHERE
+		id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<select id="selectByApiKey" resultMap="BaseResultMap">
+		SELECT *
+		FROM api_manage
+		WHERE api_key = #{apiKey,jdbcType=VARCHAR}
+	</select>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<processFlow>
+
+	<compose name="base-info-submit" >
+		<executors>
+			<executor name="baseInfoSubmitUsExecutor"/>
+			<executor name="idmInitExecutor"/>
+		</executors>
+	</compose>
+	
+	<atom name="base-info-audit" executor="baseInfoAuditExecutor"/>
+
+	<atom name="idm-auth-result" executor="idmAuthResultExecutor" />
+
+	<compose name="address-info-submit" >
+		<executors>
+			<executor name="addressInfoSubmitExecutor"/>
+			<executor name="idmAddressInitExecutor"/>
+			<executor name="idmAddressProofSuccExecutor"/>
+		</executors>
+	</compose>
+
+	<atom name="kyc-bind-mobile" executor="kycBindMobileExecutor"/>
+
+	<atom name="kyc-jumio-init" executor="jumioInitExecutor" />
+
+	
+	<compose name="jumio-auth-result" >
+		<executors>
+			<executor name="jumioAuthResultExecutor"/>
+			<executor name="jumioIdmExecutor"/>
+		</executors>
+	</compose>
+
+	<atom name="kyc-face-init" executor="faceInitExecutor"/>
+	
+	<compose name="kyc-face-auth-result" >
+		<executors>
+			<executor name="faceAuthResultExecutor"/>
+			<executor name="faceIdmExecutor"/>
+		</executors>
+	</compose>
+
+	<compose name="address-auth-result" >
+		<executors>
+			<executor name="addressAuthResultExecutor"/>
+			<executor name="idmAddressProofSuccExecutor"/>
+		</executors>
+	</compose>
+	
+	<atom name="google-form-audit" executor="googleFormAuditExecutor"/>
+
+	<global-end>
+		<executors>
+			<executor name="usL0ToL1EndHandler"/>
+			<executor name="usL1ToL0EndHandler"/>
+			<executor name="usL1ToL2EndHandler"/>
+			<executor name="usL2ToL1EndHandler"/>
+			<executor name="usKycL1EmailEndHandle"/>
+		</executors>
+	</global-end>
+
+</processFlow>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.binance.account.data.mapper.security.QuestionRepositoryMapper">
+	<resultMap id="BaseResultMap" type="com.binance.account.data.entity.security.QuestionRepository">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="risk_type" jdbcType="VARCHAR" property="riskType" />
+		<result column="doc_lang_flag" jdbcType="VARCHAR" property="docLangFlag" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="enable" jdbcType="TINYINT" property="enable" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="group" jdbcType="VARCHAR" property="group" />
+		<result column="weight" jdbcType="INTEGER" property="weight" />
+	</resultMap>
+
+	<select id="selectALL" resultMap="BaseResultMap">
+		SELECT * FROM `question_repository`;
+	</select>
+	
+	 <select id="selectEnableALL" resultMap="BaseResultMap">
+		SELECT * FROM `question_repository` WHERE enable = 0 ;
+	</select>
+
+	 <select id="selectBy" resultMap="BaseResultMap">
+		SELECT * 
+		FROM `question_repository`
+		<where>
+		   <if test="group !=null and group != ''">
+		     `group` = #{group,jdbcType=VARCHAR}
+		   </if>
+		    <if test="riskType != null and riskType != ''">
+		      AND `risk_type` = #{riskType,jdbcType=VARCHAR}
+		   </if>
+		</where>
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		UPDATE `question_repository` SET enable = 1,update_time= now()  WHERE id =#{id,jdbcType=BIGINT}
+	</delete>
+	
+	<delete id="enable" parameterType="java.lang.Long">
+		UPDATE `question_repository` SET enable = 0,update_time= now()  WHERE id =#{id,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insertOrUpdate"
+		parameterType="com.binance.account.data.entity.security.QuestionRepository"
+		keyProperty="id" useGeneratedKeys="true" keyColumn="id">
+		INSERT INTO `question_repository`
+		(
+		  `risk_type`,
+		  `doc_lang_flag`,
+		  `remark`,
+		  `enable`,
+		  `create_time`,
+		  `update_time`,
+		  `group`,
+		  `weight`
+		)
+		VALUES (
+		  #{riskType,jdbcType=VARCHAR},
+		  #{docLangFlag,jdbcType=VARCHAR},
+		  #{remark,jdbcType=VARCHAR},
+		  #{enable,jdbcType=TINYINT},
+		  #{createTime,jdbcType=TIMESTAMP},
+		  #{updateTime,jdbcType=TIMESTAMP},
+		  #{group,jdbcType=VARCHAR},
+		  #{weight,jdbcType=INTEGER}
+		)
+		ON DUPLICATE KEY UPDATE
+		  <if test="docLangFlag != null">
+		    `doc_lang_flag` = VALUES(doc_lang_flag),
+		  </if>
+		  <if test="enable != null">
+		    `enable` = VALUES(enable),
+		  </if>
+		  <if test="remark != null">
+		    `remark` = VALUES(remark),
+		  </if>
+		  <if test="weight != null">
+		    `weight` = VALUES(weight),
+		  </if>
+		  `update_time` = NOW()
+	</insert>
+
+</mapper>

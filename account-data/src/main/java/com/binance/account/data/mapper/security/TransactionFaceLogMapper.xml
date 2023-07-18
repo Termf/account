@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.security.TransactionFaceLogMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.security.TransactionFaceLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="trans_id" jdbcType="VARCHAR" property="transId" />
+    <result column="trans_type" jdbcType="VARCHAR" property="transType"/>
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="certificate_type" jdbcType="INTEGER" property="certificateType"/>
+    <result column="certificate_id" jdbcType="BIGINT" property="certificateId"/>
+    <result column="face_status" jdbcType="VARCHAR" property="faceStatus" />
+    <result column="face_remark" jdbcType="VARCHAR" property="faceRemark" />
+    <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
+    <result column="withdraw_id" jdbcType="VARCHAR" property="withdrawId" />
+    <result column="kyc_lock_one" jdbcType="BIT" property="kycLockOne" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, trans_id, trans_type, status, create_time, update_time, certificate_type, certificate_id,
+    face_status, face_remark, fail_reason, withdraw_id, kyc_lock_one
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from transaction_face_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <insert id="insert" parameterType="com.binance.account.data.entity.security.TransactionFaceLog" useGeneratedKeys="true" keyProperty="id">
+    insert into transaction_face_log (user_id, trans_id, trans_type,
+      status, create_time, update_time, certificate_type, certificate_id,
+      face_status, face_remark, fail_reason, withdraw_id, kyc_lock_one
+      )
+    values (#{userId,jdbcType=BIGINT}, #{transId,jdbcType=VARCHAR}, #{transType,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{certificateType,jdbcType=INTEGER}, #{certificateId,jdbcType=BIGINT},
+      #{faceStatus,jdbcType=VARCHAR}, #{faceRemark,jdbcType=VARCHAR}, #{failReason,jdbcType=VARCHAR},
+      #{withdrawId,jdbcType=VARCHAR}, #{kycLockOne, jdbcType=BIT}
+      )
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.security.TransactionFaceLog">
+    update transaction_face_log
+    <set>
+      <if test="transId != null">
+        trans_id = #{transId,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null">
+        trans_type = #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="certificateType != null">
+        certificate_type = #{certificateType,jdbcType=INTEGER},
+      </if>
+      <if test="certificateId != null">
+        certificate_id = #{certificateId,jdbcType=BIGINT},
+      </if>
+      <if test="faceStatus != null">
+        face_status = #{faceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="faceRemark != null">
+        face_remark = #{faceRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        fail_reason = #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="withdrawId != null" >
+        withdraw_id = #{withdrawId,jdbcType=VARCHAR},
+      </if>
+      <if test="kycLockOne != null" >
+        kyc_lock_one = #{kycLockOne,jdbcType=BIT}
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <select id="findByTransId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from transaction_face_log
+    where trans_id = #{transId,jdbcType=VARCHAR} and trans_type = #{transType,jdbcType=VARCHAR}
+  </select>
+
+  <select id="findByUserIdTransId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from transaction_face_log
+    where trans_id = #{transId,jdbcType=VARCHAR} and trans_type = #{transType,jdbcType=VARCHAR}
+    and user_id = #{userId, jdbcType=BIGINT}
+  </select>
+
+  <select id="findLastByUserId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from transaction_face_log
+    where user_id = #{userId,jdbcType=BIGINT}
+    <if test="transType != null">
+      and trans_type = #{transType,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null">
+      and status = #{status}
+    </if>
+    order by create_time desc limit 1
+  </select>
+
+  <select id="findLastByUserIdMultipleType" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from transaction_face_log
+    where user_id = #{userId,jdbcType=BIGINT}
+    <if test="types != null and types.size() > 0" >
+      and trans_type in
+      <foreach collection="types" item="item" open="(" close=")" separator=",">
+        #{item}
+      </foreach>
+    </if>
+    <if test="status != null">
+      and status = #{status}
+    </if>
+    order by create_time desc limit 1
+  </select>
+
+  <select id="getTransactionFaceLogs" parameterType="com.binance.account.common.query.TransactionFaceQuery" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from transaction_face_log
+    <where>
+      <if test="userId != null">
+        and user_id = #{userId}
+      </if>
+      <if test="transType != null">
+        and trans_type = #{transType}
+      </if>
+      <if test="transId != null">
+        and trans_id = #{transId}
+      </if>
+      <if test="status != null" >
+        and status = #{status}
+      </if>
+      <if test="startTime != null">
+        and create_time >= #{startTime}
+      </if>
+      <if test="endTime != null" >
+        and create_time &lt;= #{endTime}
+      </if>
+    </where>
+    order by create_time desc
+    <if test="start != null">
+      limit #{start}, #{rows}
+    </if>
+  </select>
+
+  <select id="getTransactionFaceLogsCount" parameterType="com.binance.account.common.query.TransactionFaceQuery" resultType="java.lang.Long">
+    select count(1)
+    from transaction_face_log
+    <where>
+      <if test="userId != null">
+        and user_id = #{userId}
+      </if>
+      <if test="transType != null">
+        and trans_type = #{transType}
+      </if>
+      <if test="transId != null">
+        and trans_id = #{transId}
+      </if>
+      <if test="status != null" >
+        and status = #{status}
+      </if>
+      <if test="startTime != null">
+        and create_time >= #{startTime}
+      </if>
+      <if test="endTime != null" >
+        and create_time &lt;= #{endTime}
+      </if>
+    </where>
+  </select>
+
+  <update id="updateStatus" parameterType="com.binance.account.data.entity.security.TransactionFaceLog" >
+    update transaction_face_log
+    set status = #{status},
+    <if test="failReason != null">
+      fail_reason = #{failReason},
+    </if>
+    update_time = #{updateTime}
+    where id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+</mapper>

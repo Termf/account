@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.user.UserSearchMapper">
+
+    <select id="queryUser" resultType="java.lang.Long">
+        select user_id from ${table}
+        <where>
+            <trim prefixOverrides="and">
+                <if test="param.status != null">
+                    <![CDATA[
+						and status & #{param.mask,jdbcType=BIGINT} = #{param.status,jdbcType=BIGINT}
+					]]>
+                </if>
+                <if test="param.email != null and param.email != '' and param.canEmailLike == true">
+                    <![CDATA[
+						and instr(email,#{param.email,jdbcType=VARCHAR})>0
+					]]>
+                </if>
+                <if test="param.email != null and param.email != '' and param.canEmailLike == false">
+                    and email = #{param.email,jdbcType=VARCHAR}
+                </if>
+                <if test="param.emails != null and param.emails.size() > 0">
+                    AND email in
+                    <foreach collection="param.emails" item="email" open="(" close=")" separator=",">
+                        #{email}
+                    </foreach>
+                </if>
+                <if test="param.startInsertTime != null">
+                    <![CDATA[
+						and insert_time >= #{param.startInsertTime}
+					]]>
+                </if>
+                <if test="param.endInsertTime != null">
+                    <![CDATA[
+						and insert_time < #{param.endInsertTime}
+					]]>
+                </if>
+            </trim>
+        </where>
+    </select>
+
+    <select id="queryUserInfo" resultType="java.lang.Long">
+        select user_id from ${table}
+        <where>
+            <if test="param.remark != null and param.remark!=''">
+                <![CDATA[
+						and instr(remark,#{param.remark,jdbcType=VARCHAR})>0
+					]]>
+            </if>
+        </where>
+    </select>
+
+    <select id="queryUserSecurity" resultType="java.lang.Long">
+        select user_id from ${table}
+        <where>
+            <if test="param.mobileCode != null and param.mobileCode!=''">
+               mobile_code=#{param.mobileCode}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <!-- jar 不要用6.x版本的生成会有问题 -->
+    <!--  <classPathEntry
+              location="D:\apache-maven-3.5.3/repository/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar"/>-->
+    <classPathEntry
+            location="/Users/yangyang/soft/apache-maven-3.5.4/repository/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar"/>
+
+    <!--<classPathEntry location="/Users/pengchenxue/mysql-connector-java-5.1.47.jar" />-->
+
+    <context id="context" targetRuntime="MyBatis3">
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 去除自动生成的注释 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://tk-dev-account-db.cluster-ctdjwepesacu.ap-northeast-1.rds.amazonaws.com:3306/account?useUnicode=true"
+                        userId="bijieprd" password="rIbDsmmZeRqM3n0TrIcV"/>
+
+        <javaTypeResolver>
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- javabeen生成的地方 -->
+        <javaModelGenerator targetPackage="com.binance.account.data.entity.agent" targetProject="../account-data/src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- mapper.xml生成的地方 -->
+        <sqlMapGenerator targetPackage="com.binance.account.data.mapper.agent" targetProject="../account-data/src/main/java">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+        <!-- mapper接口 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.binance.account.data.mapper.agent" targetProject="../account-data/src/main/java">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- 表名和生成的实体名 -->
+        <!--<table tableName="user_security_log" domainObjectName="UserSecurityLogV2" enableCountByExample="false"-->
+        <!--enableUpdateByExample="false"-->
+        <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false"/>-->
+        <table tableName="oauth_agent_relation" domainObjectName="OauthAgentRelation"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.security.UserYubikeyMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.security.UserYubikey">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="origin" jdbcType="VARCHAR" property="origin" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="credential_id" jdbcType="VARCHAR" property="credentialId" />
+    <result column="user_handle" jdbcType="VARCHAR" property="userHandle" />
+    <result column="public_key" jdbcType="VARCHAR" property="publicKey" />
+    <result column="signature_count" jdbcType="BIGINT" property="signatureCount" />
+    <result column="is_legacy" jdbcType="TINYINT" property="isLegacy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, origin, nick_name, credential_id, user_handle, public_key, signature_count, is_legacy,
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_yubikey
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user_yubikey
+    where id = #{id,jdbcType=BIGINT} and user_id = #{userId, jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.security.UserYubikey" keyProperty="id" useGeneratedKeys="true">
+    insert into user_yubikey (user_id, origin,
+      nick_name, credential_id, user_handle, 
+      public_key, signature_count, create_time, 
+      update_time)
+    values (#{userId,jdbcType=BIGINT}, #{origin,jdbcType=VARCHAR},
+      #{nickName,jdbcType=VARCHAR}, #{credentialId,jdbcType=VARCHAR}, #{userHandle,jdbcType=VARCHAR}, 
+      #{publicKey,jdbcType=VARCHAR}, #{signatureCount,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.security.UserYubikey">
+    insert into user_yubikey
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="origin != null">
+        origin,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+      <if test="credentialId != null">
+        credential_id,
+      </if>
+      <if test="userHandle != null">
+        user_handle,
+      </if>
+      <if test="publicKey != null">
+        public_key,
+      </if>
+      <if test="signatureCount != null">
+        signature_count,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="origin != null">
+        #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="credentialId != null">
+        #{credentialId,jdbcType=VARCHAR},
+      </if>
+      <if test="userHandle != null">
+        #{userHandle,jdbcType=VARCHAR},
+      </if>
+      <if test="publicKey != null">
+        #{publicKey,jdbcType=VARCHAR},
+      </if>
+      <if test="signatureCount != null">
+        #{signatureCount,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.security.UserYubikey">
+    update user_yubikey
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="origin != null">
+        origin = #{origin,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="credentialId != null">
+        credential_id = #{credentialId,jdbcType=VARCHAR},
+      </if>
+      <if test="userHandle != null">
+        user_handle = #{userHandle,jdbcType=VARCHAR},
+      </if>
+      <if test="publicKey != null">
+        public_key = #{publicKey,jdbcType=VARCHAR},
+      </if>
+      <if test="signatureCount != null">
+        signature_count = #{signatureCount,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.security.UserYubikey">
+    update user_yubikey
+    set user_id = #{userId,jdbcType=BIGINT},
+      origin = #{origin,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      credential_id = #{credentialId,jdbcType=VARCHAR},
+      user_handle = #{userHandle,jdbcType=VARCHAR},
+      public_key = #{publicKey,jdbcType=VARCHAR},
+      signature_count = #{signatureCount,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getByUserId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/> from user_yubikey
+    where user_id=#{userId,jdbcType=BIGINT}
+    <if test="origin != null" >
+      and origin = #{origin,jdbcType=VARCHAR}
+    </if>
+    <if test="credentialId">
+      and credential_id = #{credentialId,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="getByCredentialId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/> from user_yubikey
+    where credential_id = #{credentialId,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateSignatureCountByCredentialId" parameterType="com.binance.account.data.entity.security.UserYubikey" >
+    update user_yubikey
+        set
+            signature_count = #{signatureCount,jdbcType=BIGINT},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT} and credential_id = #{credentialId,jdbcType=VARCHAR}
+  </update>
+
+  <resultMap id="uidResult" type="java.lang.Long" >
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+  </resultMap>
+
+  <select id="findRegisteredUserIds" parameterType="java.util.ArrayList" resultMap="uidResult">
+    select user_id from user_yubikey
+    where user_id in
+    <foreach collection="uids" item="uid" index="index"
+             open="(" close=")" separator=",">
+      #{uid}
+    </foreach>
+  </select>
+
+</mapper>

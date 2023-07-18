@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [%-5level] [%-40.36logger{40}:%-4.4line] - %msg%n" />
+		</Console>
+	</Appenders>
+	<Loggers>
+	    <Logger name="org.apache.http" level="info"></Logger>
+        <Logger name="org.springframework" level="info"></Logger>
+        <Logger name="springfox.documentation" level="info"></Logger>
+        <Logger name="com.netflix" level="info"></Logger>
+        <Logger name="org.hibernate" level="info"></Logger>
+        <Logger name="com.alibaba" level="info"></Logger>
+        <Logger name="org.thymeleaf" level="error"></Logger>
+        <Logger name="org.apache.coyote.http11.Http11Processor" level="fatal"></Logger>
+        <Logger name="org.apache.skywalking" level="info"></Logger>
+        <Logger name="com.binance" level="info"></Logger>
+		<Root level="info">
+			<AppenderRef ref="Console" />
+		</Root>
+	</Loggers>
+</Configuration>

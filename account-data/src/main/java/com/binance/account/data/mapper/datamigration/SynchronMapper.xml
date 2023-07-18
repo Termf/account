@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.datamigration.SynchronMapper">
+    <resultMap id="BaseResultMap"
+               type="com.binance.account.data.entity.datamigration.Synchron">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        user_id, insert_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from synchron
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from synchron
+        where user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.binance.account.data.entity.datamigration.Synchron">
+        insert ignore into synchron (user_id, insert_time)
+        values (#{userId,jdbcType=BIGINT}, #{insertTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.binance.account.data.entity.datamigration.Synchron">
+        insert ignore into synchron
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="insertTime != null">
+                insert_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="insertTime != null">
+                #{insertTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.datamigration.Synchron">
+        update synchron
+        <set>
+            <if test="insertTime != null">
+                insert_time = #{insertTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.datamigration.Synchron">
+        update synchron
+        set insert_time = #{insertTime,jdbcType=TIMESTAMP}
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <select id="getMaxUserId" resultType="java.lang.Long">
+        <![CDATA[
+			SELECT MAX(user_id) FROM synchron where user_id >= #{minId,jdbcType=BIGINT} and user_id < #{maxId,jdbcType=BIGINT}
+		]]>
+    </select>
+</mapper>

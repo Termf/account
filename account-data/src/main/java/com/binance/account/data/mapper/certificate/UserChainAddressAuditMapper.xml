@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.UserChainAddressAuditMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.UserChainAddressAudit">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="coin" jdbcType="VARCHAR" property="coin" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="channel" jdbcType="VARCHAR" property="channel" />
+    <result column="refund_address" jdbcType="VARCHAR" property="refundAddress" />
+    <result column="refund_address_tag" jdbcType="VARCHAR" property="refundAddressTag" />
+    <result column="chainalysis_result" jdbcType="VARCHAR" property="chainalysisResult" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="biz_id" jdbcType="VARCHAR" property="bizId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, type, status, coin, address, refund_address, channel, refund_address_tag, chainalysis_result, comment, create_time,
+    update_time, created_by, updated_by, biz_id
+  </sql>
+
+  <select id="getAuditPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_chain_addr_audit
+    where 1=1
+    <if test="id != null">
+      and id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="userId != null">
+      and user_id = #{userId,jdbcType=BIGINT}
+    </if>
+    <if test="status != null">
+      and status = #{status,jdbcType=TINYINT}
+    </if>
+    <if test="type != null">
+      and type = #{type,jdbcType=TINYINT}
+    </if>
+    <if test="coin != null">
+      and coin = #{coin,jdbcType=VARCHAR}
+    </if>
+    <choose>
+      <when test="sort != null and sort != '' and order != null">
+        ORDER BY
+        <if test="sort == 'userId'" >
+          <if test="order == 'desc'">
+            user_id desc
+          </if>
+          <if test="order == 'asc'">
+            user_id asc
+          </if>
+        </if>
+        <if test="sort == 'createTime'" >
+          <if test="order == 'desc'">
+            create_time desc
+          </if>
+          <if test="order == 'asc'">
+            create_time asc
+          </if>
+        </if>
+        <if test="sort == 'updateTime'" >
+          <if test="order == 'desc'">
+            update_time desc
+          </if>
+          <if test="order == 'asc'">
+            update_time asc
+          </if>
+        </if>
+      </when>
+      <otherwise>
+        ORDER BY create_time desc
+      </otherwise>
+    </choose>
+    <if test="offset != null and limit != null and limit > 0">
+      LIMIT #{offset},#{limit}
+    </if>
+  </select>
+
+  <select id="getAuditCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    select
+      count(1)
+    from user_chain_addr_audit
+    where 1=1
+    <if test="userId != null">
+      and user_id = #{userId,jdbcType=BIGINT}
+    </if>
+    <if test="status != null">
+      and status = #{status,jdbcType=TINYINT}
+    </if>
+    <if test="type != null">
+      and type = #{type,jdbcType=TINYINT}
+    </if>
+    <if test="coin != null">
+      and coin = #{coin,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="getProcessingCount" parameterType="java.lang.Long" resultType="java.util.Map">
+    select
+     status, count(1) as statusCount
+    from user_chain_addr_audit
+    where user_id = #{userId,jdbcType=BIGINT}
+    group by status
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_chain_addr_audit
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user_chain_addr_audit
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.certificate.UserChainAddressAudit" useGeneratedKeys="true" keyProperty="id">
+    insert into user_chain_addr_audit (user_id, type,
+      status, coin, address, channel, refund_address, refund_address_tag,
+      chainalysis_result, comment, create_time, 
+      update_time, created_by, updated_by,biz_id
+      )
+    values (#{userId,jdbcType=BIGINT}, #{type,jdbcType=TINYINT},
+      #{status,jdbcType=TINYINT}, #{coin,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+      #{channel,jdbcType=VARCHAR}, #{refundAddress,jdbcType=VARCHAR}, #{refundAddressTag,jdbcType=VARCHAR},
+      #{chainalysisResult,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR},#{bizId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.certificate.UserChainAddressAudit" useGeneratedKeys="true" keyProperty="id">
+    insert into user_chain_addr_audit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="coin != null">
+        coin,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="refundAddress != null">
+        refund_address,
+      </if>
+      <if test="refundAddressTag != null">
+        refund_address_tag,
+      </if>
+      <if test="chainalysisResult != null">
+        chainalysis_result,
+      </if>
+      <if test="comment != null">
+        comment,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="updatedBy != null">
+        updated_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="coin != null">
+        #{coin,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="refundAddress != null">
+        #{refund_address,jdbcType=VARCHAR},
+      </if>
+      <if test="refundAddressTag != null">
+        #{refund_address_tag,jdbcType=VARCHAR},
+      </if>
+      <if test="chainalysisResult != null">
+        #{chainalysisResult,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.certificate.UserChainAddressAudit">
+    update user_chain_addr_audit
+    <set>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="coin != null">
+        coin = #{coin,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="refundAddress != null">
+        refund_address = #{refundAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="refundAddressTag != null">
+        refund_address_tag = #{refundAddressTag,jdbcType=VARCHAR},
+      </if>
+      <if test="chainalysisResult != null">
+        chainalysis_result = #{chainalysisResult,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null">
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updated_by = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+    <if test="userId != null">
+      and user_id = #{userId,jdbcType=BIGINT}
+    </if>
+  </update>
+  <update id="updateAllRecordStatus" parameterType="com.binance.account.data.entity.certificate.UserChainAddressAudit">
+    update user_chain_addr_audit
+    <set>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="chainalysisResult != null">
+        chainalysis_result = #{chainalysisResult,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null">
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updated_by = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where 1=1
+    <if test="userId != null">
+      and user_id = #{userId,jdbcType=BIGINT}
+    </if>
+  </update>
+  <update id="resetToPending" parameterType="com.binance.account.data.entity.certificate.UserChainAddressAudit">
+    update user_chain_addr_audit
+    <set>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="chainalysisResult != null">
+        chainalysis_result = #{chainalysisResult,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null">
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        updated_by = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where status > 0
+    <if test="userId != null">
+      and user_id = #{userId,jdbcType=BIGINT}
+    </if>
+  </update>
+
+  <select id="selectRejectRecByAddress" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_chain_addr_audit
+    where status = 3 and address = #{address,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

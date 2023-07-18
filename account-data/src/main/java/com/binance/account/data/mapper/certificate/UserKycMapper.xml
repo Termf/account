@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.certificate.UserKycMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.UserKyc">
+        <result column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="status" property="status" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="fail_reason" property="failReason" jdbcType="VARCHAR"/>
+        <result column="memo" property="memo" jdbcType="VARCHAR"/>
+        <result column="jumio_id" property="jumioId" jdbcType="VARCHAR"/>
+        <result column="scan_reference" property="scanReference" jdbcType="VARCHAR"/>
+        <result column="check_status" property="checkStatus" jdbcType="VARCHAR"/>
+
+        <result column="fill_first_name" property="baseInfo.firstName" jdbcType="VARCHAR"/>
+        <result column="fill_last_name" property="baseInfo.lastName" jdbcType="VARCHAR"/>
+        <result column="fill_middle_name" property="baseInfo.middleName" jdbcType="VARCHAR"/>
+
+        <result column="former_first_name" property="baseInfo.formerFirstName" jdbcType="VARCHAR"/>
+        <result column="former_last_name" property="baseInfo.formerLastName" jdbcType="VARCHAR"/>
+        <result column="former_middle_name" property="baseInfo.formerMiddleName" jdbcType="VARCHAR"/>
+
+        <result column="nationality" property="baseInfo.nationality" jdbcType="VARCHAR"/>
+        <result column="fill_dob" property="baseInfo.dob" jdbcType="TIMESTAMP"/>
+        <result column="fill_address" property="baseInfo.address" jdbcType="VARCHAR"/>
+        <result column="fill_postal_code" property="baseInfo.postalCode" jdbcType="VARCHAR"/>
+        <result column="fill_city" property="baseInfo.city" jdbcType="VARCHAR"/>
+        <result column="fill_country" property="baseInfo.country" jdbcType="VARCHAR"/>
+
+        <result column="face_status" jdbcType="VARCHAR" property="faceStatus" />
+        <result column="face_remark" jdbcType="VARCHAR" property="faceRemark" />
+
+        <result column="trans_face_log_id" jdbcType="VARCHAR" property="transFaceLogId"/>
+
+        <result column="face_ocr_status" jdbcType="VARCHAR" property="faceOcrStatus" />
+        <result column="face_ocr_remark" jdbcType="VARCHAR" property="faceOcrRemark" />
+
+    </resultMap>
+    
+     <sql id="Base_Column_List">
+        id, user_id, `status`, create_time, update_time, fail_reason, memo,
+        jumio_id, scan_reference, check_status,
+        fill_first_name, fill_last_name,fill_middle_name,
+        former_first_name, former_last_name, former_middle_name, nationality,
+        fill_dob, fill_address, fill_postal_code, fill_city, fill_country,
+        face_status, face_remark, trans_face_log_id, face_ocr_status, face_ocr_remark
+    </sql>
+
+    <sql id="Base_SortByWhere_List">
+        <if test="sort =='updateTime'">
+            t.update_time
+        </if>
+        <if test="sort =='createTime'">
+            t.create_time
+        </if>
+        <if test="sort == 'status'">
+            t.status
+        </if>
+        <if test="sort == 'memo'">
+            t.memo
+        </if>
+    </sql>
+
+    <select id="getById" resultMap="BaseResultMap">
+		SELECT * from user_kyc
+		where user_id = #{userId,jdbcType=BIGINT} and id = #{id,jdbcType=BIGINT}
+	</select>
+
+    <select id="getLast" resultMap="BaseResultMap">
+		SELECT * from user_kyc
+		where
+		user_id = #{userId,jdbcType=BIGINT}
+		and status != 5
+		order by create_time desc
+		limit 1
+	</select>
+	
+	<select id="getByJumioId" resultMap="BaseResultMap">
+	  	SELECT * from user_kyc
+	  	where user_id = #{userId,jdbcType=BIGINT} and jumio_id = #{jumioId,jdbcType=VARCHAR}
+	</select>
+
+    <insert id="saveBaseInfo" parameterType="com.binance.account.data.entity.certificate.UserKyc" useGeneratedKeys="true" keyProperty="id">
+		INSERT ignore INTO user_kyc (user_id,status,create_time,update_time,jumio_id, fail_reason, memo, scan_reference, check_status,
+		fill_first_name,fill_last_name,fill_middle_name,fill_dob,fill_address,fill_postal_code,fill_city,fill_country,
+		former_first_name, former_last_name, former_middle_name, nationality, face_status, face_remark, trans_face_log_id,
+		face_ocr_status, face_ocr_remark)
+		VALUES (#{userId,jdbcType=BIGINT},#{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+		#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{jumioId,jdbcType=VARCHAR},
+		#{failReason,jdbcType=VARCHAR},#{memo,jdbcType=VARCHAR},
+		#{scanReference,jdbcType=VARCHAR}, #{checkStatus, jdbcType=VARCHAR},
+		#{baseInfo.firstName,jdbcType=VARCHAR},#{baseInfo.lastName,jdbcType=VARCHAR},#{baseInfo.middleName,jdbcType=VARCHAR},
+		#{baseInfo.dob,jdbcType=TIMESTAMP},#{baseInfo.address,jdbcType=VARCHAR},
+		#{baseInfo.postalCode,jdbcType=VARCHAR},#{baseInfo.city,jdbcType=VARCHAR},#{baseInfo.country,jdbcType=VARCHAR},
+		#{baseInfo.formerFirstName,jdbcType=VARCHAR},#{baseInfo.formerLastName,jdbcType=VARCHAR},#{baseInfo.formerMiddleName,jdbcType=VARCHAR},
+		#{baseInfo.nationality,jdbcType=VARCHAR},
+		#{faceStatus,jdbcType=VARCHAR}, #{faceRemark, jdbcType=VARCHAR},
+		#{transFaceLogId,jdbcType=VARCHAR}, #{faceOcrStatus,jdbcType=VARCHAR}, #{faceOcrRemark,jdbcType=VARCHAR})
+	</insert>
+
+    <select id="getDailySubmitCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
+		SELECT count(*) from user_kyc
+		where user_id = #{userId,jdbcType=BIGINT}
+		and UNIX_TIMESTAMP(date_sub(now(),interval 1 DAY)) &lt; UNIX_TIMESTAMP(update_time)
+	</select>
+
+    <!-- pass/reject/overdue -->
+    <select id="getIncompleteCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
+		SELECT count(*) from user_kyc
+		where user_id = #{userId,jdbcType=BIGINT}
+		and status != 1 and status != 2 and status != 5 and status != 9
+	</select>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT * from user_kyc t
+        left join jumio t1 on t.jumio_id=t1.id
+        <where>
+            <if test="userId !=null">
+                and t.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="id !=null">
+                and t.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="status !=null and status !=''">
+                and t.status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="firstName !=null and firstName !=''">
+                and (t.fill_first_name = #{firstName,jdbcType=VARCHAR}
+                or t1.first_name = #{firstName,jdbcType=VARCHAR})
+            </if>
+            <if test="lastName !=null and lastName !=''">
+                and (t.fill_last_name = #{lastName,jdbcType=VARCHAR}
+                or t1.last_name = #{lastName,jdbcType=VARCHAR})
+            </if>
+            <if test="country !=null and country !=''">
+                and t.fill_country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="issuingCountry !=null and issuingCountry !=''">
+                and t1.issuing_country = #{issuingCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="documentType !=null and documentType !=''">
+                and t1.document_type = #{documentType,jdbcType=VARCHAR}
+            </if>
+            <if test="source !=null and source !=''">
+                and t1.source = #{source,jdbcType=VARCHAR}
+            </if>
+            <if test="number !=null and number !=''">
+                and t1.number = #{number,jdbcType=VARCHAR}
+            </if>
+            <if test="startCreateTime!=null">
+                and t.create_time &gt;= #{startCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endCreateTime!=null">
+                and t.create_time &lt;=#{endCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="scanReference!=null and scanReference !=''">
+                and t1.scan_reference =#{scanReference,jdbcType=VARCHAR}
+            </if>
+            <if test="faceStatus != null and faceStatus != ''">
+                and t1.face_status = #{faceStatus,jdbcType=VARCHAR}
+            </if>
+        </where>
+        <if test="sort != null and sort != '' and order == 'desc'">
+            order by
+            <include refid="Base_SortByWhere_List"/>
+            desc
+        </if>
+        <if test="sort != null and sort != '' and order == 'asc'">
+            order by
+            <include refid="Base_SortByWhere_List"/>
+            asc
+        </if>
+        <if test="sort==null or sort==''">
+            ORDER BY t.create_time desc
+        </if>
+        <if test="start!=null">
+            LIMIT #{start},#{rows}
+        </if>
+    </select>
+
+    <select id="getListCount" resultType="java.lang.Long">
+        SELECT count(*) from user_kyc t
+        left join jumio t1 on t.jumio_id=t1.id
+        <where>
+            <if test="userId !=null">
+                and t.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="id !=null">
+                and t.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="status !=null and status !=''">
+                and t.status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="firstName !=null and firstName !=''">
+                and (t.fill_first_name = #{firstName,jdbcType=VARCHAR}
+                or t1.first_name = #{firstName,jdbcType=VARCHAR})
+            </if>
+            <if test="lastName !=null and lastName !=''">
+                and (t.fill_last_name = #{lastName,jdbcType=VARCHAR}
+                or t1.last_name = #{lastName,jdbcType=VARCHAR})
+            </if>
+            <if test="country !=null and country !=''">
+                and t.fill_country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="issuingCountry !=null and issuingCountry !=''">
+                and t1.issuing_country = #{issuingCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="documentType !=null and documentType !=''">
+                and t1.document_type = #{documentType,jdbcType=VARCHAR}
+            </if>
+            <if test="source !=null and source !=''">
+                and t1.source = #{source,jdbcType=VARCHAR}
+            </if>
+            <if test="number !=null and number !=''">
+                and t1.number = #{number,jdbcType=VARCHAR}
+            </if>
+            <if test="startCreateTime!=null">
+                and t.create_time &gt;= #{startCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endCreateTime!=null">
+                and t.create_time &lt;= #{endCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="scanReference!=null and scanReference !=''">
+                and t1.scan_reference =#{scanReference,jdbcType=VARCHAR}
+            </if>
+            <if test="faceStatus != null and faceStatus != ''">
+                and t1.face_status = #{faceStatus,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateStatus" parameterType="com.binance.account.data.entity.certificate.UserKyc">
+		UPDATE user_kyc
+		set
+            status=#{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+            update_time=#{updateTime,jdbcType=TIMESTAMP},
+            <if test="checkStatus != null">
+                check_status = #{checkStatus, jdbcType=VARCHAR},
+            </if>
+            fail_reason=#{failReason,jdbcType=VARCHAR},
+            memo=#{memo,jdbcType=VARCHAR}
+		WHERE user_id = #{userId,jdbcType=BIGINT} and id = #{id,jdbcType=BIGINT}
+	</update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.certificate.UserKyc">
+        update user_kyc
+        <set>
+            <if test="baseInfo != null and baseInfo.firstName != null">
+                fill_first_name = #{baseInfo.firstName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.lastName != null">
+                fill_last_name = #{baseInfo.lastName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.middleName != null">
+                fill_middle_name = #{baseInfo.middleName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.formerFirstName != null">
+                former_first_name = #{baseInfo.formerFirstName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.formerLastName != null">
+                former_last_name = #{baseInfo.formerLastName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.formerMiddleName != null">
+                former_middle_name = #{baseInfo.formerMiddleName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.nationality != null">
+                nationality = #{baseInfo.nationality,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.dob != null">
+                fill_dob = #{baseInfo.dob,jdbcType=TIMESTAMP},
+            </if>
+            <if test="baseInfo != null and baseInfo.address != null">
+                fill_address = #{baseInfo.address,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.postalCode != null">
+                fill_postal_code = #{baseInfo.postalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.city != null">
+                fill_city = #{baseInfo.city,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.country != null">
+                fill_country = #{baseInfo.country,jdbcType=VARCHAR},
+            </if>
+            <if test="scanReference != null and scanReference != ''" >
+                scan_reference = #{scanReference,jdbcType=VARCHAR},
+            </if>
+            <if test="checkStatus != null and checkStatus != ''">
+                check_status = #{checkStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="faceStatus != null and faceStatus != ''">
+                face_status = #{faceStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="faceRemark != null and faceRemark != ''">
+                face_remark = #{faceRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="transFaceLogId != null and transFaceLogId != ''">
+                trans_face_log_id = #{transFaceLogId,jdbcType=VARCHAR},
+            </if>
+            <if test="faceOcrStatus != null and faceOcrStatus != ''">
+                face_ocr_status =  #{faceOcrStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="faceOcrRemark != null and faceOcrRemark != ''">
+                face_ocr_remark =  #{faceOcrRemark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+        and id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="saveJumioId" parameterType="com.binance.account.data.entity.certificate.UserKyc">
+        update user_kyc
+          set jumio_id = #{jumioId,jdbcType=VARCHAR},
+              scan_reference = #{scanReference,jdbcType=VARCHAR},
+              check_status = #{checkStatus, jdbcType=VARCHAR},
+              update_time = #{updateTime,jdbcType=TIMESTAMP}
+              <if test="failReason != null and failReason != ''">
+                  , fail_reason = #{failReason,jdbcType=VARCHAR}
+              </if>
+        where user_id = #{userId,jdbcType=BIGINT}
+        and id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="getModularUserKycList" parameterType="com.binance.account.common.query.UserKycModularQuery" resultMap="BaseResultMap">
+        select * from user_kyc
+        <where>
+            <if test="userId !=null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="statusList != null" >
+                and status in
+                <foreach collection="statusList" separator="," open="(" close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="checkStatus != null">
+                and check_status = #{checkStatus}
+            </if>
+            <if test="scanReference != null">
+                and scan_reference = #{scanReference}
+            </if>
+            <if test="fillCountry != null">
+                and fill_country = #{fillCountry}
+            </if>
+            <if test="firstName != null" >
+                and (fill_first_name = #{firstName} or fill_last_name = #{firstName})
+            </if>
+            <if test="lastName != null">
+                and (fill_first_name = #{lastName} or fill_last_name = #{lastName})
+            </if>
+            <if test="startCreateTime != null">
+                and create_time >= #{startCreateTime}
+            </if>
+            <if test="endCreateTime != null">
+                and create_time &lt;= #{endCreateTime}
+            </if>
+            <if test="faceStatus != null">
+                and face_status = #{faceStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="faceOcrStatus != null and faceOcrStatus != ''">
+                and face_ocr_status =  #{faceOcrStatus,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by create_time desc
+        <if test="start != null">
+            limit #{start}, #{rows}
+        </if>
+    </select>
+
+    <select id="getModularUserKycListCount" parameterType="com.binance.account.common.query.UserKycModularQuery" resultType="java.lang.Long">
+        select count(1) from user_kyc
+        <where>
+            <if test="userId !=null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="statusList != null" >
+                and status in
+                <foreach collection="statusList" separator="," open="(" close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="checkStatus != null">
+                and check_status = #{checkStatus}
+            </if>
+            <if test="scanReference != null">
+                and scan_reference = #{scanReference}
+            </if>
+            <if test="fillCountry != null">
+                and fill_country = #{fillCountry}
+            </if>
+            <if test="firstName != null" >
+                and (fill_first_name = #{firstName} or fill_last_name = #{firstName})
+            </if>
+            <if test="lastName != null">
+                and (fill_first_name = #{lastName} or fill_last_name = #{lastName})
+            </if>
+            <if test="startCreateTime != null">
+                and create_time >= #{startCreateTime}
+            </if>
+            <if test="endCreateTime != null">
+                and create_time &lt;= #{endCreateTime}
+            </if>
+            <if test="faceStatus != null">
+                and face_status = #{faceStatus,jdbcType=VARCHAR}
+            </if>
+            <if test="faceOcrStatus != null and faceOcrStatus != ''">
+                and face_ocr_status =  #{faceOcrStatus,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    
+    <select id="getByPrimaryKeys">
+    	select 
+    	<include refid="Base_Column_List" />
+    	from user_kyc
+    	where id in
+            <foreach collection="kycIds" item="kycId" open="(" close=")" separator=",">
+                #{kycId}
+            </foreach>
+    </select>
+
+    <update id="updateFaceStatus" parameterType="com.binance.account.data.entity.certificate.UserKyc">
+        update user_kyc
+          set face_status = #{faceStatus,jdbcType=VARCHAR},
+              face_remark = #{faceRemark,jdbcType=VARCHAR},
+              update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <select id="getExpiredCheckData" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from user_kyc
+        where create_time > #{startCreateTime}
+            and update_time &lt; #{endUpdateTime}
+            and status = 0
+            and face_ocr_status is null
+    </select>
+    
+    <update id="updateOcrResult" parameterType="com.binance.account.data.entity.certificate.UserKyc">
+        update user_kyc set
+                fill_first_name = #{baseInfo.firstName,jdbcType=VARCHAR},
+                fill_last_name = #{baseInfo.lastName,jdbcType=VARCHAR},
+                fill_middle_name = #{baseInfo.middleName,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <update id="saveFaceOcrStatus" parameterType="com.binance.account.data.entity.certificate.UserKyc">
+        update user_kyc
+          set face_ocr_status = #{faceOcrStatus,jdbcType=VARCHAR},
+              face_ocr_remark = #{faceOcrRemark,jdbcType=VARCHAR},
+              update_time = #{updateTime,jdbcType=TIMESTAMP},
+              fill_first_name = #{baseInfo.firstName,jdbcType=VARCHAR},
+              fill_middle_name = #{baseInfo.middleName,jdbcType=VARCHAR},
+              fill_last_name = #{baseInfo.lastName,jdbcType=VARCHAR},
+              fill_dob = #{baseInfo.dob,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+	<update id="updateBasicByPrimaryKey" parameterType="com.binance.account.data.entity.certificate.UserKyc">
+        update user_kyc
+        <set>
+            <if test="baseInfo != null and baseInfo.firstName != null">
+                fill_first_name = #{baseInfo.firstName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.lastName != null">
+                fill_last_name = #{baseInfo.lastName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.middleName != null">
+                fill_middle_name = #{baseInfo.middleName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.formerFirstName != null">
+                former_first_name = #{baseInfo.formerFirstName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.formerLastName != null">
+                former_last_name = #{baseInfo.formerLastName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.formerMiddleName != null">
+                former_middle_name = #{baseInfo.formerMiddleName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.nationality != null">
+                nationality = #{baseInfo.nationality,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.dob != null">
+                fill_dob = #{baseInfo.dob,jdbcType=TIMESTAMP},
+            </if>
+            <if test="baseInfo != null and baseInfo.address != null">
+                fill_address = #{baseInfo.address,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.postalCode != null">
+                fill_postal_code = #{baseInfo.postalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.city != null">
+                fill_city = #{baseInfo.city,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo != null and baseInfo.country != null">
+                fill_country = #{baseInfo.country,jdbcType=VARCHAR},
+            </if>
+            <if test="scanReference != null and scanReference != ''" >
+                scan_reference = #{scanReference,jdbcType=VARCHAR},
+            </if>
+            <if test="checkStatus != null and checkStatus != ''">
+                check_status = #{checkStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="faceStatus != null and faceStatus != ''">
+                face_status = #{faceStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="faceRemark != null and faceRemark != ''">
+                face_remark = #{faceRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="transFaceLogId != null and transFaceLogId != ''">
+                trans_face_log_id = #{transFaceLogId,jdbcType=VARCHAR},
+            </if>
+                face_ocr_status =  #{faceOcrStatus,jdbcType=VARCHAR},
+                face_ocr_remark =  #{faceOcrRemark,jdbcType=VARCHAR}
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+        and id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateFillName" parameterType="com.binance.account.data.entity.certificate.UserKyc">
+        update user_kyc
+        set
+            fill_first_name = #{baseInfo.firstName,jdbcType=VARCHAR},
+            fill_last_name = #{baseInfo.lastName,jdbcType=VARCHAR},
+            fill_middle_name = #{baseInfo.middleName,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=BIGINT}
+        and id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

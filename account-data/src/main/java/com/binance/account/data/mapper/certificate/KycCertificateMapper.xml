@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.KycCertificateMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.KycCertificate">
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="kyc_type" jdbcType="TINYINT" property="kycType"/>
+    <result column="kyc_level" jdbcType="TINYINT" property="kycLevel" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="message_tips" jdbcType="VARCHAR" property="messageTips" />
+    <result column="base_fill_status" jdbcType="VARCHAR" property="baseFillStatus" />
+    <result column="base_sub_status" property="baseSubStatus" jdbcType="VARCHAR" />
+    <result column="base_fill_tips" jdbcType="VARCHAR" property="baseFillTips" />
+    <result column="address_status" jdbcType="VARCHAR" property="addressStatus" />
+    <result column="address_tips" jdbcType="VARCHAR" property="addressTips" />
+    <result column="bind_mobile" jdbcType="VARCHAR" property="bindMobile" />
+    <result column="jumio_status" jdbcType="VARCHAR" property="jumioStatus" />
+    <result column="jumio_tips" jdbcType="VARCHAR" property="jumioTips" />
+    <result column="face_status" jdbcType="VARCHAR" property="faceStatus" />
+    <result column="face_tips" jdbcType="VARCHAR" property="faceTips" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="mobile_code" jdbcType="VARCHAR" property="mobileCode" />
+    <result column="google_form_status" jdbcType="VARCHAR" property="googleFormStatus" />
+    <result column="google_form_tips" jdbcType="VARCHAR" property="googleFormTips" />
+    <result column="fiat_pt_status" jdbcType="VARCHAR" property="fiatPtStatus" />
+    <result column="fiat_pt_tips" jdbcType="VARCHAR" property="fiatPtTips" />
+    <result column="face_ocr_status" jdbcType="VARCHAR" property="faceOcrStatus" />
+    <result column="face_ocr_tips" jdbcType="VARCHAR" property="faceOcrTips" />
+    <result column="lock_one" property="lockOne" jdbcType="BIT" />
+    <result column="flow_define" property="flowDefine" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, kyc_type, kyc_level, status, create_time, update_time, message_tips, base_fill_status,base_sub_status, 
+    base_fill_tips, address_status, address_tips, bind_mobile, jumio_status, jumio_tips,
+    face_status, face_tips, remark, mobile_code, google_form_status, google_form_tips,
+    fiat_pt_status, fiat_pt_tips, face_ocr_status, face_ocr_tips, lock_one, flow_define, operator
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from kyc_certificate
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+
+  <insert id="insert" parameterType="com.binance.account.data.entity.certificate.KycCertificate">
+    insert into kyc_certificate (user_id, kyc_type, kyc_level,
+      status, create_time, update_time,
+      message_tips, base_fill_status, base_fill_tips,
+      address_status, address_tips, bind_mobile,
+      jumio_status, jumio_tips, face_status,
+      face_tips, remark, mobile_code,
+      google_form_status, google_form_tips, fiat_pt_status,
+      fiat_pt_tips, face_ocr_status, face_ocr_tips,
+      lock_one, flow_define, operator)
+    values (#{userId,jdbcType=BIGINT}, #{kycType,jdbcType=TINYINT}, #{kycLevel,jdbcType=TINYINT},
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{messageTips,jdbcType=VARCHAR}, #{baseFillStatus,jdbcType=VARCHAR}, #{baseFillTips,jdbcType=VARCHAR},
+      #{addressStatus,jdbcType=VARCHAR}, #{addressTips,jdbcType=VARCHAR}, #{bindMobile,jdbcType=VARCHAR},
+      #{jumioStatus,jdbcType=VARCHAR}, #{jumioTips,jdbcType=VARCHAR}, #{faceStatus,jdbcType=VARCHAR},
+      #{faceTips,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{mobileCode,jdbcType=VARCHAR},
+      #{googleFormStatus,jdbcType=VARCHAR}, #{googleFormTips,jdbcType=VARCHAR}, #{fiatPtStatus,jdbcType=VARCHAR},
+      #{fiatPtTips,jdbcType=VARCHAR}, #{faceOcrStatus,jdbcType=VARCHAR}, #{faceOcrTips,jdbcType=VARCHAR},
+      #{lockOne,jdbcType=BIT}, #{flowDefine,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.certificate.KycCertificate">
+    update kyc_certificate
+    <set>
+      <if test="kycType != null">
+        kyc_type = #{kycType,jdbcType=TINYINT},
+      </if>
+      <if test="kycLevel != null">
+        kyc_level = #{kycLevel,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="messageTips != null">
+        message_tips = #{messageTips,jdbcType=VARCHAR},
+      </if>
+      <if test="baseFillStatus != null">
+        base_fill_status = #{baseFillStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="baseFillTips != null">
+        base_fill_tips = #{baseFillTips,jdbcType=VARCHAR},
+      </if>
+      <if test="addressStatus != null">
+        address_status = #{addressStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="addressTips != null">
+        address_tips = #{addressTips,jdbcType=VARCHAR},
+      </if>
+      <if test="bindMobile != null">
+        bind_mobile = #{bindMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="jumioStatus != null">
+        jumio_status = #{jumioStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="jumioTips != null">
+        jumio_tips = #{jumioTips,jdbcType=VARCHAR},
+      </if>
+      <if test="faceStatus != null">
+        face_status = #{faceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="faceTips != null">
+        face_tips = #{faceTips,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileCode != null">
+        mobile_code = #{mobileCode,jdbcType=VARCHAR},
+      </if>
+      <if test="googleFormStatus != null">
+        google_form_status = #{googleFormStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="googleFormTips != null">
+        google_form_tips = #{googleFormTips,jdbcType=VARCHAR},
+      </if>
+      <if test="fiatPtStatus != null">
+        fiat_pt_status = #{fiatPtStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="fiatPtTips != null">
+        fiat_pt_tips = #{fiatPtTips,jdbcType=VARCHAR},
+      </if>
+      <if test="faceOcrStatus != null">
+        face_ocr_status = #{faceOcrStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="faceOcrTips != null">
+        face_ocr_tips = #{faceOcrTips,jdbcType=VARCHAR},
+      </if>
+      <if test="lockOne != null" >
+        lock_one = #{lockOne,jdbcType=BIT},
+      </if>
+      <if test="flowDefine != null" >
+        flow_define = #{flowDefine,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateStatus" parameterType="com.binance.account.data.entity.certificate.KycCertificate">
+    update kyc_certificate
+    <set>
+      <if test="kycLevel != null">
+        kyc_level = #{kycLevel,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="messageTips != null">
+        message_tips = #{messageTips,jdbcType=VARCHAR},
+      </if>
+      <if test="baseFillStatus != null">
+        base_fill_status = #{baseFillStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="baseFillTips != null">
+        base_fill_tips = #{baseFillTips,jdbcType=VARCHAR},
+      </if>
+      <if test="addressStatus != null">
+        address_status = #{addressStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="addressTips != null">
+        address_tips = #{addressTips,jdbcType=VARCHAR},
+      </if>
+      <if test="googleFormStatus != null">
+        google_form_status = #{googleFormStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="googleFormTips != null">
+        google_form_tips = #{googleFormTips,jdbcType=VARCHAR},
+      </if>
+      <if test="faceOcrStatus != null">
+        face_ocr_status = #{faceOcrStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="faceOcrTips != null">
+        face_ocr_tips = #{faceOcrTips,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateJumioStatus" parameterType="com.binance.account.data.entity.certificate.KycCertificate">
+    update kyc_certificate
+        set jumio_status = #{jumioStatus,jdbcType=VARCHAR},
+            jumio_tips = #{jumioTips,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateJumioStatusWithFace" parameterType="com.binance.account.data.entity.certificate.KycCertificate">
+    update kyc_certificate
+        set jumio_status = #{jumioStatus,jdbcType=VARCHAR},
+            jumio_tips = #{jumioTips,jdbcType=VARCHAR},
+            face_status = #{faceStatus,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateJumioAndBaseStatus" parameterType="com.binance.account.data.entity.certificate.KycCertificate">
+    update kyc_certificate
+        set jumio_status = #{jumioStatus,jdbcType=VARCHAR},
+            jumio_tips = #{jumioTips,jdbcType=VARCHAR},
+            base_fill_status = #{baseFillStatus,jdbcType=VARCHAR},
+            base_fill_tips = #{baseFillTips,jdbcType=VARCHAR},
+            google_form_status = #{googleFormStatus,jdbcType=VARCHAR},
+            google_form_tips = #{googleFormTips,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            lock_one = #{lockOne,jdbcType=BIT}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateFaceStatus" parameterType="com.binance.account.data.entity.certificate.KycCertificate">
+    update kyc_certificate
+        set face_status = #{faceStatus,jdbcType=VARCHAR},
+            face_tips = #{faceTips,jdbcType=VARCHAR},
+            operator = #{operator,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateFaceOcrStatus" parameterType="com.binance.account.data.entity.certificate.KycCertificate">
+    update kyc_certificate
+        set face_ocr_status = #{faceOcrStatus,jdbcType=VARCHAR},
+            face_ocr_tips = #{faceOcrTips,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateFiatPtStatus" parameterType="com.binance.account.data.entity.certificate.KycCertificate">
+    update kyc_certificate
+        set fiat_pt_status = #{fiatPtStatus,jdbcType=VARCHAR},
+            fiat_pt_tips = #{fiatPtTips,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <select id="getListCount" parameterType="com.binance.account.common.query.KycCertificateQuery" resultType="java.lang.Long">
+    select count(1) from kyc_certificate
+        where 1 = 1
+        <if test="userId != null" >
+          and user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="kycTypeValue != null" >
+          and kyc_type = #{kycTypeValue,jdbcType=TINYINT}
+        </if>
+        <if test="kycLevel != null">
+          and kyc_level = #{kycLevel,jdbcType=TINYINT}
+        </if>
+        <if test="status != null">
+          and status = #{status,jdbcType=VARCHAR}
+        </if>
+        <if test="baseFillStatus != null">
+          and base_fill_status = #{baseFillStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="addressStatus != null">
+          and address_status = #{addressStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="bindMobile != null">
+          and bind_mobile = #{bindMobile,jdbcType=VARCHAR}
+        </if>
+        <if test="jumioStatus != null">
+          and jumio_status = #{jumioStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="faceStatus != null">
+          and face_status = #{faceStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="startTime != null">
+          and create_time >= #{startTime,jdbcType=TIMESTAMP}
+        </if>
+       	<if test="endTime != null">
+          and create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      	</if>
+      	<if test="upStartTime != null">
+          and update_time >= #{upStartTime,jdbcType=TIMESTAMP}
+      	</if>
+      	<if test="upEndTime != null">
+          and update_time &lt;= #{upEndTime,jdbcType=TIMESTAMP}
+      	</if>
+      	<if test="fiatPtStatus != null">
+          and fiat_pt_status = #{fiatPtStatus,jdbcType=VARCHAR}
+        </if>
+		<if test="faceOcrStatus != null">
+	      and face_ocr_status = #{faceOcrStatus,jdbcType=VARCHAR}
+	    </if>
+	    <if test="googleFormStatus != null">
+	      and google_form_status = #{googleFormStatus,jdbcType=VARCHAR}
+	    </if>
+  </select>
+
+  <select id="getList" parameterType="com.binance.account.common.query.KycCertificateQuery" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from kyc_certificate
+    where 1 = 1
+      <if test="userId != null" >
+        and user_id = #{userId,jdbcType=BIGINT}
+      </if>
+      <if test="kycTypeValue != null" >
+        and kyc_type = #{kycTypeValue,jdbcType=TINYINT}
+      </if>
+      <if test="kycLevel != null">
+        and kyc_level = #{kycLevel,jdbcType=TINYINT}
+      </if>
+      <if test="status != null">
+        and status = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="baseFillStatus != null">
+        and base_fill_status = #{baseFillStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="addressStatus != null">
+        and address_status = #{addressStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="bindMobile != null">
+        and bind_mobile = #{bindMobile,jdbcType=VARCHAR}
+      </if>
+      <if test="jumioStatus != null">
+        and jumio_status = #{jumioStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="faceStatus != null">
+        and face_status = #{faceStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="startTime != null">
+        and create_time >= #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null">
+        and create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="upStartTime != null">
+        and update_time >= #{upStartTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="upEndTime != null">
+        and update_time &lt;= #{upEndTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="fiatPtStatus != null">
+        and fiat_pt_status = #{fiatPtStatus,jdbcType=VARCHAR}
+      </if>
+	  <if test="faceOcrStatus != null">
+	    and face_ocr_status = #{faceOcrStatus,jdbcType=VARCHAR}
+	  </if>
+	  <if test="googleFormStatus != null">
+	    and google_form_status = #{googleFormStatus,jdbcType=VARCHAR}
+	  </if>
+    order by create_time desc
+      <if test="start!=null">
+        limit #{start},#{rows}
+      </if>
+  </select>
+
+  <update id="updateKycType" parameterType="com.binance.account.data.entity.certificate.KycCertificate">
+  update kyc_certificate set
+        kyc_type = #{kycType,jdbcType=TINYINT},
+        status = #{status,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        base_fill_status = #{baseFillStatus,jdbcType=VARCHAR},
+        base_fill_tips = null,
+        face_ocr_status =  #{faceOcrStatus,jdbcType=VARCHAR},
+        jumio_status = #{jumioStatus,jdbcType=VARCHAR},
+        message_tips = #{messageTips,jdbcType=VARCHAR},
+        face_ocr_tips = null,
+        jumio_tips = null,
+        flow_define =#{flowDefine,jdbcType=VARCHAR},
+        <if test="faceStatus != null">
+        face_status = #{faceStatus,jdbcType=VARCHAR},
+      	</if>
+      	<if test="faceTips != null">
+        face_tips = #{faceTips,jdbcType=VARCHAR},
+      	</if>
+        <if test="kycType == 1">
+        	google_form_status = null,
+        	google_form_tips = null
+        </if>
+        <if test="kycType == 2">
+	        address_status = null,
+	        address_tips = null,
+	        bind_mobile = null,
+	        mobile_code = null,
+	        google_form_status = #{googleFormStatus,jdbcType=VARCHAR}
+        </if>
+
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateLockOne" parameterType="com.binance.account.data.entity.certificate.KycCertificate">
+  update kyc_certificate set lock_one = #{lockOne,jdbcType=BIT}  where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <select id="deleteByPk" parameterType="java.lang.Long">
+    delete from kyc_certificate where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+
+  <select id="queryByIdList" parameterType="java.util.Map"  resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from kyc_certificate where user_id in
+    <foreach collection="userIds" item="item" open="(" separator=", " close=")">
+      #{item}
+    </foreach>
+  </select>
+
+	<update id="updateFaceOcrPassStatus" parameterType="com.binance.account.data.entity.certificate.KycCertificate">
+    update kyc_certificate
+    <set>
+      <if test="kycLevel != null">
+        kyc_level = #{kycLevel,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="messageTips != null">
+        message_tips = #{messageTips,jdbcType=VARCHAR},
+      </if>
+      <if test="baseFillStatus != null">
+        base_fill_status = #{baseFillStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="baseFillTips != null">
+        base_fill_tips = #{baseFillTips,jdbcType=VARCHAR},
+      </if>
+      <if test="addressStatus != null">
+        address_status = #{addressStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="addressTips != null">
+        address_tips = #{addressTips,jdbcType=VARCHAR},
+      </if>
+      <if test="googleFormStatus != null">
+        google_form_status = #{googleFormStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="googleFormTips != null">
+        google_form_tips = #{googleFormTips,jdbcType=VARCHAR},
+      </if>
+      <if test="faceOcrStatus != null">
+        face_ocr_status = #{faceOcrStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="faceOcrTips != null">
+        face_ocr_tips = #{faceOcrTips,jdbcType=VARCHAR},
+      </if>
+      <if test="faceStatus != null">
+        face_status = #{faceStatus,jdbcType=VARCHAR}
+        </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+</mapper>

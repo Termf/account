@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.user.MarginFixCheckInfoMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.user.MarginFixCheckInfo">
+    <id column="root_user_id" jdbcType="BIGINT" property="rootUserId" />
+    <result column="root_account_id" jdbcType="BIGINT" property="rootAccountId" />
+    <result column="old_margin_user_id" jdbcType="BIGINT" property="oldMarginUserId" />
+    <result column="old_margin_account_id" jdbcType="BIGINT" property="oldMarginAccountId" />
+    <result column="new_margin_user_id" jdbcType="BIGINT" property="newMarginUserId" />
+    <result column="new_margin_account_id" jdbcType="BIGINT" property="newMarginAccountId" />
+    <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    root_user_id, root_account_id, old_margin_user_id, old_margin_account_id, new_margin_user_id, 
+    new_margin_account_id, insert_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from margin_fix_check_info
+    where root_user_id = #{rootUserId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from margin_fix_check_info
+    where root_user_id = #{rootUserId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.user.MarginFixCheckInfo">
+    insert into margin_fix_check_info (root_user_id, root_account_id, old_margin_user_id, 
+      old_margin_account_id, new_margin_user_id, new_margin_account_id, 
+      insert_time, update_time)
+    values (#{rootUserId,jdbcType=BIGINT}, #{rootAccountId,jdbcType=BIGINT}, #{oldMarginUserId,jdbcType=BIGINT}, 
+      #{oldMarginAccountId,jdbcType=BIGINT}, #{newMarginUserId,jdbcType=BIGINT}, #{newMarginAccountId,jdbcType=BIGINT}, 
+      #{insertTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.user.MarginFixCheckInfo">
+    insert into margin_fix_check_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rootUserId != null">
+        root_user_id,
+      </if>
+      <if test="rootAccountId != null">
+        root_account_id,
+      </if>
+      <if test="oldMarginUserId != null">
+        old_margin_user_id,
+      </if>
+      <if test="oldMarginAccountId != null">
+        old_margin_account_id,
+      </if>
+      <if test="newMarginUserId != null">
+        new_margin_user_id,
+      </if>
+      <if test="newMarginAccountId != null">
+        new_margin_account_id,
+      </if>
+      <if test="insertTime != null">
+        insert_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rootUserId != null">
+        #{rootUserId,jdbcType=BIGINT},
+      </if>
+      <if test="rootAccountId != null">
+        #{rootAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="oldMarginUserId != null">
+        #{oldMarginUserId,jdbcType=BIGINT},
+      </if>
+      <if test="oldMarginAccountId != null">
+        #{oldMarginAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="newMarginUserId != null">
+        #{newMarginUserId,jdbcType=BIGINT},
+      </if>
+      <if test="newMarginAccountId != null">
+        #{newMarginAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="insertTime != null">
+        #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.user.MarginFixCheckInfo">
+    update margin_fix_check_info
+    <set>
+      <if test="rootAccountId != null">
+        root_account_id = #{rootAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="oldMarginUserId != null">
+        old_margin_user_id = #{oldMarginUserId,jdbcType=BIGINT},
+      </if>
+      <if test="oldMarginAccountId != null">
+        old_margin_account_id = #{oldMarginAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="newMarginUserId != null">
+        new_margin_user_id = #{newMarginUserId,jdbcType=BIGINT},
+      </if>
+      <if test="newMarginAccountId != null">
+        new_margin_account_id = #{newMarginAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="insertTime != null">
+        insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where root_user_id = #{rootUserId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.user.MarginFixCheckInfo">
+    update margin_fix_check_info
+    set root_account_id = #{rootAccountId,jdbcType=BIGINT},
+      old_margin_user_id = #{oldMarginUserId,jdbcType=BIGINT},
+      old_margin_account_id = #{oldMarginAccountId,jdbcType=BIGINT},
+      new_margin_user_id = #{newMarginUserId,jdbcType=BIGINT},
+      new_margin_account_id = #{newMarginAccountId,jdbcType=BIGINT},
+      insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where root_user_id = #{rootUserId,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByOldMarginUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from margin_fix_check_info
+    where old_margin_user_id = #{oldMarginUserId,jdbcType=BIGINT}
+  </select>
+</mapper>

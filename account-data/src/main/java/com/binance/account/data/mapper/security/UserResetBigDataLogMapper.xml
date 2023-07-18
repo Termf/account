@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.binance.account.data.mapper.security.UserResetBigDataLogMapper">
+	<resultMap id="BaseResultMap" type="com.binance.account.data.entity.security.UserResetBigDataLog">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<id column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="trans_id" jdbcType="VARCHAR" property="transId" />
+		<result column="score" jdbcType="INTEGER" property="score" />
+		<result column="batch_time" jdbcType="TIMESTAMP" property="batchTime" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+	</resultMap>
+
+	<select id="select" resultMap="BaseResultMap" useCache="true">
+	SELECT *
+	FROM `user_reset_bigdata_log`
+	<where>
+		<if test="userId != null ">
+			AND user_id = #{userId,jdbcType=BIGINT}
+		</if>
+		<if test="transId != null and transId !='' ">
+			AND trans_id = #{transId,jdbcType=VARCHAR}
+		</if>
+		<if test="startTime != null">
+			AND batch_time >= #{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime != null">
+			AND batch_time <![CDATA[ < ]]> #{endTime,jdbcType=TIMESTAMP}
+		</if>
+	</where>
+	ORDER BY id DESC
+</select>
+
+	<insert id="insert"
+		parameterType="com.binance.account.data.entity.security.UserResetBigDataLog"
+		keyProperty="id" useGeneratedKeys="true" keyColumn="id">
+		INSERT INTO `user_reset_bigdata_log`
+		(
+		`user_id`,
+		`trans_id`,
+		`score`,
+		`batch_time`,
+		`create_time`
+		)
+		VALUES (
+		#{userId,jdbcType=BIGINT},
+		#{transId,jdbcType=VARCHAR},
+		#{score,jdbcType=INTEGER},
+		#{batchTime,jdbcType=TIMESTAMP},
+		#{createTime,jdbcType=TIMESTAMP}
+		);
+	</insert>
+
+</mapper>

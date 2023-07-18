@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.security.UserSecurityResetMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.security.UserSecurityReset">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="type" jdbcType="INTEGER" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" property="type" />
+    <result column="status" jdbcType="INTEGER" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" property="status" />
+    <result column="certificate_type" jdbcType="SMALLINT" property="certificateType" />
+    <result column="front" jdbcType="VARCHAR" property="front" />
+    <result column="back" jdbcType="VARCHAR" property="back" />
+    <result column="hand" jdbcType="VARCHAR" property="hand" />
+    <result column="audit_time" jdbcType="TIMESTAMP" property="auditTime" />
+    <result column="audit_msg" jdbcType="VARCHAR" property="auditMsg" />
+    <result column="question_fail_times" jdbcType="SMALLINT" property="questionFailTimes" />
+    <result column="question_seq" jdbcType="SMALLINT" property="questionSeq" />
+    <result column="question_score" jdbcType="INTEGER" property="questionScore" />
+    <result column="scan_reference" jdbcType="VARCHAR" property="scanReference" />
+    <result column="jumio_token" jdbcType="VARCHAR" property="jumioToken" />
+    <result column="jumio_status" jdbcType="VARCHAR" property="jumioStatus" />
+    <result column="jumio_remark" jdbcType="VARCHAR" property="jumioRemark" />
+    <result column="issuing_country" jdbcType="VARCHAR" property="issuingCountry" />
+    <result column="id_number" jdbcType="VARCHAR" property="idNumber" />
+    <result column="document_type" jdbcType="VARCHAR" property="documentType" />
+    <result column="apply_ip" jdbcType="VARCHAR" property="applyIp" />
+    <result column="jumio_ip" jdbcType="VARCHAR" property="jumioIp" />
+    <result column="face_ip" jdbcType="VARCHAR" property="faceIp" />
+    <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
+    <result column="face_status" jdbcType="VARCHAR" property="faceStatus" />
+    <result column="face_remark" jdbcType="VARCHAR" property="faceRemark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, create_time, update_time, type, status, certificate_type, front, back,
+    hand, audit_time, audit_msg, question_fail_times, question_seq, question_score, scan_reference,
+    jumio_token, jumio_status, jumio_remark, issuing_country, id_number, document_type,
+    apply_ip, jumio_ip, face_ip, fail_reason, face_status,
+    face_remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_security_reset
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user_security_reset
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.security.UserSecurityReset">
+    insert into user_security_reset (id, user_id, create_time,
+      update_time, type, status,
+      certificate_type, front, back,
+      hand, audit_time, audit_msg,
+      question_fail_times, question_seq, question_score,
+      scan_reference, jumio_token, jumio_status, jumio_remark,
+      issuing_country, id_number, document_type,
+      apply_ip, jumio_ip, face_ip,
+      fail_reason, face_status, face_remark)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP},
+      #{type,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      #{certificateType,jdbcType=SMALLINT}, #{front,jdbcType=VARCHAR}, #{back,jdbcType=VARCHAR},
+      #{hand,jdbcType=VARCHAR}, #{auditTime,jdbcType=TIMESTAMP}, #{auditMsg,jdbcType=VARCHAR},
+      #{questionFailTimes,jdbcType=SMALLINT}, #{questionSeq,jdbcType=SMALLINT}, #{questionScore,jdbcType=INTEGER},
+      #{scanReference,jdbcType=VARCHAR}, #{jumioToken,jdbcType=VARCHAR}, #{jumioStatus,jdbcType=VARCHAR}, #{jumioRemark,jdbcType=VARCHAR},
+      #{issuingCountry,jdbcType=VARCHAR}, #{idNumber,jdbcType=VARCHAR}, #{documentType,jdbcType=VARCHAR},
+      #{applyIp,jdbcType=VARCHAR}, #{jumioIp,jdbcType=VARCHAR}, #{faceIp,jdbcType=VARCHAR},
+      #{failReason,jdbcType=VARCHAR}, #{faceStatus,jdbcType=VARCHAR}, #{faceRemark,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.security.UserSecurityReset">
+    insert into user_security_reset
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="certificateType != null">
+        certificate_type,
+      </if>
+      <if test="front != null">
+        front,
+      </if>
+      <if test="back != null">
+        back,
+      </if>
+      <if test="hand != null">
+        hand,
+      </if>
+      <if test="auditTime != null">
+        audit_time,
+      </if>
+      <if test="auditMsg != null">
+        audit_msg,
+      </if>
+      <if test="questionFailTimes != null">
+        question_fail_times,
+      </if>
+      <if test="questionSeq != null">
+        question_seq,
+      </if>
+      <if test="questionScore != null">
+        question_score,
+      </if>
+      <if test="scanReference != null">
+        scan_reference,
+      </if>
+      <if test="jumioToken != null">
+        jumio_token,
+      </if>
+      <if test="jumioStatus != null">
+        jumio_status,
+      </if>
+      <if test="jumioRemark != null">
+        jumio_remark,
+      </if>
+      <if test="issuingCountry != null" >
+        issuing_country,
+      </if>
+      <if test="idNumber != null">
+        id_number,
+      </if>
+      <if test="documentType != null">
+        document_type,
+      </if>
+      <if test="applyIp != null">
+        apply_ip,
+      </if>
+      <if test="jumioIp != null">
+        jumio_ip,
+      </if>
+      <if test="faceIp != null">
+        face_ip,
+      </if>
+      <if test="failReason != null">
+        fail_reason,
+      </if>
+      <if test="faceStatus != null">
+        face_status,
+      </if>
+      <if test="faceRemark != null">
+        face_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      </if>
+      <if test="certificateType != null">
+        #{certificateType,jdbcType=SMALLINT},
+      </if>
+      <if test="front != null">
+        #{front,jdbcType=VARCHAR},
+      </if>
+      <if test="back != null">
+        #{back,jdbcType=VARCHAR},
+      </if>
+      <if test="hand != null">
+        #{hand,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTime != null">
+        #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditMsg != null">
+        #{auditMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="questionFailTimes != null">
+        #{questionFailTimes,jdbcType=SMALLINT},
+      </if>
+      <if test="questionSeq != null">
+        #{questionSeq,jdbcType=SMALLINT},
+      </if>
+      <if test="questionScore != null">
+        #{questionScore,jdbcType=INTEGER},
+      </if>
+      <if test="scanReference != null">
+        #{scanReference,jdbcType=VARCHAR},
+      </if>
+      <if test="jumioToken != null">
+        #{jumioToken,jdbcType=VARCHAR},
+      </if>
+      <if test="jumioStatus != null">
+        #{jumioStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="jumioRemark != null">
+        #{jumioRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="issuingCountry != null" >
+        #{issuingCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="idNumber != null">
+        #{idNumber, jdbcType=VARCHAR},
+      </if>
+      <if test="documentType != null">
+        #{documentType, jdbcType=VARCHAR},
+      </if>
+      <if test="applyIp != null">
+        #{applyIp,jdbcType=VARCHAR},
+      </if>
+      <if test="jumioIp != null">
+        #{jumioIp,jdbcType=VARCHAR},
+      </if>
+      <if test="faceIp != null">
+        #{faceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="faceStatus != null">
+        #{faceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="faceRemark != null">
+        #{faceRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.security.UserSecurityReset">
+    update user_security_reset
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      </if>
+      <if test="certificateType != null">
+        certificate_type = #{certificateType,jdbcType=SMALLINT},
+      </if>
+      <if test="front != null">
+        front = #{front,jdbcType=VARCHAR},
+      </if>
+      <if test="back != null">
+        back = #{back,jdbcType=VARCHAR},
+      </if>
+      <if test="hand != null">
+        hand = #{hand,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTime != null">
+        audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditMsg != null">
+        audit_msg = #{auditMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="questionFailTimes != null">
+        question_fail_times = #{questionFailTimes,jdbcType=SMALLINT},
+      </if>
+      <if test="questionSeq != null">
+        question_seq = #{questionSeq,jdbcType=SMALLINT},
+      </if>
+      <if test="questionScore != null">
+        question_score = #{questionScore,jdbcType=INTEGER},
+      </if>
+      <if test="scanReference != null">
+        scan_reference = #{scanReference,jdbcType=VARCHAR},
+      </if>
+      <if test="jumioToken != null">
+        jumio_token = #{jumioToken,jdbcType=VARCHAR},
+      </if>
+      <if test="jumioStatus != null">
+        jumio_status = #{jumioStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="jumioRemark != null">
+        jumio_remark = #{jumioRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="issuingCountry != null" >
+        issuing_country = #{issuingCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="idNumber != null">
+        id_number = #{idNumber, jdbcType=VARCHAR},
+      </if>
+      <if test="documentType != null">
+        document_type = #{documentType, jdbcType=VARCHAR},
+      </if>
+      <if test="applyIp != null">
+        apply_ip = #{applyIp,jdbcType=VARCHAR},
+      </if>
+      <if test="jumioIp != null">
+        jumio_ip = #{jumioIp,jdbcType=VARCHAR},
+      </if>
+      <if test="faceIp != null">
+        face_ip = #{faceIp,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        fail_reason = #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="faceStatus != null">
+        face_status = #{faceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="faceRemark != null">
+        face_remark = #{faceRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.security.UserSecurityReset">
+    update user_security_reset
+    set user_id = #{userId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      type = #{type,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      status = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      certificate_type = #{certificateType,jdbcType=SMALLINT},
+      front = #{front,jdbcType=VARCHAR},
+      back = #{back,jdbcType=VARCHAR},
+      hand = #{hand,jdbcType=VARCHAR},
+      audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      audit_msg = #{auditMsg,jdbcType=VARCHAR},
+      question_fail_times = #{questionFailTimes,jdbcType=SMALLINT},
+      question_seq = #{questionSeq,jdbcType=SMALLINT},
+      question_score = #{questionScore,jdbcType=INTEGER},
+      scan_reference = #{scanReference,jdbcType=VARCHAR},
+      jumio_token = #{jumioToken,jdbcType=VARCHAR},
+      jumio_status = #{jumioStatus,jdbcType=VARCHAR},
+      jumio_remark = #{jumioRemark,jdbcType=VARCHAR},
+      issuing_country = #{issuingCountry,jdbcType=VARCHAR},
+      id_number = #{idNumber, jdbcType=VARCHAR},
+      document_type = #{documentType, jdbcType=VARCHAR},
+      apply_ip = #{applyIp,jdbcType=VARCHAR},
+      jumio_ip = #{jumioIp,jdbcType=VARCHAR},
+      face_ip = #{faceIp,jdbcType=VARCHAR},
+      fail_reason = #{failReason,jdbcType=VARCHAR},
+      face_status = #{faceStatus,jdbcType=VARCHAR},
+      face_remark = #{faceRemark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getLastByUserId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from user_security_reset
+    where user_id = #{userId,jdbcType=BIGINT}
+    <if test="typeOrdinal != null">
+      and type = #{typeOrdinal}
+    </if>
+    order by create_time desc
+    limit 1
+  </select>
+
+  <select id="getDailyResetWithScanRefTimes" resultType="java.lang.Long" parameterType="java.util.Map">
+    select count(1) from user_security_reset
+    where user_id = #{userId,jdbcType=BIGINT}
+      and type = #{typeOrdinal}
+      and scan_reference is not null
+      and create_time >= #{startTime}
+      and create_time &lt; #{endTime}
+  </select>
+
+  <select id="getLongTimeNoChangeList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from user_security_reset
+    where update_time &lt;= #{endTime}
+    and status not in (3, 4, 5)
+    and (jumio_status IS NULL OR jumio_status != 'jumioPassed')
+    and (face_status IS NULL OR face_status != 'FACE_PASS')
+    order by create_time asc
+    limit 50
+  </select>
+
+  <select id="getFaceFailStatusList" parameterType="java.util.Map" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from user_security_reset
+    where create_time > #{endTime}
+    and status not in (3, 4, 5)
+    and face_status = 'FACE_FAIL'
+    order by create_time asc
+    limit 100
+  </select>
+
+  <select id="getPendingFaceList" parameterType="java.util.Map" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from user_security_reset
+    where create_time > #{endTime}
+    and status = 6
+    and hand is not null
+    and face_status is null
+    order by create_time asc
+    limit 50
+  </select>
+
+  <select id="getResetApplyTimes" resultType="java.util.Map" parameterType="java.util.Map">
+    select
+		  (select count(1) from user_security_reset r where r.user_id=#{userId,jdbcType=VARCHAR} and r.type=#{typeOrdinal,jdbcType=INTEGER})  as applyTimes,
+		  (select count(1) from user_security_reset r where r.user_id=#{userId,jdbcType=VARCHAR} and r.type=#{typeOrdinal,jdbcType=INTEGER} and r.`status`=4) as refuseTimes,
+		  (select count(1) from user_security_reset r where r.user_id=#{userId,jdbcType=VARCHAR} and r.type=#{typeOrdinal,jdbcType=INTEGER} and r.`status`=3) as successTimes
+  </select>
+
+  <select id="getResetList" parameterType="com.binance.account.common.query.ResetModularQuery" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user_security_reset
+    <where>
+      <if test="userId != null ">
+        and user_id = #{userId}
+      </if>
+      <if test="statusList != null">
+        and status in
+        <foreach collection="statusList" item="item" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+      </if>
+      <if test="type != null" >
+        and type = #{type, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+      </if>
+      <if test="jumioStatus != null and jumioStatus != ''">
+        and jumio_status = #{jumioStatus}
+      </if>
+      <if test="idNumber != null and idNumber != ''">
+        and id_number = #{idNumber}
+      </if>
+      <if test="faceStatus != null and faceStatus != ''">
+        and face_status = #{faceStatus}
+      </if>
+      <if test="certificateType != null">
+        and certificate_type = #{certificateType}
+      </if>
+      <if test="startCreateTime != null" >
+        and create_time >= #{startCreateTime}
+      </if>
+      <if test="endCreateTime != null">
+        and create_time &lt;= #{endCreateTime}
+      </if>
+    </where>
+    order by create_time desc
+    <if test="start != null and rows != null">
+      limit #{start}, #{rows}
+    </if>
+  </select>
+
+  <select id="getResetListCount" parameterType="com.binance.account.common.query.ResetModularQuery" resultType="java.lang.Long">
+    select count(1)
+    from user_security_reset
+    <where>
+      <if test="userId != null ">
+        and user_id = #{userId}
+      </if>
+      <if test="statusList != null">
+        and status in
+        <foreach collection="statusList" item="item" open="(" close=")" separator=",">
+          #{item}
+        </foreach>
+      </if>
+      <if test="type != null" >
+        and type = #{type,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+      </if>
+      <if test="jumioStatus != null and jumioStatus != ''">
+        and jumio_status = #{jumioStatus}
+      </if>
+      <if test="idNumber != null and idNumber != ''">
+        and id_number = #{idNumber}
+      </if>
+      <if test="faceStatus != null and faceStatus != ''">
+        and face_status = #{faceStatus}
+      </if>
+      <if test="certificateType != null">
+        and certificate_type = #{certificateType}
+      </if>
+      <if test="startCreateTime != null" >
+        and create_time >= #{startCreateTime}
+      </if>
+      <if test="endCreateTime != null">
+        and create_time &lt;= #{endCreateTime}
+      </if>
+    </where>
+  </select>
+
+  <select id="getUserAllReset" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from user_security_reset
+    where user_id = #{userId}
+    order by create_time desc
+  </select>
+
+  <select id="haveResetNumberExistByOtherUser" parameterType="java.util.Map" resultType="java.lang.Long">
+    select count(1) from user_security_reset
+      where status = 3
+        and user_id != #{userId,jdbcType=BIGINT}
+        and id_number = #{idNumber,jdbcType=VARCHAR}
+        and issuing_country = #{issuingCountry,jdbcType=VARCHAR}
+        and document_type = #{documentType,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateFaceStatus" parameterType="com.binance.account.data.entity.security.UserSecurityReset">
+    update user_security_reset
+    set face_status = #{faceStatus,jdbcType=VARCHAR},
+    face_remark = #{faceRemark,jdbcType=VARCHAR},
+    <if test="faceIp != null">
+      face_ip = #{faceIp,jdbcType=VARCHAR},
+    </if>
+    update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateJumioInfo" parameterType="com.binance.account.data.entity.security.UserSecurityReset">
+    update user_security_reset
+    <set>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      </if>
+      <if test="front != null">
+        front = #{front,jdbcType=VARCHAR},
+      </if>
+      <if test="back != null">
+        back = #{back,jdbcType=VARCHAR},
+      </if>
+      <if test="hand != null">
+        hand = #{hand,jdbcType=VARCHAR},
+      </if>
+      <if test="jumioStatus != null">
+        jumio_status = #{jumioStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="jumioRemark != null">
+        jumio_remark = #{jumioRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="issuingCountry != null" >
+        issuing_country = #{issuingCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="idNumber != null">
+        id_number = #{idNumber, jdbcType=VARCHAR},
+      </if>
+      <if test="documentType != null">
+        document_type = #{documentType, jdbcType=VARCHAR},
+      </if>
+      <if test="jumioIp != null">
+        jumio_ip = #{jumioIp,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        fail_reason = #{failReason,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getNeedCheckJumioResults" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from user_security_reset
+    where create_time > #{startTime}
+    and create_time &lt;= #{endTime}
+    and status = 1
+    and scan_reference is not null
+    and jumio_status is null
+  </select>
+
+  <update id="removeJumioInitScanRef" parameterType="com.binance.account.data.entity.security.UserSecurityReset" >
+    update user_security_reset
+        set
+            jumio_status = #{jumioStatus,jdbcType=VARCHAR},
+            jumio_remark = #{jumioRemark,jdbcType=VARCHAR},
+            scan_reference = #{scanReference,jdbcType=VARCHAR},
+            jumio_token = #{jumioToken,jdbcType=VARCHAR},
+            jumio_ip = #{jumioIp,jdbcType=VARCHAR},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT}
+        and id = #{id,jdbcType=VARCHAR}
+
+
+  </update>
+
+</mapper>

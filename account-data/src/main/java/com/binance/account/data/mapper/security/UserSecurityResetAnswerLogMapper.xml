@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.security.UserSecurityResetAnswerLogMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.security.UserSecurityResetAnswerLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="reset_id" jdbcType="VARCHAR" property="resetId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="result" jdbcType="INTEGER" property="result" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+    <result column="question_seq" jdbcType="INTEGER" property="questionSeq" />
+    <result column="question_score" jdbcType="INTEGER" property="questionScore" />
+    <result column="total_score" jdbcType="INTEGER" property="totalScore" />
+    <result column="answer" jdbcType="VARCHAR" property="answer" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, reset_id, user_id, create_time, update_time, result, question_seq, question_score, 
+    total_score, answer
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_security_reset_answer_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <insert id="insert" parameterType="com.binance.account.data.entity.security.UserSecurityResetAnswerLog" keyProperty="id" useGeneratedKeys="true">
+    insert into user_security_reset_answer_log (reset_id, user_id,
+      create_time, update_time, result, 
+      question_seq, question_score, total_score, 
+      answer)
+    values (#{resetId,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{result,jdbcType=INTEGER, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      #{questionSeq,jdbcType=INTEGER}, #{questionScore,jdbcType=INTEGER}, #{totalScore,jdbcType=INTEGER},
+      #{answer,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.security.UserSecurityResetAnswerLog">
+    update user_security_reset_answer_log
+    <set>
+      <if test="resetId != null">
+        reset_id = #{resetId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=INTEGER, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      </if>
+      <if test="questionSeq != null">
+        question_seq = #{questionSeq,jdbcType=INTEGER},
+      </if>
+      <if test="questionScore != null">
+        question_score = #{questionScore,jdbcType=INTEGER},
+      </if>
+      <if test="totalScore != null">
+        total_score = #{totalScore,jdbcType=INTEGER},
+      </if>
+      <if test="answer != null">
+        answer = #{answer,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getByResetId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+      <include refid="Base_Column_List"/>
+    from user_security_reset_answer_log
+    where reset_id = #{resetId,jdbcType=VARCHAR}
+    order by create_time desc
+  </select>
+
+</mapper>

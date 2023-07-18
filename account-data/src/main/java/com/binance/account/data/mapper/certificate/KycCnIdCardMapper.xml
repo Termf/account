@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.KycCnIdCardMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.KycCnIdCard">
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="first_name" jdbcType="VARCHAR" property="firstName" />
+    <result column="middle_name" jdbcType="VARCHAR" property="middleName" />
+    <result column="last_name" jdbcType="VARCHAR" property="lastName" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="approve_time" jdbcType="TIMESTAMP" property="approveTime" />
+    <result column="flag_user" jdbcType="INTEGER" property="flagUser" />
+    <result column="fiat_status" jdbcType="VARCHAR" property="fiatStatus" />
+    <result column="fiat_remark" jdbcType="VARCHAR" property="fiatRemark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, first_name, middle_name, last_name, number, status, fail_reason, create_time, 
+    approve_time, flag_user, fiat_status, fiat_remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from kyc_cn_id_card
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from kyc_cn_id_card
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.certificate.KycCnIdCard">
+    insert into kyc_cn_id_card (user_id, first_name, middle_name, 
+      last_name, number, status, 
+      fail_reason, create_time, approve_time, flag_user, fiat_status, fiat_remark
+      )
+    values (#{userId,jdbcType=BIGINT}, #{firstName,jdbcType=VARCHAR}, #{middleName,jdbcType=VARCHAR}, 
+      #{lastName,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{failReason,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{approveTime,jdbcType=TIMESTAMP},
+      #{flag_user,jdbcType=INTEGER}, #{fiatStatus,jdbcType=VARCHAR}, #{fiatRemark, jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.certificate.KycCnIdCard">
+    update kyc_cn_id_card
+    <set>
+      <if test="firstName != null">
+        first_name = #{firstName,jdbcType=VARCHAR},
+      </if>
+      <if test="middleName != null">
+        middle_name = #{middleName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastName != null">
+        last_name = #{lastName,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        fail_reason = #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approveTime != null">
+        approve_time = #{approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="flagUser != null">
+        flag_user = #{flagUser,jdbcType=INTEGER},
+      </if>
+      <if test="fiatStatus != null">
+        fiat_status = #{fiatStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="fiatRemark != null">
+        fiat_remark = #{fiatRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  
+  <select id="countByStatus" resultType="java.lang.Long">
+  	select count(1) from kyc_cn_id_card where status = 'INIT'
+  	<if test="userIds != null">
+    and user_id in 
+        <foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">
+        #{item}
+   		</foreach>
+   </if>
+  </select>
+  
+   
+   <select id="selectPageByStatus" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from kyc_cn_id_card where status = 'INIT' 
+  	<if test="userIds != null">
+    and user_id in 
+        <foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">
+        #{item}
+   		</foreach>
+   </if>
+   <if test="flagUser != null">
+    and flag_user = #{flagUser,jdbcType=INTEGER}
+   </if>
+   order by user_id LIMIT #{start},#{rows} 
+  </select>
+  
+  <select id="selectPageByStatusError" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from kyc_cn_id_card where status = #{status,jdbcType=VARCHAR}
+  	and  fail_reason = #{failReason,jdbcType=VARCHAR}
+  	<if test="userIds != null">
+    and user_id in 
+        <foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">
+        #{item}
+   		</foreach>
+   </if>
+   order by user_id LIMIT #{start},#{rows} 
+  </select>
+
+  <select id="selectCreateFiatAccountList" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select <include refid="Base_Column_List" /> from kyc_cn_id_card
+    where status = 'PASS'
+    and fiat_status = 'INIT'
+    <if test="flagUser != null">
+      and flag_user = #{flagUser,jdbcType=INTEGER}
+    </if>
+    order by user_id LIMIT #{start},#{rows}
+  </select>
+	
+	
+	<select id="selectPageResetkyc" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from kyc_cn_id_card where status = #{status,jdbcType=VARCHAR} 
+  	<if test="userIds != null">
+    and user_id in 
+        <foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">
+        #{item}
+   		</foreach>
+   </if>
+   <if test="flagUser != null">
+    and flag_user = #{flagUser,jdbcType=INTEGER}
+   </if>
+   order by user_id LIMIT #{start},#{rows} 
+  </select>
+</mapper>

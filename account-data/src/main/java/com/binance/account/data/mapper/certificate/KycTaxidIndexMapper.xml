@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.KycTaxidIndexMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.KycTaxidIndex">
+    <id column="tax_id" jdbcType="VARCHAR" property="taxId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tax_id, user_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from kyc_taxid_index
+    where tax_id = #{taxId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from kyc_taxid_index
+    where tax_id = #{taxId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.certificate.KycTaxidIndex">
+    insert into kyc_taxid_index (tax_id, user_id)
+    values (#{taxId,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.certificate.KycTaxidIndex">
+    insert into kyc_taxid_index
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taxId != null">
+        tax_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taxId != null">
+        #{taxId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.certificate.KycTaxidIndex">
+    update kyc_taxid_index
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where tax_id = #{taxId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.certificate.KycTaxidIndex">
+    update kyc_taxid_index
+    set user_id = #{userId,jdbcType=BIGINT}
+    where tax_id = #{taxId,jdbcType=VARCHAR}
+  </update>
+</mapper>

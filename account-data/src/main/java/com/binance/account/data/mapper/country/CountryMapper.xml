@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.country.CountryMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.country.Country">
+        <id column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="code2" jdbcType="VARCHAR" property="code2"/>
+        <result column="en" jdbcType="VARCHAR" property="en"/>
+        <result column="cn" jdbcType="VARCHAR" property="cn"/>
+        <result column="nationality" jdbcType="VARCHAR" property="nationality"/>
+        <result column="mobile_code" jdbcType="VARCHAR" property="mobileCode"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        code,code2, en, cn, nationality,mobile_code
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from country
+        where code = #{code,jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="selectByMobileCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from country
+        where mobile_code = #{code,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByCode2" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from country
+        where code2 = #{code2,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByNationality" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from country
+        where nationality = #{nationality,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from country
+        where code = #{code,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.binance.account.data.entity.country.Country">
+        insert into country (code,code2,result en, cn,
+        mobile_code)
+        values (#{code,jdbcType=VARCHAR},#{code2,jdbcType=VARCHAR}, #{en,jdbcType=VARCHAR}, #{cn,jdbcType=VARCHAR},
+        #{mobileCode,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.binance.account.data.entity.country.Country">
+        insert into country
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                code,
+            </if>
+            <if test="code2 != null">
+                code2,
+            </if>
+            <if test="en != null">
+                en,
+            </if>
+            <if test="cn != null">
+                cn,
+            </if>
+            <if test="mobileCode != null">
+                mobile_code,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="code2 != null">
+                #{code2,jdbcType=VARCHAR},
+            </if>
+            <if test="en != null">
+                #{en,jdbcType=VARCHAR},
+            </if>
+            <if test="cn != null">
+                #{cn,jdbcType=VARCHAR},
+            </if>
+            <if test="mobileCode != null">
+                #{mobileCode,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.country.Country">
+        update country
+        <set>
+            <if test="en != null">
+                en = #{en,jdbcType=VARCHAR},
+            </if>
+            <if test="cn != null">
+                cn = #{cn,jdbcType=VARCHAR},
+            </if>
+            <if test="mobileCode != null">
+                mobile_code = #{mobileCode,jdbcType=VARCHAR},
+            </if>
+            <if test="code2 != null">
+                code2 = #{code2,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where code = #{code,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.country.Country">
+        update country
+        set en = #{en,jdbcType=VARCHAR},
+        cn = #{cn,jdbcType=VARCHAR},
+        mobile_code = #{mobileCode,jdbcType=VARCHAR}
+        where code = #{code,jdbcType=VARCHAR}
+    </update>
+    <select id="selectCountryList" resultMap="BaseResultMap">
+    	select
+        <include refid="Base_Column_List"/>
+        from country t where not EXISTS  (select * from country_blacklist t1 where is_active=1 and t.code=t1.country_code)
+    </select>
+
+    <select id="selectAllCountryList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from country
+    </select>
+
+
+</mapper>

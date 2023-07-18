@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.user.UserMobileIndexMapper">
+    <resultMap id="BaseResultMap"
+               type="com.binance.account.data.entity.user.UserMobileIndex">
+        <id column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        mobile, user_id, country
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_mobile_index
+        where mobile = #{mobile,jdbcType=VARCHAR} and country = #{country,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey">
+        delete from user_mobile_index
+        where mobile = #{mobile,jdbcType=VARCHAR} and country = #{country,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert"
+            parameterType="com.binance.account.data.entity.user.UserMobileIndex">
+        insert into user_mobile_index (mobile, user_id, country)
+        values (#{mobile,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT},#{country,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertIgnore" parameterType="com.binance.account.data.entity.user.UserMobileIndex">
+        insert ignore into user_mobile_index (mobile, user_id, country)
+        values (#{mobile,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT},#{country,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective"
+            parameterType="com.binance.account.data.entity.user.UserMobileIndex">
+        insert into user_mobile_index
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateSelective" parameterType="com.binance.account.data.entity.user.UserMobileIndex">
+        update user_mobile_index set
+        <trim suffixOverrides=",">
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+        </trim>
+        <where>
+            mobile = #{mobile,jdbcType=VARCHAR} and country = #{country,jdbcType=VARCHAR}
+        </where>
+    </update>
+    <select id="selectByMobile" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_mobile_index
+        where mobile = #{mobile,jdbcType=VARCHAR}
+    </select>
+</mapper>

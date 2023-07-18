@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.user.UserReferralSettingsMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.user.UserReferralSettings">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="region_state" jdbcType="VARCHAR" property="regionState"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="postal_code" jdbcType="VARCHAR" property="postalCode"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="tax_info" jdbcType="VARCHAR" property="taxInfo"/>
+        <result column="promotion_methods" jdbcType="VARCHAR" property="promotionMethods"/>
+        <result column="outlets" jdbcType="VARCHAR" property="outlets"/>
+        <result column="notes" jdbcType="VARCHAR" property="notes"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id, region_state, create_time, update_time, postal_code, city, address, tax_info,
+        promotion_methods, outlets, notes
+    </sql>
+
+    <insert id="insert" parameterType="com.binance.account.data.entity.user.UserReferralSettings" keyProperty="id"
+            useGeneratedKeys="true">
+    insert into user_referral_settings (user_id, region_state, create_time, update_time, postal_code, city, address, tax_info,
+        promotion_methods, outlets, notes)
+    values (#{userId,jdbcType=BIGINT}, #{regionState,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{postalCode,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+      #{address,jdbcType=VARCHAR}, #{taxInfo,jdbcType=VARCHAR}, #{promotionMethods,jdbcType=VARCHAR},
+      #{outlets,jdbcType=VARCHAR}, #{notes,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="queryByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM user_referral_settings WHERE user_id = #{userId,jdbcType=BIGINT} limit 1
+    </select>
+
+    <sql id="Base_SortByWhere_List">
+        <if test="sort == 'updateTime'">
+            update_time
+        </if>
+        <if test="sort == 'createTime'">
+            create_time
+        </if>
+        <if test="sort != 'updateTime' and sort != 'createTime'">
+            create_time
+        </if>
+    </sql>
+
+</mapper>

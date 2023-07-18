@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.broker.BrokerUserCommisssionMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.broker.BrokerUserCommisssion">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="max_maker_commiss" jdbcType="DECIMAL" property="maxMakerCommiss" />
+    <result column="min_maker_commiss" jdbcType="DECIMAL" property="minMakerCommiss" />
+    <result column="max_taker_commiss" jdbcType="DECIMAL" property="maxTakerCommiss" />
+    <result column="min_taker_commiss" jdbcType="DECIMAL" property="minTakerCommiss" />
+    <result column="max_sub_account" jdbcType="INTEGER" property="maxSubAccount" />
+    <result column="day_max_sub_account" jdbcType="INTEGER" property="dayMaxSubAccount" />
+    <result column="day_withdraw_limit" jdbcType="INTEGER" property="dayWithdrawLimit" />
+    <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="source" jdbcType="INTEGER" property="source" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="max_futures_maker_commiss" jdbcType="DECIMAL" property="maxFuturesMakerCommiss" />
+    <result column="min_futures_maker_commiss" jdbcType="DECIMAL" property="minFuturesMakerCommiss" />
+    <result column="max_futures_taker_commiss" jdbcType="DECIMAL" property="maxFuturesTakerCommiss" />
+    <result column="min_futures_taker_commiss" jdbcType="DECIMAL" property="minFuturesTakerCommiss" />
+    <result column="max_delivery_maker_commiss" jdbcType="DECIMAL" property="maxDeliveryMakerCommiss" />
+    <result column="min_delivery_maker_commiss" jdbcType="DECIMAL" property="minDeliveryMakerCommiss" />
+    <result column="max_delivery_taker_commiss" jdbcType="DECIMAL" property="maxDeliveryTakerCommiss" />
+    <result column="min_delivery_taker_commiss" jdbcType="DECIMAL" property="minDeliveryTakerCommiss" />
+    <result column="fiat_request_ip" jdbcType="VARCHAR" property="fiatRequestIp" />
+    <result column="fiat_supported_asset" jdbcType="VARCHAR" property="fiatSupportedAsset" />
+    <result column="day_withdraw_per" jdbcType="DECIMAL" property="dayWithdrawPer" />
+    <result column="day_withdraw_switch" jdbcType="INTEGER" property="dayWithdrawSwitch" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, max_maker_commiss, min_maker_commiss, max_taker_commiss, min_taker_commiss,
+    max_sub_account,day_max_sub_account, insert_time, update_time, is_delete, source,max_futures_maker_commiss,min_futures_maker_commiss,max_futures_taker_commiss,min_futures_taker_commiss,
+    fiat_request_ip,fiat_supported_asset,day_withdraw_limit,day_withdraw_per,day_withdraw_switch,min_delivery_maker_commiss,max_delivery_maker_commiss,max_delivery_taker_commiss,min_delivery_taker_commiss
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from broker_user_commission
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from broker_user_commission
+    where user_id = #{userId,jdbcType=BIGINT} and is_delete = 0
+  </select>
+
+  <select id="selectAllNotInWhite" parameterType="java.util.List" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from broker_user_commission
+      <if test="list != null and list.size() > 0">
+          where user_id not in
+          <foreach collection="list" item="userId" open="(" close=")" separator="," >
+              #{userId,jdbcType=BIGINT}
+          </foreach>
+      </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from broker_user_commission
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.broker.BrokerUserCommisssion">
+    insert into broker_user_commission (id, user_id, max_maker_commiss, 
+      min_maker_commiss, max_taker_commiss, min_taker_commiss, 
+      max_sub_account,day_max_sub_account, insert_time, update_time,day_withdraw_limit
+      is_delete,day_withdraw_per,day_withdraw_switch)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{maxMakerCommiss,jdbcType=DECIMAL}, 
+      #{minMakerCommiss,jdbcType=DECIMAL}, #{maxTakerCommiss,jdbcType=DECIMAL}, #{minTakerCommiss,jdbcType=DECIMAL}, 
+      #{maxSubAccount,jdbcType=INTEGER}, #{dayMaxSubAccount,jdbcType=INTEGER}, #{insertTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},#{dayWithdrawLimit}
+      #{isDelete,jdbcType=INTEGER}, #{dayWithdrawPer,jdbcType=DECIMAL},#{dayWithdrawSwitch,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.broker.BrokerUserCommisssion">
+    insert into broker_user_commission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="maxMakerCommiss != null">
+        max_maker_commiss,
+      </if>
+      <if test="minMakerCommiss != null">
+        min_maker_commiss,
+      </if>
+      <if test="maxTakerCommiss != null">
+        max_taker_commiss,
+      </if>
+      <if test="minTakerCommiss != null">
+        min_taker_commiss,
+      </if>
+      <if test="maxSubAccount != null">
+        max_sub_account,
+      </if>
+      <if test="dayMaxSubAccount != null">
+        day_max_sub_account,
+      </if>
+      <if test="dayWithdrawLimit != null">
+        day_withdraw_limit,
+      </if>
+      <if test="insertTime != null">
+        insert_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+
+      <if test="maxFuturesMakerCommiss != null">
+        max_futures_maker_commiss,
+      </if>
+      <if test="minFuturesMakerCommiss != null">
+        min_futures_maker_commiss,
+      </if>
+      <if test="maxFuturesTakerCommiss != null">
+        max_futures_taker_commiss,
+      </if>
+      <if test="minFuturesTakerCommiss != null">
+        min_futures_taker_commiss,
+      </if>
+      <if test="dayWithdrawPer != null">
+        day_withdraw_per,
+      </if>
+      <if test="dayWithdrawSwitch != null">
+        day_withdraw_switch,
+      </if>
+
+      <if test="maxDeliveryMakerCommiss != null">
+        max_delivery_maker_commiss,
+      </if>
+      <if test="minDeliveryMakerCommiss != null">
+        min_delivery_maker_commiss,
+      </if>
+      <if test="maxDeliveryTakerCommiss != null">
+        max_delivery_taker_commiss,
+      </if>
+      <if test="minDeliveryTakerCommiss != null">
+        min_delivery_taker_commiss,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="maxMakerCommiss != null">
+        #{maxMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minMakerCommiss != null">
+        #{minMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="maxTakerCommiss != null">
+        #{maxTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minTakerCommiss != null">
+        #{minTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="maxSubAccount != null">
+        #{maxSubAccount,jdbcType=INTEGER},
+      </if>
+      <if test="dayMaxSubAccount != null">
+        #{dayMaxSubAccount,jdbcType=INTEGER},
+      </if>
+      <if test="dayWithdrawLimit != null">
+        #{dayWithdrawLimit,jdbcType=INTEGER},
+      </if>
+      <if test="insertTime != null">
+        #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+
+      <if test="maxFuturesMakerCommiss != null">
+        #{maxFuturesMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minFuturesMakerCommiss != null">
+        #{minFuturesMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="maxFuturesTakerCommiss != null">
+        #{maxFuturesTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minFuturesTakerCommiss != null">
+        #{minFuturesTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="dayWithdrawPer != null">
+        #{dayWithdrawPer,jdbcType=DECIMAL},
+      </if>
+      <if test="dayWithdrawSwitch != null">
+        #{dayWithdrawSwitch,jdbcType=INTEGER},
+      </if>
+
+      <if test="maxDeliveryMakerCommiss != null">
+        #{maxDeliveryMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minDeliveryMakerCommiss != null">
+        #{minDeliveryMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="maxDeliveryTakerCommiss != null">
+        #{maxDeliveryTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minDeliveryTakerCommiss != null">
+        #{minDeliveryTakerCommiss,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.broker.BrokerUserCommisssion">
+    update broker_user_commission
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="maxMakerCommiss != null">
+        max_maker_commiss = #{maxMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minMakerCommiss != null">
+        min_maker_commiss = #{minMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="maxTakerCommiss != null">
+        max_taker_commiss = #{maxTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minTakerCommiss != null">
+        min_taker_commiss = #{minTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="maxSubAccount != null">
+        max_sub_account = #{maxSubAccount,jdbcType=INTEGER},
+      </if>
+      <if test="dayMaxSubAccount != null">
+        day_max_sub_account = #{dayMaxSubAccount,jdbcType=INTEGER},
+      </if>
+      <if test="dayWithdrawLimit != null">
+        day_withdraw_limit = #{dayWithdrawLimit,jdbcType=INTEGER},
+      </if>
+      <if test="insertTime != null">
+        insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=INTEGER},
+      </if>
+
+      <if test="maxFuturesMakerCommiss != null">
+        max_futures_maker_commiss = #{maxFuturesMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minFuturesMakerCommiss != null">
+        min_futures_maker_commiss = #{minFuturesMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="maxFuturesTakerCommiss != null">
+        max_futures_taker_commiss = #{maxFuturesTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minFuturesTakerCommiss != null">
+        min_futures_taker_commiss = #{minFuturesTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="dayWithdrawPer != null">
+        day_withdraw_per = #{dayWithdrawPer,jdbcType=DECIMAL},
+      </if>
+      <if test="dayWithdrawSwitch != null">
+        day_withdraw_switch = #{dayWithdrawSwitch,jdbcType=INTEGER},
+      </if>
+
+      <if test="maxDeliveryMakerCommiss != null">
+        max_delivery_maker_commiss = #{maxDeliveryMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minDeliveryMakerCommiss != null">
+        min_delivery_maker_commiss = #{minDeliveryMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="maxDeliveryTakerCommiss != null">
+        max_delivery_taker_commiss = #{maxDeliveryTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minDeliveryTakerCommiss != null">
+        min_delivery_taker_commiss = #{minDeliveryTakerCommiss,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.broker.BrokerUserCommisssion">
+    update broker_user_commission
+    set user_id = #{userId,jdbcType=BIGINT},
+      max_maker_commiss = #{maxMakerCommiss,jdbcType=DECIMAL},
+      min_maker_commiss = #{minMakerCommiss,jdbcType=DECIMAL},
+      max_taker_commiss = #{maxTakerCommiss,jdbcType=DECIMAL},
+      min_taker_commiss = #{minTakerCommiss,jdbcType=DECIMAL},
+      max_sub_account = #{maxSubAccount,jdbcType=INTEGER},
+      day_withdraw_limit = #{dayWithdrawLimit,jdbcType=INTEGER},
+      day_max_sub_account = #{dayMaxSubAccount,jdbcType=INTEGER},
+      insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      day_withdraw_per = #{dayWithdrawPer,jdbcType=DECIMAL},
+      day_withdraw_switch = #{dayWithdrawSwitch,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByUserIdSelective" parameterType="com.binance.account.data.entity.broker.BrokerUserCommisssion">
+    update broker_user_commission
+    <set>
+      <if test="maxMakerCommiss != null">
+        max_maker_commiss = #{maxMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minMakerCommiss != null">
+        min_maker_commiss = #{minMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="maxTakerCommiss != null">
+        max_taker_commiss = #{maxTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minTakerCommiss != null">
+        min_taker_commiss = #{minTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="maxSubAccount != null">
+        max_sub_account = #{maxSubAccount,jdbcType=INTEGER},
+      </if>
+      <if test="dayMaxSubAccount != null">
+        day_max_sub_account = #{dayMaxSubAccount,jdbcType=INTEGER},
+      </if>
+      <if test="dayWithdrawLimit != null">
+        day_withdraw_limit = #{dayWithdrawLimit,jdbcType=INTEGER},
+      </if>
+      <if test="insertTime != null">
+        insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="maxFuturesMakerCommiss != null">
+        max_futures_maker_commiss = #{maxFuturesMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minFuturesMakerCommiss != null">
+        min_futures_maker_commiss = #{minFuturesMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="maxFuturesTakerCommiss != null">
+        max_futures_taker_commiss = #{maxFuturesTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minFuturesTakerCommiss != null">
+        min_futures_taker_commiss = #{minFuturesTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=INTEGER},
+      </if>
+      <if test="dayWithdrawPer != null">
+        day_withdraw_per = #{dayWithdrawPer,jdbcType=DECIMAL},
+      </if>
+      <if test="dayWithdrawSwitch != null">
+        day_withdraw_switch = #{dayWithdrawSwitch,jdbcType=INTEGER},
+      </if>
+
+      <if test="maxDeliveryMakerCommiss != null">
+        max_delivery_maker_commiss = #{maxDeliveryMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minDeliveryMakerCommiss != null">
+        min_delivery_maker_commiss = #{minDeliveryMakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="maxDeliveryTakerCommiss != null">
+        max_delivery_taker_commiss = #{maxDeliveryTakerCommiss,jdbcType=DECIMAL},
+      </if>
+      <if test="minDeliveryTakerCommiss != null">
+        min_delivery_taker_commiss = #{minDeliveryTakerCommiss,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT} and is_delete = 0
+  </update>
+</mapper>

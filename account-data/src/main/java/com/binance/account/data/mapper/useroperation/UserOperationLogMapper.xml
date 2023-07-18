@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.useroperation.UserOperationLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.log.UserOperationLog">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="operation" property="operation" jdbcType="VARCHAR"/>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR"/>
+        <result column="full_ip" property="fullIp" jdbcType="VARCHAR"/>
+        <result column="real_ip" property="realIp" jdbcType="VARCHAR"/>
+        <result column="client_type" property="clientType" jdbcType="VARCHAR"/>
+        <result column="version_code" property="versionCode" jdbcType="VARCHAR"/>
+        <result column="apikey" property="apikey" jdbcType="VARCHAR"/>
+        <result column="user_agent" property="userAgent" jdbcType="VARCHAR"/>
+        <result column="request_time" property="requestTime" jdbcType="TIMESTAMP"/>
+        <result column="response_time" property="responseTime" jdbcType="TIMESTAMP"/>
+        <result column="request" property="request" jdbcType="VARCHAR"/>
+        <result column="response" property="response" jdbcType="VARCHAR"/>
+        <result column="response_status" property="responseStatus" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id, operation, client_type, version_code, apikey, request, response, response_status,
+        uuid, real_ip, full_ip, user_agent, request_time, response_time
+    </sql>
+
+    <insert id="insert" parameterType="com.binance.account.data.entity.log.UserOperationLog" keyProperty="id"
+            useGeneratedKeys="true">
+        insert into user_operation_log
+         (user_id, operation, uuid, client_type, version_code, apikey, request, response, response_status,
+          real_ip, full_ip, user_agent, request_time, response_time)
+        values (#{userId,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR}, #{uuid,jdbcType=VARCHAR},
+                #{clientType,jdbcType=VARCHAR}, #{versionCode,jdbcType=VARCHAR}, #{apikey,jdbcType=VARCHAR},
+                #{request,jdbcType=VARCHAR}, #{response,jdbcType=VARCHAR}, #{responseStatus,jdbcType=VARCHAR},
+                #{realIp,jdbcType=VARCHAR}, #{fullIp,jdbcType=VARCHAR}, #{userAgent,jdbcType=VARCHAR},
+                #{requestTime,jdbcType=TIMESTAMP}, #{responseTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List" keyProperty="id" useGeneratedKeys="true">
+        insert into user_operation_log
+        (user_id, operation, uuid, client_type, version_code, apikey, request, response, response_status,
+        real_ip, full_ip, user_agent, request_time, response_time) values
+        <foreach collection="list" item="log" separator="," index="index">
+            (
+            #{log.userId,jdbcType=BIGINT}, #{log.operation,jdbcType=VARCHAR}, #{log.uuid,jdbcType=VARCHAR},
+            #{log.clientType,jdbcType=VARCHAR}, #{log.versionCode,jdbcType=VARCHAR}, #{log.apikey,jdbcType=VARCHAR},
+            #{log.request,jdbcType=VARCHAR}, #{log.response,jdbcType=VARCHAR}, #{log.responseStatus,jdbcType=VARCHAR},
+            #{log.realIp,jdbcType=VARCHAR}, #{log.fullIp,jdbcType=VARCHAR},
+            #{log.userAgent,jdbcType=VARCHAR}, #{log.requestTime,jdbcType=TIMESTAMP},
+            #{log.responseTime,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <select id="queryUserOperationLogPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_operation_log
+        where user_id = #{userId}
+        <if test="operationList!=null and operationList.size()!=0">
+            and operation in
+            <foreach collection="operationList" item="op"
+                     index="index" open="(" close=")" separator=",">
+                #{op}
+            </foreach>
+        </if>
+        <if test="requestTimeFrom != null">
+            and request_time  <![CDATA[ >= ]]> #{requestTimeFrom}
+        </if>
+        <if test="requestTimeTo != null">
+            and request_time  <![CDATA[ <= ]]> #{requestTimeTo}
+        </if>
+        <if test="ip != null and ip != ''">
+            and full_ip like concat('%',#{ip},'%')
+        </if>
+        <if test="request != null and request != ''">
+            and request like concat('%',#{request},'%')
+        </if>
+        <if test="response != null and response != ''">
+            and response like concat('%',#{response},'%')
+        </if>
+        <if test="responseStatus != null and responseStatus != ''">
+            and response_status = #{responseStatus}
+        </if>
+        <if test="apikey != null and apikey != ''">
+            and apikey = #{apikey}
+        </if>
+        <if test="clientType != null and clientType != ''">
+            and client_type = #{clientType}
+        </if>
+        <if test="successOrHavingFailReason">
+            and (response_status = 'true' or (response_status is not null and response_status != 'false'))
+        </if>
+        <if test="havingFailReason">
+            and response_status is not null and response_status not in ('true', 'false')
+        </if>
+        order by request_time desc
+        <if test="limit>0">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="queryUserOperationLogPageCount" resultType="java.lang.Long">
+        select count(1)
+        from user_operation_log
+        where user_id = #{userId}
+        <if test="operationList!=null and operationList.size()!=0">
+            and operation in
+            <foreach collection="operationList" item="op"
+                     index="index" open="(" close=")" separator=",">
+                #{op}
+            </foreach>
+        </if>
+        <if test="requestTimeFrom != null">
+            and request_time  <![CDATA[ >= ]]> #{requestTimeFrom}
+        </if>
+        <if test="requestTimeTo != null">
+            and request_time  <![CDATA[ <= ]]> #{requestTimeTo}
+        </if>
+        <if test="ip != null and ip != ''">
+            and full_ip like concat('%',#{ip},'%')
+        </if>
+        <if test="request != null and request != ''">
+            and request like concat('%',#{request},'%')
+        </if>
+        <if test="response != null and response != ''">
+            and response like concat('%',#{response},'%')
+        </if>
+        <if test="responseStatus != null and responseStatus != ''">
+            and response_status = #{responseStatus}
+        </if>
+        <if test="apikey != null and apikey != ''">
+            and apikey = #{apikey}
+        </if>
+        <if test="clientType != null and clientType != ''">
+            and client_type = #{clientType}
+        </if>
+        <if test="successOrHavingFailReason">
+            and (response_status = 'true' or (response_status is not null and response_status != 'false'))
+        </if>
+        <if test="havingFailReason">
+            and response_status is not null and response_status not in ('true', 'false')
+        </if>
+    </select>
+
+    <select id="countDistinctLogin" resultType="java.lang.Long">
+        <!--MySql count(distinct xxx) has bug-->
+        select count(distinct user_id) from user_operation_log
+        where operation = '用户登陆'
+        <if test="requestTimeFrom != null">
+            and request_time  <![CDATA[ >= ]]> #{requestTimeFrom}
+        </if>
+        <if test="requestTimeTo != null">
+            and request_time  <![CDATA[ <= ]]> #{requestTimeTo}
+        </if>
+    </select>
+
+    <select id="queryDetail" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user_operation_log
+        WHERE user_id = #{userId} AND id = #{id}
+    </select>
+
+    <select id="queryDetailWithUuid" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user_operation_log
+        WHERE user_id = #{userId} AND uuid = #{uuid}
+    </select>
+
+    <select id="countUserOperationLogByView" resultType="java.lang.Long">
+        select count(1)
+        from user_operation_log_view
+        <where>
+            <if test="operationList!=null and operationList.size()!=0">
+                and operation in
+                <foreach collection="operationList" item="op"
+                         index="index" open="(" close=")" separator=",">
+                    #{op}
+                </foreach>
+            </if>
+            <if test="requestTimeFrom != null">
+                and request_time  <![CDATA[ >= ]]> #{requestTimeFrom}
+            </if>
+            <if test="requestTimeTo != null">
+                and request_time  <![CDATA[ <= ]]> #{requestTimeTo}
+            </if>
+            <if test="realIpList != null">
+                and real_ip in
+                <foreach collection="realIpList" item="realIp" index="index" open="(" close=")" separator=",">
+                    #{realIp}
+                </foreach>
+            </if>
+            <if test="ip != null and ip != ''">
+                and full_ip like concat('%',#{ip},'%')
+            </if>
+            <if test="request != null and request != ''">
+                and request like concat('%',#{request},'%')
+            </if>
+            <if test="responseStatus != null and responseStatus != ''">
+                and response_status like concat('%',#{responseStatus},'%')
+            </if>
+            <if test="apikey != null and apikey != ''">
+                and apikey = #{apikey}
+            </if>
+            <if test="clientType != null and clientType != ''">
+                and client_type = #{clientType}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="queryUserOperationLogListByView" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_operation_log_view
+        <where>
+            <if test="operationList!=null and operationList.size()!=0">
+                and operation in
+                <foreach collection="operationList" item="op"
+                         index="index" open="(" close=")" separator=",">
+                    #{op}
+                </foreach>
+            </if>
+            <if test="requestTimeFrom != null">
+                and request_time  <![CDATA[ >= ]]> #{requestTimeFrom}
+            </if>
+            <if test="requestTimeTo != null">
+                and request_time  <![CDATA[ <= ]]> #{requestTimeTo}
+            </if>
+            <if test="realIpList != null">
+                and real_ip in
+                <foreach collection="realIpList" item="realIp" index="index" open="(" close=")" separator=",">
+                    #{realIp}
+                </foreach>
+            </if>
+            <if test="ip != null and ip != ''">
+                and full_ip like concat('%',#{ip},'%')
+            </if>
+            <if test="request != null and request != ''">
+                and request like concat('%',#{request},'%')
+            </if>
+            <if test="responseStatus != null and responseStatus != ''">
+                and response_status like concat('%',#{responseStatus},'%')
+            </if>
+            <if test="apikey != null and apikey != ''">
+                and apikey = #{apikey}
+            </if>
+            <if test="clientType != null and clientType != ''">
+                and client_type = #{clientType}
+            </if>
+        </where>
+        order by request_time desc
+        <if test="limit>0">
+            LIMIT #{offset},#{limit}
+        </if>
+
+
+    </select>
+    <select id="page" resultType="com.binance.account.data.entity.log.UserOperationLog" resultMap="BaseResultMap">
+        select * from user_operation_log
+        /*查询中带片键 路由到指定分表*/
+        where (user_id=#{userId} or 1=1)
+        <if test="end !=null">
+            and request_time &lt; #{end}
+        </if>
+        <if test="start !=null">
+            and request_time >=#{start}
+        </if>
+        order by request_time
+        limit #{skip},#{size}
+    </select>
+
+    <select id="queryUserLastLog" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List"/>
+        from user_operation_log
+        where user_id=#{userId} 
+        order by request_time desc
+        limit 0,1
+    </select>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.binance.account.data.mapper.security.UserQuestionOptionsMapper">
+	<resultMap id="BaseResultMap" type="com.binance.account.data.entity.security.UserQuestionOptions">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<id column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="risk_type" jdbcType="VARCHAR" property="riskType" />
+		<result column="options" jdbcType="VARCHAR" property="options" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+	</resultMap>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" useCache="true">
+		SELECT *
+		  FROM `user_question_options`
+		WHERE
+		  user_id = #{userId,jdbcType=BIGINT}
+		AND
+		  risk_type = #{riskType,jdbcType=VARCHAR};
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		DELETE FROM user_question_options WHERE id =#{id,jdbcType=BIGINT};
+	</delete>
+
+	<insert id="insert"
+		parameterType="com.binance.account.data.entity.security.UserQuestionOptions"
+		keyProperty="id" useGeneratedKeys="true" keyColumn="id">
+		INSERT INTO `user_question_options`
+		(
+		`user_id`,
+		`risk_type`,
+		`options`,
+		`create_time`
+		)
+		VALUES (
+		#{userId,jdbcType=BIGINT},
+		#{riskType,jdbcType=VARCHAR},
+		#{options,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}
+		);
+	</insert>
+
+	<insert id="insertBatch"
+			parameterType="java.util.Map"
+			keyProperty="id" useGeneratedKeys="true" keyColumn="id">
+		INSERT INTO `user_question_options`
+		(
+		`user_id`,
+		`risk_type`,
+		`options`,
+		`create_time`
+		)
+		VALUES
+		<foreach collection="options" item="item" open="(" close=")" separator="), (">
+			#{item.userId,jdbcType=BIGINT},
+			#{item.riskType,jdbcType=VARCHAR},
+			#{item.options,jdbcType=VARCHAR},
+			#{item.createTime,jdbcType=TIMESTAMP}
+		</foreach>
+	</insert>
+
+</mapper>

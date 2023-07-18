@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.tag.TagIndicatorMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.tag.TagIndicator">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="tag_id" property="tagId" jdbcType="INTEGER"/>
+        <result column="category_name" property="categoryName" jdbcType="VARCHAR"/>
+        <result column="tag_name" property="tagName" jdbcType="VARCHAR"/>
+        <result column="value" property="value" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="last_updated_by" property="lastUpdatedBy" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id, user_id, tag_id, category_name, `value`, tag_name, remark, last_updated_by, update_time
+  	</sql>
+
+    <insert id="insert" parameterType="com.binance.account.data.entity.tag.TagIndicator" keyProperty="id" useGeneratedKeys="true">
+        insert into tag_indicator(user_id, tag_id, category_name, value, tag_name, remark, last_updated_by)
+        values
+        (#{userId}, #{tagId}, #{categoryName}, #{value}, #{tagName}, #{remark},
+        #{lastUpdatedBy})
+    </insert>
+
+    <insert id="insertbatch" parameterType="java.util.List" keyProperty="id" useGeneratedKeys="true">
+        insert into tag_indicator(user_id, tag_id, category_name, value, tag_name, remark, last_updated_by)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userId}, #{item.tagId}, #{item.categoryName}, #{item.value}, #{item.tagName}, #{item.remark},
+            #{item.lastUpdatedBy})
+        </foreach>
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.tag.TagIndicator">
+        update tag_indicator set
+            user_id = #{userId},
+            tag_id = #{tagId},
+            category_name = #{categoryName},
+            `value` = #{value},
+            tag_name = #{tagName},
+            remark = #{remark},
+            last_updated_by = #{lastUpdatedBy}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from tag_indicator where id = #{id}
+    </delete>
+
+    <select id="selectByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tag_indicator
+        <where>
+            <if test="userId != null and userId !=''">
+                and user_id = #{userId}
+            </if>
+            <if test="tagName != null and tagName !=''">
+                and tag_name = #{tagName}
+            </if>
+            <if test="categoryName != null and categoryName !=''">
+                and category_name = #{categoryName}
+            </if>
+            <if test="tagRemark != null and tagRemark !=''">
+                and remark = #{tagRemark}
+            </if>
+            <if test="tagValue != null and tagValue !=''">
+                and `value` = #{tagValue}
+            </if>
+            <if test="tagMinValue != null and tagMinValue !=''">
+                and `value` &gt;= #{tagMinValue}
+            </if>
+            <if test="tagMaxValue != null and tagMaxValue !=''">
+                and `value` &lt;= #{tagMaxValue}
+            </if>
+            <if test="tagIds!=null and tagIds.size()>0">
+                and tag_id in
+                <foreach collection="tagIds" open="(" separator="," close=")" item="tagId">
+                    #{tagId}
+                </foreach>
+            </if>
+        </where>
+        <if test="position != null">
+            limit #{position}, #{size}
+        </if>
+    </select>
+
+
+    <select id="countByCondition" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(1) from tag_indicator
+        <where>
+            <if test="userId != null and userId !=''">
+                and user_id = #{userId}
+            </if>
+            <if test="tagName != null and tagName !=''">
+                and tag_name = #{tagName}
+            </if>
+            <if test="categoryName != null and categoryName !=''">
+                and category_name = #{categoryName}
+            </if>
+            <if test="tagRemark != null and tagRemark !=''">
+                and remark = #{tagRemark}
+            </if>
+            <if test="tagValue != null and tagValue !=''">
+                and `value` = #{tagValue}
+            </if>
+            <if test="tagMinValue != null and tagMinValue !=''">
+                and `value` &gt;= #{tagMinValue}
+            </if>
+            <if test="tagMaxValue != null and tagMaxValue !=''">
+                and `value` &lt;= #{tagMaxValue}
+            </if>
+            <if test="tagIds!=null and tagIds.size()>0">
+                and tag_id in
+                <foreach collection="tagIds" open="(" separator="," close=")" item="tagId">
+                    #{tagId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByTagIdAndUserId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tag_indicator
+        where user_id = #{userId} and tag_id = #{tagId}
+    </select>
+
+    <select id="selectTagInfoByUserid" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+            t1.id as indicatorId,
+            t3.id as categoryId,
+            t3.name as categoryName,
+            t1.`value` as indicatorValue,
+            t2.id as tagId,
+            t2.name as tagName,
+            t2.min as minValue,
+            t2.max as `maxValue`,
+            t2.`value` as `value`,
+            t1.remark as remark,
+            t1.last_updated_by as lastUpdatedBy
+        from tag_indicator t1
+        left join tag_info t2 on t1.tag_id=t2.id
+        left join tag_category t3 on t2.category_id=t3.id
+        where t1.user_id = #{userid}
+        <if test="position!=null">
+            limit #{position}, #{size}
+        </if>
+    </select>
+
+    <select id="countTagInfoByUserid" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(1)
+        from tag_indicator t1
+        left join tag_info t2 on t1.tag_id=t2.id
+        left join tag_category t3 on t2.category_id=t3.id
+        where t1.user_id = #{userid}
+    </select>
+
+    <select id="selectOneById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from tag_indicator where id = #{id}
+    </select>
+
+    <select id="selectUserIdsByTagIds" parameterType="java.util.List" resultType="java.lang.Long">
+        select user_id from tag_indicator
+        <if test="tagIds != null and tagIds.size() > 0">
+            where tag_id in
+            <foreach collection="tagIds" separator="," item="tagId" open="(" close=")">
+                #{tagId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="countBindTagByUserId" parameterType="java.util.List" resultType="java.util.Map">
+        select user_id as userId, count(1) as total from tag_indicator where user_id in
+        (
+        <foreach collection="userIds" separator="," item="userId">
+            #{userId}
+        </foreach>
+        )
+        group by user_id
+    </select>
+
+    <select id="selectTagNameByUserIds" parameterType="java.util.List" resultType="java.util.Map">
+        select user_id userId, tag_name tagName from tag_indicator where user_id in
+        (
+        <foreach collection="userIds" separator="," item="userId">
+            #{userId}
+        </foreach>
+        )
+    </select>
+
+    <select id="selectByUserIdsAndTagIds" parameterType="java.util.List" resultType="java.lang.Long">
+        select user_id from tag_indicator where
+        <foreach collection="list" separator="or" open="(" close=")" item="map">
+           user_id=#{map.userId} and tag_id=#{map.tagId}
+        </foreach>
+    </select>
+
+    <delete id="deleteByUIdAndTagId">
+        delete from tag_indicator where tag_id =#{tagId} and user_id =#{userId}
+    </delete>
+</mapper>

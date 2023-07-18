@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.tradelevel.TradeLevelMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.tradelevel.TradeLevel">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="bnb_floor" property="bnbFloor" jdbcType="DECIMAL"/>
+        <result column="bnb_ceil" property="bnbCeil" jdbcType="DECIMAL"/>
+        <result column="btc_floor" property="btcFloor" jdbcType="DECIMAL"/>
+        <result column="btc_ceil" property="btcCeil" jdbcType="DECIMAL"/>
+        <result column="maker_commission" property="makerCommission" jdbcType="DECIMAL"/>
+        <result column="taker_commission" property="takerCommission" jdbcType="DECIMAL"/>
+        <result column="buyer_commission" property="buyerCommission" jdbcType="DECIMAL"/>
+        <result column="seller_commission" property="sellerCommission" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <insert id="save" keyProperty="id" useGeneratedKeys="true">
+        insert into trade_level_manage (level,bnb_floor,bnb_ceil,btc_floor,btc_ceil,maker_commission,taker_commission,buyer_commission,seller_commission)
+        values(#{level},#{bnbFloor}, #{bnbCeil}, #{btcFloor}, #{btcCeil}, #{makerCommission},#{takerCommission},#{buyerCommission},#{sellerCommission})
+    </insert>
+
+    <update id="update">
+		update trade_level_manage set
+				level=#{level},
+				bnb_floor=#{bnbFloor},
+				bnb_ceil=#{bnbCeil},
+				btc_floor=#{btcFloor},
+				btc_ceil=#{btcCeil},
+				maker_commission=#{makerCommission},
+				taker_commission=#{takerCommission},
+				buyer_commission=#{buyerCommission},
+				seller_commission=#{sellerCommission}
+		where id= #{id}
+    </update>
+
+    <delete id="delete">
+        delete from trade_level_manage where id= #{id}
+    </delete>
+
+    <select id="selectList" resultMap="BaseResultMap">
+		select id,level,bnb_floor,bnb_ceil,btc_floor,btc_ceil,maker_commission,taker_commission,buyer_commission,seller_commission
+		from trade_level_manage
+		order by level
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select id,level,bnb_floor,bnb_ceil,btc_floor,btc_ceil,maker_commission,taker_commission,buyer_commission,seller_commission
+		from trade_level_manage
+		where id = #{id}
+    </select>
+
+    <select id="selectByLevel" resultMap="BaseResultMap">
+        select id,level,bnb_floor,bnb_ceil,btc_floor,btc_ceil,maker_commission,taker_commission,buyer_commission,seller_commission
+		from trade_level_manage
+		where level = #{level}
+    </select>
+</mapper>

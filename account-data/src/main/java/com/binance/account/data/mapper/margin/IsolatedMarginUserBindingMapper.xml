@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.margin.IsolatedMarginUserBindingMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.margin.IsolatedMarginUserBinding">
+        <id column="isolated_margin_user_id" property="isolatedMarginUserId" jdbcType="BIGINT"/>
+        <result column="root_user_id" property="rootUserId" jdbcType="BIGINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="insert_time" property="insertTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    isolated_margin_user_id, root_user_id, remark, insert_time, update_time
+    </sql>
+
+    <delete id="deleteByIsolatedMarginUserId" parameterType="java.lang.Long">
+        delete from isolated_margin_user_binding
+        where isolated_margin_user_id = #{isolatedMarginUserId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.binance.account.data.entity.margin.IsolatedMarginUserBinding">
+        insert into isolated_margin_user_binding (isolated_margin_user_id, root_user_id, remark)
+        values (#{isolatedMarginUserId,jdbcType=BIGINT}, #{rootUserId,jdbcType=BIGINT},#{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByIsolatedMarginUserId" parameterType="com.binance.account.data.entity.margin.IsolatedMarginUserBinding">
+        update isolated_margin_user_binding
+        set root_user_id = #{rootUserId,jdbcType=BIGINT},
+        remark = #{remark,jdbcType=VARCHAR},
+        where isolated_margin_user_id = #{isolatedMarginUserId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByIsolatedMarginUserIdSelective" parameterType="com.binance.account.data.entity.margin.IsolatedMarginUserBinding">
+        update isolated_margin_user_binding
+        <set>
+            <if test="rootUserId != null">
+                root_user_id = #{rootUserId,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where isolated_margin_user_id = #{isolatedMarginUserId,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByIsolatedMarginUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from isolated_margin_user_binding
+        where isolated_margin_user_id = #{isolatedMarginUserId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getIsolatedMarginUserBindingsByRootUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from isolated_margin_user_binding
+        where root_user_id = #{rootUserId,jdbcType=BIGINT}
+    </select>
+
+    <select id="countIsolatedMarginUsersByRootUserId" resultType="java.lang.Long">
+        select count(1) from isolated_margin_user_binding where root_user_id = #{rootUserId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectisolatedMarginUserIdsByRootUserId" resultType="java.lang.Long" parameterType="java.lang.Long">
+        SELECT isolated_margin_user_id isolatedMarginUserId FROM isolated_margin_user_binding
+          WHERE root_user_id  = #{rootUserId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectisolatedMarginUserIdsByRootUserIdAndIsolatedMarginUserId" resultMap="BaseResultMap">
+        SELECT isolated_margin_user_id isolatedMarginUserId FROM isolated_margin_user_binding
+          WHERE root_user_id  = #{rootUserId,jdbcType=BIGINT}
+          and
+          isolated_margin_user_id = #{isolatedMarginUserId,jdbcType=BIGINT}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.binance.account.data.mapper.security.QuestionConfigMapper">
+	<resultMap id="BaseResultMap" type="com.binance.account.data.entity.security.QuestionConfig">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="scene" jdbcType="TINYINT" property="scene" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="group" jdbcType="VARCHAR" property="group" />
+		<result column="rules" jdbcType="VARCHAR" property="rules" javaType="java.util.List" typeHandler="com.binance.account.data.handler.ListToVarcharTypeHandler"/>
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="operator" jdbcType="VARCHAR" property="operator" />
+	</resultMap>
+
+	<select id="selectALL" resultMap="BaseResultMap">
+		SELECT * FROM `question_business_config`;
+	</select>
+	
+	 <select id="selectBy" resultMap="BaseResultMap">
+		SELECT * 
+		FROM `question_business_config`
+		<where>
+	      <if test="scene != null">
+	     	scene= #{scene,jdbcType=TINYINT}
+	     </if>
+	      <if test="group != null and group != ''">
+		    AND `group`= #{group,jdbcType=VARCHAR}
+	     </if>
+       </where>
+	</select>
+
+	<insert id="insertOrUpdate"
+		parameterType="com.binance.account.data.entity.security.QuestionConfig"
+		keyProperty="id" useGeneratedKeys="true" keyColumn="id">
+		INSERT INTO `question_business_config`
+		(
+		  `scene`,
+		  `group`,
+		  `rules`,
+		  `operator`,
+		  `create_time`,
+		  `update_time`
+		)
+		VALUES (
+		  #{scene,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+		  #{group,jdbcType=VARCHAR},
+		  #{rules,jdbcType=VARCHAR,typeHandler=com.binance.account.data.handler.ListToVarcharTypeHandler},
+		  #{operator,jdbcType=VARCHAR},
+		  #{createTime,jdbcType=TIMESTAMP},
+		  #{updateTime,jdbcType=TIMESTAMP}
+		)
+		ON DUPLICATE KEY UPDATE
+		  <if test="rules != null">
+		    `rules`= values(rules),
+		  </if>
+		  <if test="operator != null">
+		    `operator`= values(operator),
+		  </if>
+		  `update_time` = NOW()
+	</insert>
+
+</mapper>

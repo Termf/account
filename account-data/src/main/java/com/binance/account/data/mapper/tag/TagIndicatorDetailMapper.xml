@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.tag.TagIndicatorDetailMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.tag.TagIndicatorDetail">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="indicator_id" property="indicatorId" jdbcType="BIGINT"/>
+        <result column="f0" property="f0" jdbcType="VARCHAR"/>
+        <result column="f1" property="f1" jdbcType="VARCHAR"/>
+        <result column="f2" property="f2" jdbcType="VARCHAR"/>
+        <result column="f3" property="f3" jdbcType="VARCHAR"/>
+        <result column="f4" property="f4" jdbcType="VARCHAR"/>
+        <result column="f5" property="f5" jdbcType="VARCHAR"/>
+        <result column="f6" property="f6" jdbcType="VARCHAR"/>
+        <result column="f7" property="f7" jdbcType="VARCHAR"/>
+        <result column="f8" property="f8" jdbcType="VARCHAR"/>
+        <result column="f9" property="f9" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, indicator_id,
+        f0, f1, f2, f3,
+        f4, f5, f6, f7,
+        f8, f9
+    </sql>
+
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.binance.account.data.entity.tag.TagDetailDefine">
+        insert into tag_indicator_detail
+        (
+            indicator_id,
+            f0, f1, f2, f3,
+            f4, f5, f6, f7,
+            f8, f9
+        )
+        values
+        (
+          #{indicatorId},
+          #{f0}, #{f1}, #{f2}, #{f3},
+          #{f4}, #{f5}, #{f6}, #{f7},
+          #{f8}, #{f9}
+        )
+    </insert>
+
+    <delete id="deleteByIndicatorId" parameterType="java.lang.Long">
+      delete from tag_indicator_detail where indicator_id = #{indicatorId}
+    </delete>
+
+    <select id="selectByIndicatorId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from tag_indicator_detail
+        where indicator_id = #{indicatorId}
+    </select>
+</mapper>

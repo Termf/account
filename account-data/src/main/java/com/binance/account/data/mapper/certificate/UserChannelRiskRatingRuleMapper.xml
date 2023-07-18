@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.certificate.UserChannelRiskRatingRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.UserChannelRiskRatingRule" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="risk_rating_id" property="riskRatingId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="channel_code" property="channelCode" jdbcType="VARCHAR" />
+    <result column="rule_no" property="ruleNo" jdbcType="VARCHAR" />
+    <result column="rule_name" property="ruleName" jdbcType="VARCHAR" />
+    <result column="rule_value" property="ruleValue" jdbcType="VARCHAR" />
+    <result column="rule_level" property="ruleLevel" jdbcType="VARCHAR" />
+    <result column="rule_score" property="ruleScore" jdbcType="VARCHAR" />
+    <result column="auditor" property="auditor" jdbcType="VARCHAR" />
+    <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, risk_rating_id, user_id, channel_code, rule_no, rule_name, rule_value, rule_level,
+    rule_score, auditor, audit_time, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from user_channel_risk_rating_rule
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_channel_risk_rating_rule
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskRatingRule" useGeneratedKeys="true" keyProperty="id">
+    insert into user_channel_risk_rating_rule ( risk_rating_id, user_id,
+      channel_code, rule_no, rule_name,
+      rule_value, rule_level, rule_score,
+      auditor, audit_time, create_time,
+      update_time)
+    values (#{riskRatingId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT},
+      #{channelCode,jdbcType=VARCHAR}, #{ruleNo,jdbcType=VARCHAR}, #{ruleName,jdbcType=VARCHAR},
+      #{ruleValue,jdbcType=VARCHAR}, #{ruleLevel,jdbcType=VARCHAR}, #{ruleScore,jdbcType=VARCHAR},
+      #{auditor,jdbcType=VARCHAR}, #{auditTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskRatingRule" >
+    insert into user_channel_risk_rating_rule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="riskRatingId != null" >
+        risk_rating_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="channelCode != null" >
+        channel_code,
+      </if>
+      <if test="ruleNo != null" >
+        rule_no,
+      </if>
+      <if test="ruleName != null" >
+        rule_name,
+      </if>
+      <if test="ruleValue != null" >
+        rule_value,
+      </if>
+      <if test="ruleLevel != null" >
+        rule_level,
+      </if>
+      <if test="ruleScore != null" >
+        rule_score,
+      </if>
+      <if test="auditor != null" >
+        auditor,
+      </if>
+      <if test="auditTime != null" >
+        audit_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="riskRatingId != null" >
+        #{riskRatingId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="channelCode != null" >
+        #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleNo != null" >
+        #{ruleNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleName != null" >
+        #{ruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleValue != null" >
+        #{ruleValue,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleLevel != null" >
+        #{ruleLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleScore != null" >
+        #{ruleScore,jdbcType=VARCHAR},
+      </if>
+      <if test="auditor != null" >
+        #{auditor,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTime != null" >
+        #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskRatingRule" >
+    update user_channel_risk_rating_rule
+    <set >
+      <if test="riskRatingId != null" >
+        risk_rating_id = #{riskRatingId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="channelCode != null" >
+        channel_code = #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleNo != null" >
+        rule_no = #{ruleNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleName != null" >
+        rule_name = #{ruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleValue != null" >
+        rule_value = #{ruleValue,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleLevel != null" >
+        rule_level = #{ruleLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleScore != null" >
+        rule_score = #{ruleScore,jdbcType=VARCHAR},
+      </if>
+      <if test="auditor != null" >
+        auditor = #{auditor,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTime != null" >
+        audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskRatingRule" >
+    update user_channel_risk_rating_rule
+    set risk_rating_id = #{riskRatingId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=BIGINT},
+      channel_code = #{channelCode,jdbcType=VARCHAR},
+      rule_no = #{ruleNo,jdbcType=VARCHAR},
+      rule_name = #{ruleName,jdbcType=VARCHAR},
+      rule_value = #{ruleValue,jdbcType=VARCHAR},
+      rule_level = #{ruleLevel,jdbcType=VARCHAR},
+      rule_score = #{ruleScore,jdbcType=VARCHAR},
+      auditor = #{auditor,jdbcType=VARCHAR},
+      audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByUserIdAndChannelCode" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_channel_risk_rating_rule
+    where user_id = #{userId,jdbcType=BIGINT}
+    and channel_code = #{channelCode, jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateRiskLevelScore" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskRatingRule" >
+    update user_channel_risk_rating_rule
+    set
+      rule_level = #{ruleLevel,jdbcType=VARCHAR},
+      rule_score = #{ruleScore,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByUserIdAndRiskRatingId" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select
+        <include refid="Base_Column_List" />
+    from user_channel_risk_rating_rule
+    where user_id = #{userId,jdbcType=BIGINT}
+        and  risk_rating_id = #{riskRatingId,jdbcType=INTEGER}
+  </select>
+</mapper>

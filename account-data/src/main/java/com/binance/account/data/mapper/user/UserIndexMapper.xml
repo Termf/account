@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.user.UserIndexMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.user.UserIndex">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        user_id, email
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_index
+        where user_id = #{userId,jdbcType=BIGINT} and email is not null
+    </select>
+    <select id="selectIdByEmail" parameterType="java.lang.String" resultType="java.lang.Long">
+        select
+            user_id
+        from user_index
+        where email = #{email,jdbcType=VARCHAR} and email is not null
+    </select>
+    <select id="selectEmailById" parameterType="java.lang.Long" resultType="java.lang.String">
+        select
+            email
+        from user_index
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from user_index
+        where user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.binance.account.data.entity.user.UserIndex">
+        insert into user_index (user_id, email)
+        values (#{userId,jdbcType=BIGINT}, #{email,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertIgnore" parameterType="com.binance.account.data.entity.user.UserIndex">
+        insert ignore into user_index (user_id, email)
+        values (#{userId,jdbcType=BIGINT}, #{email,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.binance.account.data.entity.user.UserIndex">
+        insert into user_index
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.user.UserIndex">
+        update user_index
+        <set>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.user.UserIndex">
+        update user_index
+        set email = #{email,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <update id="registerByUserId" parameterType="com.binance.account.data.entity.user.UserIndex">
+        update user_index
+        set email = #{email,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=BIGINT} and email is null
+    </update>
+    <select id="maxUserId" resultType="java.lang.Long">
+        select max(user_id) from user_index
+    </select>
+    <select id="maxUserIdByMaxUserId" resultType="java.lang.Long">
+        select max(user_id) from user_index
+        <![CDATA[
+			where user_id < #{userId,jdbcType=BIGINT}
+
+        ]]>
+    </select>
+    <select id="fuzzyQueryByEmail" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_index
+        <![CDATA[
+            where instr(email,#{email,jdbcType=VARCHAR})> 0
+        ]]>
+    </select>
+
+    <select id="selectByUserIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from user_index
+        where email is not null
+        and user_id in
+        <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </select>
+    
+    <select id="selectByEmails" parameterType="java.util.List" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from user_index
+        where email in
+        <foreach collection="emails" item="email" open="(" close=")" separator=",">
+            #{email}
+        </foreach>
+    </select>
+
+
+    <select id="selectUnusedUserIndex" parameterType="java.util.List" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from user_index
+        where email is null
+        limit 0,1000
+    </select>
+</mapper>

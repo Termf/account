@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.security.UserSecurityLogMapper">
+    <resultMap id="BaseResultMap"
+               type="com.binance.account.data.entity.security.UserSecurityLog">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="ip" jdbcType="VARCHAR" property="ip"/>
+        <result column="ip_location" jdbcType="VARCHAR" property="ipLocation"/>
+        <result column="client_type" jdbcType="VARCHAR" property="clientType"/>
+        <result column="operate_type" jdbcType="VARCHAR" property="operateType"/>
+        <result column="device_pk" jdbcType="BIGINT" property="devicePk" />
+        <result column="device_id" jdbcType="VARCHAR" property="deviceId" />
+        <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_id, ip, ip_location, client_type, operate_type, device_pk, device_id, operate_time, description
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_security_log
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from user_security_log
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.binance.account.data.entity.security.UserSecurityLog" keyProperty="id"
+            useGeneratedKeys="true" keyColumn="id">
+        insert into user_security_log (user_id, ip, ip_location,
+        client_type, operate_type, device_pk, device_id, operate_time,
+        description)
+        values (#{userId,jdbcType=BIGINT}, #{ip,jdbcType=VARCHAR}, #{ipLocation,jdbcType=VARCHAR},
+        #{clientType,jdbcType=VARCHAR}, #{operateType,jdbcType=VARCHAR}, #{devicePk,jdbcType=BIGINT},
+        #{deviceId,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertIgnore" parameterType="com.binance.account.data.entity.security.UserSecurityLog" keyProperty="id"
+            useGeneratedKeys="true" keyColumn="id">
+        insert ignore into user_security_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="ipLocation != null">
+                ip_location,
+            </if>
+            <if test="clientType != null">
+                client_type,
+            </if>
+            <if test="operateType != null">
+                operate_type,
+            </if>
+            <if test="devicePk != null">
+                device_pk,
+            </if>
+            <if test="deviceId != null">
+                device_id,
+            </if>
+            <if test="operateTime != null">
+                operate_time,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="ipLocation != null">
+                #{ipLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="clientType != null">
+                #{clientType,jdbcType=VARCHAR},
+            </if>
+            <if test="operateType != null">
+                #{operateType,jdbcType=VARCHAR},
+            </if>
+            <if test="devicePk != null">
+                #{devicePk,jdbcType=BIGINT},
+            </if>
+            <if test="deviceId != null">
+                #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="operateTime != null">
+                #{operateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertIgnoreId" parameterType="com.binance.account.data.entity.security.UserSecurityLog">
+        insert ignore into user_security_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="ipLocation != null">
+                ip_location,
+            </if>
+            <if test="clientType != null">
+                client_type,
+            </if>
+            <if test="operateType != null">
+                operate_type,
+            </if>
+            <if test="devicePk != null">
+                device_pk,
+            </if>
+            <if test="deviceId != null">
+                device_id,
+            </if>
+            <if test="operateTime != null">
+                operate_time,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="ipLocation != null">
+                #{ipLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="clientType != null">
+                #{clientType,jdbcType=VARCHAR},
+            </if>
+            <if test="operateType != null">
+                #{operateType,jdbcType=VARCHAR},
+            </if>
+            <if test="devicePk != null">
+                #{devicePk,jdbcType=BIGINT},
+            </if>
+            <if test="deviceId != null">
+                #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="operateTime != null">
+                #{operateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertSelective" parameterType="com.binance.account.data.entity.security.UserSecurityLog"
+            keyProperty="id" useGeneratedKeys="true" keyColumn="id">
+        insert into user_security_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="ipLocation != null">
+                ip_location,
+            </if>
+            <if test="clientType != null">
+                client_type,
+            </if>
+            <if test="operateType != null">
+                operate_type,
+            </if>
+            <if test="devicePk != null">
+                device_pk,
+            </if>
+            <if test="deviceId != null">
+                device_id,
+            </if>
+            <if test="operateTime != null">
+                operate_time,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="ipLocation != null">
+                #{ipLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="clientType != null">
+                #{clientType,jdbcType=VARCHAR},
+            </if>
+            <if test="operateType != null">
+                #{operateType,jdbcType=VARCHAR},
+            </if>
+            <if test="devicePk != null">
+                #{devicePk,jdbcType=BIGINT},
+            </if>
+            <if test="deviceId != null">
+                #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="operateTime != null">
+                #{operateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.security.UserSecurityLog">
+        update user_security_log
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="ip != null">
+                ip = #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="ipLocation != null">
+                ip_location = #{ipLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="clientType != null">
+                client_type = #{clientType,jdbcType=VARCHAR},
+            </if>
+            <if test="operateType != null">
+                operate_type = #{operateType,jdbcType=VARCHAR},
+            </if>
+            <if test="devicePk != null">
+                device_pk = #{devicePk,jdbcType=BIGINT},
+            </if>
+            <if test="deviceId != null">
+                device_id = #{deviceId,jdbcType=VARCHAR},
+            </if>
+            <if test="operateTime != null">
+                operate_time = #{operateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.security.UserSecurityLog">
+        update user_security_log
+        set user_id = #{userId,jdbcType=BIGINT},
+        ip = #{ip,jdbcType=VARCHAR},
+        ip_location = #{ipLocation,jdbcType=VARCHAR},
+        client_type = #{clientType,jdbcType=VARCHAR},
+        operate_type = #{operateType,jdbcType=VARCHAR},
+        device_pk = #{devicePk,jdbcType=BIGINT},
+        device_id = #{deviceId,jdbcType=VARCHAR},
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+        description = #{description,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="getUserSecurityListByUserIdAndOperateType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_security_log
+        <where>
+            user_id = #{userId}
+            <if test="operateType != null and operateType != ''">
+                and operate_type = #{operateType}
+            </if>
+        </where>
+        order by operate_time desc limit #{startRow}, #{pageSize}
+    </select>
+    <select id="getUserSecurityCountByUserIdAndOperateType" resultType="java.lang.Long">
+        select count(1) from user_security_log
+        <where>
+            user_id = #{userId}
+            <if test="operateType != null and operateType != ''">
+                and operate_type = #{operateType}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getLastLoginLogByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_security_log
+        where user_id = #{userId} and operate_type = 'login'
+        order by operate_time desc limit 1
+    </select>
+
+    <select id="getLastUpdatePwdByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_security_log
+        where user_id = #{userId} and operate_type = 'update_password'
+        order by operate_time desc limit 1
+    </select>
+
+    <select id="getLogPage" parameterType="com.binance.account.data.entity.security.UserSecurityLog" resultMap="BaseResultMap">
+    	select ul.id,ul.user_id,ul.ip,ul.ip_location,ul.client_type, ul.operate_type,ul.device_pk,ul.device_id,ul.operate_time,ul.description
+		    from user_security_log ul
+
+
+		   <include refid="Base_Where_List" />
+        <if test="operateTypeList != null and operateTypeList.size() > 0">
+            and operate_type in
+            <foreach collection="operateTypeList" item="operateType" open="(" close=")" separator=",">
+                #{operateType}
+            </foreach>
+        </if>
+			 <choose>
+                <when test="sort != null and sort != '' and (sort == 'userId' or sort == 'operateTime')">
+					ORDER BY <include refid="Base_OrderBy_List" />
+				</when>
+				<otherwise>
+					ORDER BY operate_time desc
+				</otherwise>
+            </choose>
+			<if test="limit>0">
+		    LIMIT #{offset},#{limit}
+			</if>
+    </select>
+
+    <select id="getLogPageTotal" parameterType="com.binance.account.data.entity.security.UserSecurityLog" resultType="java.lang.Long">
+        select count(1) from user_security_log
+
+        <include refid="Base_Where_List" />
+        <if test="operateTypeList != null and operateTypeList.size() > 0">
+            and operate_type in
+            <foreach collection="operateTypeList" item="operateType" open="(" close=")" separator=",">
+                #{operateType}
+            </foreach>
+        </if>
+			 <choose>
+                <when test="sort != null and sort != '' and (sort == 'userId' or sort == 'operateTime')">
+					ORDER BY <include refid="Base_OrderBy_List" />
+				</when>
+				<otherwise>
+					ORDER BY operate_time desc
+				</otherwise>
+            </choose>
+    </select>
+
+    <select id="getLogByIp" parameterType="com.binance.account.data.entity.security.UserSecurityLog" resultMap="BaseResultMap">
+    	SELECT <include refid="Base_Column_List"/>
+        from user_security_log where ip = #{ip,jdbcType=VARCHAR}
+        ORDER BY operate_time DESC
+		<if test="limit>0">
+			LIMIT #{offset},#{limit}
+		</if>
+    </select>
+
+    <select id="getLogByIpCount" parameterType="java.util.List" resultType="java.util.Map">
+     SELECT ip, COUNT(DISTINCT user_id) userIdCount FROM user_security_log
+        WHERE ip IN
+        <foreach collection="ips" item="ips" open="(" close=")" separator=",">
+            #{ips}
+        </foreach>
+        GROUP BY ip
+    </select>
+
+    <select id="getSecurityByUserIds" resultMap="BaseResultMap">
+    	 select
+        <include refid="Base_Column_List"/>
+        from user_security_log
+        <where>
+            <if test="userIds != null and userIds.size() > 0">
+                AND user_id in
+                <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="operateType != null and operateType != ''">
+                AND operate_type = #{operateType}
+            </if>
+            <if test="startOperateTime != null">
+            	AND operate_time &gt;=#{startOperateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endOperateTime != null">
+            	AND operate_time &lt;=#{endOperateTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by operate_time desc limit #{offset}, #{limit}
+    </select>
+
+    <select id="getSecurityCountByUserIds" resultType="java.lang.Long">
+    	select count(1) from user_security_log
+        <where>
+            <if test="userIds != null and userIds.size() > 0">
+                AND user_id in
+                <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="operateType != null and operateType != ''">
+                AND operate_type = #{operateType}
+            </if>
+            <if test="startOperateTime != null">
+            	AND operate_time &gt;=#{startOperateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endOperateTime != null">
+            	AND operate_time &lt;=#{endOperateTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+    <sql id="Base_OrderBy_List">
+  	  <if test="sort=='userId'" >
+  	  	<if test="order =='desc'">
+            user_id desc
+         </if>
+         <if test="order =='asc'">
+            user_id asc
+          </if>
+      </if>
+      <if test="sort=='operateTime'" >
+      	<if test="order =='desc'">
+            operate_time desc
+         </if>
+         <if test="order =='asc'">
+            operate_time asc
+          </if>
+      </if>
+  </sql>
+
+     <!-- ****************分页查询************************ -->
+	  <sql id="Base_Where_List">
+	  	<where>
+	  	  <if test="id != null and id != '' " >
+	        and id = #{id,jdbcType=BIGINT}
+	      </if>
+	  	  <if test="userId != null and userId != '' " >
+	        and user_id = #{userId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="ip != null and ip != '' " >
+	        and ip = #{ip,jdbcType=VARCHAR}
+	      </if>
+	      <if test="ipLocation != null and ipLocation != '' " >
+	        and ip_location = #{ipLocation,jdbcType=VARCHAR}
+	      </if>
+	      <if test="clientType != null and clientType !=''" >
+	        and client_type = #{clientType,jdbcType=VARCHAR}
+	      </if>
+	      <if test="operateType != null and operateType !=''" >
+	        and operate_type = #{operateType,jdbcType=VARCHAR}
+	      </if>
+	      <if test="devicePk != null and devicePk !=''" >
+	        and device_pk = #{devicePk,jdbcType=BIGINT}
+	      </if>
+	      <if test="deviceId != null and deviceId !=''" >
+	        and device_id = #{deviceId,jdbcType=VARCHAR}
+	      </if>
+	      <if test="startDate != null" >
+	        and operate_time >= #{startDate,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="endDate != null" >
+	        and operate_time &lt;= #{endDate,jdbcType=TIMESTAMP}
+	      </if>
+	      <if test="description != null and description != '' " >
+	        and description = #{description,jdbcType=VARCHAR}
+	      </if>
+	  	</where>
+	  </sql>
+
+    <select id="getLastBindGoogleVerify" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        operate_time
+        from user_security_log
+        where user_id = #{userId} and operate_type = 'bind_google'
+        order by operate_time desc limit 1
+    </select>
+
+
+    <select id="getUserSecurityListByUserIdAndOperateTypeList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from user_security_log
+    <where>
+        user_id = #{userId}
+        <if test="operateTypeList != null and operateTypeList.size() > 0">
+            AND operate_type in
+            <foreach collection="operateTypeList" item="operateType" open="(" close=")" separator=",">
+                #{operateType}
+            </foreach>
+        </if>
+    </where>
+      order by operate_time desc limit #{startRow}, #{pageSize}
+    </select>
+</mapper>

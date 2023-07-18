@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.subuser.SubUserBindingDeleteMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.subuser.SubUserBindingDelete">
+    <id column="sub_user_id" jdbcType="BIGINT" property="subUserId" />
+    <result column="parent_user_id" jdbcType="BIGINT" property="parentUserId" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="broker_sub_account_id" jdbcType="BIGINT" property="brokerSubAccountId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    sub_user_id, parent_user_id, remark, insert_time, update_time, broker_sub_account_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sub_user_binding_delete
+    where sub_user_id = #{subUserId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sub_user_binding_delete
+    where sub_user_id = #{subUserId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.subuser.SubUserBindingDelete">
+    insert into sub_user_binding_delete (sub_user_id, parent_user_id, remark, 
+      insert_time, update_time, broker_sub_account_id
+      )
+    values (#{subUserId,jdbcType=BIGINT}, #{parentUserId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, 
+      #{insertTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{brokerSubAccountId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.subuser.SubUserBindingDelete">
+    insert into sub_user_binding_delete
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="subUserId != null">
+        sub_user_id,
+      </if>
+      <if test="parentUserId != null">
+        parent_user_id,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="insertTime != null">
+        insert_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="brokerSubAccountId != null">
+        broker_sub_account_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="subUserId != null">
+        #{subUserId,jdbcType=BIGINT},
+      </if>
+      <if test="parentUserId != null">
+        #{parentUserId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="insertTime != null">
+        #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="brokerSubAccountId != null">
+        #{brokerSubAccountId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.subuser.SubUserBindingDelete">
+    update sub_user_binding_delete
+    <set>
+      <if test="parentUserId != null">
+        parent_user_id = #{parentUserId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="insertTime != null">
+        insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="brokerSubAccountId != null">
+        broker_sub_account_id = #{brokerSubAccountId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where sub_user_id = #{subUserId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.subuser.SubUserBindingDelete">
+    update sub_user_binding_delete
+    set parent_user_id = #{parentUserId,jdbcType=BIGINT},
+      remark = #{remark,jdbcType=VARCHAR},
+      insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      broker_sub_account_id = #{brokerSubAccountId,jdbcType=BIGINT}
+    where sub_user_id = #{subUserId,jdbcType=BIGINT}
+  </update>
+</mapper>

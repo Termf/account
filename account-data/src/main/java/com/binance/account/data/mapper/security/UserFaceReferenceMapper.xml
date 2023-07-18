@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.security.UserFaceReferenceMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.security.UserFaceReference">
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="source_type" jdbcType="VARCHAR" property="sourceType" />
+    <result column="source_image" jdbcType="VARCHAR" property="sourceImage" />
+    <result column="source_scale" jdbcType="DOUBLE" property="sourceScale" />
+    <result column="need_scale" jdbcType="BIT" property="needScale" />
+    <result column="ref_scale" jdbcType="DOUBLE" property="refScale" />
+    <result column="ref_image" jdbcType="VARCHAR" property="refImage" />
+    <result column="check_image" jdbcType="VARCHAR" property="checkImage"/>
+    <result column="ref_image_name" jdbcType="VARCHAR" property="refImageName" />
+    <result column="ref_quality" jdbcType="DOUBLE" property="refQuality" />
+    <result column="quality_threshold" jdbcType="DOUBLE" property="qualityThreshold" />
+    <result column="orientation" jdbcType="INTEGER" property="orientation" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, create_time, update_time, source_type, source_image, source_scale, need_scale, 
+    ref_scale, ref_image, check_image, ref_image_name, ref_quality, quality_threshold, orientation,
+    remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_face_reference
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+
+  <insert id="insert" parameterType="com.binance.account.data.entity.security.UserFaceReference">
+    insert into user_face_reference (user_id, create_time, update_time,
+      source_type, source_image, source_scale,
+      need_scale, ref_scale, ref_image, check_image,
+      ref_image_name, ref_quality, quality_threshold,
+      orientation, remark)
+    values (#{userId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{sourceType,jdbcType=VARCHAR}, #{sourceImage,jdbcType=VARCHAR}, #{sourceScale,jdbcType=DOUBLE},
+      #{needScale,jdbcType=BIT}, #{refScale,jdbcType=DOUBLE}, #{refImage,jdbcType=VARCHAR}, #{checkImage,jdbcType=VARCHAR},
+      #{refImageName,jdbcType=VARCHAR}, #{refQuality,jdbcType=DOUBLE}, #{qualityThreshold,jdbcType=DOUBLE},
+      #{orientation,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.security.UserFaceReference">
+    update user_face_reference
+    <set>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sourceType != null">
+        source_type = #{sourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceImage != null">
+        source_image = #{sourceImage,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceScale != null">
+        source_scale = #{sourceScale,jdbcType=DOUBLE},
+      </if>
+      <if test="needScale != null">
+        need_scale = #{needScale,jdbcType=BIT},
+      </if>
+      <if test="refScale != null">
+        ref_scale = #{refScale,jdbcType=DOUBLE},
+      </if>
+      <if test="refImage != null">
+        ref_image = #{refImage,jdbcType=VARCHAR},
+      </if>
+      <if test="checkImage != null">
+        check_image = #{checkImage,jdbcType=VARCHAR},
+      </if>
+      <if test="refImageName != null">
+        ref_image_name = #{refImageName,jdbcType=VARCHAR},
+      </if>
+      <if test="refQuality != null">
+        ref_quality = #{refQuality,jdbcType=DOUBLE},
+      </if>
+      <if test="qualityThreshold != null">
+        quality_threshold = #{qualityThreshold,jdbcType=DOUBLE},
+      </if>
+      <if test="orientation != null">
+        orientation = #{orientation,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateRefImage" parameterType="com.binance.account.data.entity.security.UserFaceReference">
+    update user_face_reference
+      set ref_image = #{refImage,jdbcType=VARCHAR},
+          ref_image_name = #{refImageName,jdbcType=VARCHAR},
+          update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <select id="getListByUserIds" parameterType="map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user_face_reference
+    where user_id in
+    <foreach collection="userIds" item="item" separator="," open="(" close=")">
+      #{item}
+    </foreach>
+  </select>
+
+</mapper>

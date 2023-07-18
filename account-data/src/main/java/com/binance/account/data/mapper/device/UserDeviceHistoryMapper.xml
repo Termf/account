@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.device.UserDeviceHistoryMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.device.UserDeviceHistory">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_device_id" jdbcType="BIGINT" property="userDeviceId" />
+    <result column="agent_type" jdbcType="VARCHAR" property="agentType" />
+    <result column="operate_type" jdbcType="TINYINT" property="operateType" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, user_device_id, agent_type, operate_type, content, memo, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_device_history
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user_device_history
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.device.UserDeviceHistory"  keyProperty="id" useGeneratedKeys="true">
+    insert into user_device_history (user_id, user_device_id,
+      agent_type, operate_type, content, 
+      memo, create_time)
+    values (#{userId,jdbcType=BIGINT}, #{userDeviceId,jdbcType=BIGINT},
+      #{agentType,jdbcType=VARCHAR}, #{operateType,jdbcType=TINYINT}, #{content,jdbcType=VARCHAR},
+      #{memo,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.device.UserDeviceHistory"  keyProperty="id" useGeneratedKeys="true">
+    insert into user_device_history
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userDeviceId != null">
+        user_device_id,
+      </if>
+      <if test="agentType != null">
+        agent_type,
+      </if>
+      <if test="operateType != null">
+        operate_type,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userDeviceId != null">
+        #{userDeviceId,jdbcType=BIGINT},
+      </if>
+      <if test="agentType != null">
+        #{agentType,jdbcType=VARCHAR},
+      </if>
+      <if test="operateType != null">
+        #{operateType,jdbcType=BIGINT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.device.UserDeviceHistory">
+    update user_device_history
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userDeviceId != null">
+        user_device_id = #{userDeviceId,jdbcType=BIGINT},
+      </if>
+      <if test="agentType != null">
+        agent_type = #{agentType,jdbcType=VARCHAR},
+      </if>
+      <if test="operateType != null">
+        operate_type = #{operateType,jdbcType=TINYINT},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.device.UserDeviceHistory">
+    update user_device_history
+    set user_id = #{userId,jdbcType=BIGINT},
+      user_device_id = #{userDeviceId,jdbcType=BIGINT},
+      agent_type = #{agentType,jdbcType=VARCHAR},
+      operate_type = #{operateType,jdbcType=TINYINT},
+      content = #{content,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByUserIdAndDeviceId" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_device_history
+    where user_id = #{userId,jdbcType=BIGINT} and user_device_id = #{deviceId,jdbcType=BIGINT}
+    order by id desc
+  </select>
+</mapper>

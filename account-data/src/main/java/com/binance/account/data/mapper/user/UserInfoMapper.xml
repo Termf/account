@@ -1,0 +1,1227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.user.UserInfoMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.user.UserInfo">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="parent" jdbcType="BIGINT" property="parent"/>
+        <result column="agent_id" jdbcType="BIGINT" property="agentId"/>
+        <result column="agent_reward_ratio" jdbcType="DECIMAL"
+                property="agentRewardRatio"/>
+        <result column="referral_reward_ratio" jdbcType="DECIMAL"
+                property="referralRewardRatio"/>
+        <result column="trading_account" jdbcType="BIGINT" property="tradingAccount"/>
+        <result column="maker_commission" jdbcType="DECIMAL" property="makerCommission"/>
+        <result column="taker_commission" jdbcType="DECIMAL" property="takerCommission"/>
+        <result column="buyer_commission" jdbcType="DECIMAL" property="buyerCommission"/>
+        <result column="seller_commission" jdbcType="DECIMAL" property="sellerCommission"/>
+        <result column="daily_withdraw_cap" jdbcType="DECIMAL"
+                property="dailyWithdrawCap"/>
+        <result column="daily_withdraw_count_limit" jdbcType="INTEGER"
+                property="dailyWithdrawCountLimit"/>
+        <result column="auto_withdraw_audit_threshold" jdbcType="DECIMAL"
+                property="autoWithdrawAuditThreshold"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="nick_color" jdbcType="VARCHAR" property="nickColor"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="track_source" jdbcType="VARCHAR" property="trackSource"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime"/>
+        <result column="trade_level" jdbcType="INTEGER" property="tradeLevel"/>
+        <result column="trade_auto_status" jdbcType="VARCHAR" property="tradeAutoStatus"/>
+        <result column="trade_30btc_number" jdbcType="DECIMAL" property="trade30btcNumber"/>
+        <result column="margin_user_id" jdbcType="BIGINT" property="marginUserId"/>
+        <result column="fiat_user_id" jdbcType="BIGINT" property="fiatUserId"/>
+        <result column="daily_fiat_withdraw_cap" jdbcType="DECIMAL"
+                property="dailyFiatWithdrawCap"/>
+        <result column="single_fiat_withdraw_cap" jdbcType="DECIMAL"
+                property="singleFiatWithdrawCap"/>
+        <result column="order_confirm_status" jdbcType="BIGINT"
+                property="orderConfirmStatus"/>
+        <result column="future_user_id" jdbcType="BIGINT" property="futureUserId"/>
+        <result column="me_trading_account" jdbcType="BIGINT" property="meTradingAccount"/>
+        <result column="future_agent_id" jdbcType="BIGINT" property="futureAgentId"/>
+        <result column="mining_user_id" jdbcType="BIGINT" property="miningUserId"/>
+        <result column="card_user_id" jdbcType="BIGINT" property="cardUserId"/>
+        <result column="delivery_trading_account" jdbcType="BIGINT" property="deliveryTradingAccount"/>
+        <result column="account_type" jdbcType="VARCHAR" property="accountType" />
+    </resultMap>
+
+    <resultMap id="UserAgentRewardMap" type="com.binance.account.data.entity.user.UserAgentReward">
+    	<id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="batch_id" property="batchId" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="old_agent_reward_ratio" property="oldAgentRewardRatio" jdbcType="DECIMAL" />
+        <result column="new_agent_reward_ratio" property="newAgentRewardRatio" jdbcType="DECIMAL" />
+        <result column="reason" property="reason" jdbcType="VARCHAR" />
+        <result column="is_restore" property="isRestore" jdbcType="VARCHAR" />
+        <result column="expect_restore_time" property="expectRestoreTime" jdbcType="TIMESTAMP" />
+        <result column="actual_restore_time" property="actualRestoreTime" jdbcType="TIMESTAMP" />
+        <result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+        <result column="apply_name" property="applyName" jdbcType="VARCHAR" />
+        <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+        <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+        <result column="operator_time" property="operatorTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="agent_id" property="agentId" jdbcType="BIGINT" />
+        <result column="track_source" property="trackSource" jdbcType="VARCHAR" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        user_id, parent, agent_id, agent_reward_ratio,referral_reward_ratio,
+        trading_account,
+        maker_commission,
+        taker_commission, buyer_commission,
+        seller_commission, daily_withdraw_cap,
+        daily_withdraw_count_limit,
+        auto_withdraw_audit_threshold, nick_name,nick_color, remark, track_source,
+        update_time, insert_time,
+        trade_level, trade_auto_status,order_confirm_status,
+        trade_30btc_number,margin_user_id,fiat_user_id,daily_fiat_withdraw_cap,single_fiat_withdraw_cap,future_user_id,me_trading_account,future_agent_id,mining_user_id,delivery_trading_account,card_user_id,account_type
+    </sql>
+
+    <sql id="User_Agent_Rewar_List" >
+        id,user_id, batch_id, email, old_agent_reward_ratio, reason,
+        is_restore, expect_restore_time, actual_restore_time, apply_id, apply_name, apply_time,
+        operator_id, operator_time, `status`, agent_id, track_source, update_time, create_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <update id="updateUserType" parameterType="com.binance.account.data.entity.user.UserInfo">
+    update user_info
+    set
+    account_type = #{accountType,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+    <select id="selectUserType0" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List" />
+        from user_info
+        where account_type is null
+        limit #{start},#{offset}
+    </select>
+
+    <select id="countUserType0" resultType="java.lang.Long">
+    select
+    COUNT(1)
+    from user_info
+    where account_type is null
+    </select>
+
+    <update id="updateThreeDailyWithdrawFiledNull" parameterType="java.util.List">
+        update user_info
+        set
+        daily_withdraw_cap = null,
+        daily_withdraw_count_limit = null,
+        auto_withdraw_audit_threshold = null
+        where user_id in
+        <foreach collection="list" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </update>
+
+    <update id="updateDailyWithdrawCapNull" parameterType="java.util.List">
+        update user_info
+        set
+        daily_withdraw_cap = null
+        where user_id in
+        <foreach collection="list" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </update>
+
+    <update id="updateDailyWithdrawCountLimitNull" parameterType="java.util.List">
+        update user_info
+        set
+        daily_withdraw_count_limit = null
+        where user_id in
+        <foreach collection="list" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </update>
+
+    <update id="updateAutoWithdrawAuditThresholdNull" parameterType="java.util.List">
+        update user_info
+        set
+        auto_withdraw_audit_threshold = null
+        where user_id in
+        <foreach collection="list" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </update>
+
+    <select id="selectJobDailyThreeField"
+            resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+        where
+        <if test="userId != null">
+            user_id = #{userId} and (daily_withdraw_cap = 0 or daily_withdraw_count_limit = 0 or auto_withdraw_audit_threshold = 0)
+        </if>
+        <if test="userId == null">
+            daily_withdraw_cap = 0 or daily_withdraw_count_limit = 0 or auto_withdraw_audit_threshold = 0
+        </if>
+        limit #{start},#{offset}
+    </select>
+
+    <select id="countJobDailyThreeField"
+            resultType="java.lang.Long" >
+        select
+        count(1)
+        from user_info
+        where daily_withdraw_cap = 0 or daily_withdraw_count_limit = 0 or auto_withdraw_audit_threshold = 0
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from
+        user_info
+        where user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.binance.account.data.entity.user.UserInfo">
+        insert into user_info
+        (user_id, parent, agent_id,
+        agent_reward_ratio,referral_reward_ratio, trading_account,
+        maker_commission,
+        taker_commission, buyer_commission,
+        seller_commission,
+        daily_withdraw_cap, daily_withdraw_count_limit,
+        auto_withdraw_audit_threshold, nick_name, remark,
+        track_source,
+        insert_time, trade_level,margin_user_id,fiat_user_id,daily_fiat_withdraw_cap,single_fiat_withdraw_cap,future_user_id,me_trading_account,future_agent_id,mining_user_id,delivery_trading_account,card_user_id,account_type
+        )
+        values (#{userId,jdbcType=BIGINT},
+        #{parent,jdbcType=BIGINT},
+        #{agentId,jdbcType=BIGINT},
+        #{agentRewardRatio,jdbcType=DECIMAL},
+        #{referralRewardRatio,jdbcType=DECIMAL},
+        #{tradingAccount,jdbcType=BIGINT},
+        #{makerCommission,jdbcType=DECIMAL},
+        #{takerCommission,jdbcType=DECIMAL},
+        #{buyerCommission,jdbcType=DECIMAL},
+        #{sellerCommission,jdbcType=DECIMAL},
+        #{dailyWithdrawCap,jdbcType=DECIMAL},
+        #{dailyWithdrawCountLimit,jdbcType=INTEGER},
+        #{autoWithdrawAuditThreshold,jdbcType=DECIMAL},
+        #{nickName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+        #{trackSource,jdbcType=VARCHAR}, now(), #{tradeLevel,jdbcType=INTEGER},#{marginUserId,jdbcType=BIGINT},#{fiatUserId,jdbcType=BIGINT},
+        #{dailyFiatWithdrawCap,jdbcType=DECIMAL},#{singleFiatWithdrawCap,jdbcType=DECIMAL},#{futureUserId,jdbcType=BIGINT},
+        #{meTradingAccount,jdbcType=BIGINT},#{futureAgentId,jdbcType=BIGINT},#{miningUserId,jdbcType=BIGINT},#{deliveryTradingAccount,jdbcType=BIGINT},#{cardUserId,jdbcType=BIGINT},#{accountType,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertIgnore" parameterType="com.binance.account.data.entity.user.UserInfo">
+        insert ignore into
+        user_info
+        (user_id, parent, agent_id,
+        agent_reward_ratio,
+        referral_reward_ratio,
+        trading_account,
+        maker_commission,
+        taker_commission, buyer_commission,
+        seller_commission,
+        daily_withdraw_cap, daily_withdraw_count_limit,
+        auto_withdraw_audit_threshold, nick_name, remark,
+        track_source,
+        insert_time,update_time, trade_level,margin_user_id,fiat_user_id,daily_fiat_withdraw_cap,single_fiat_withdraw_cap,future_user_id,me_trading_account,mining_user_id,delivery_trading_account,card_user_id,account_type
+        )
+        values (#{userId,jdbcType=BIGINT},
+        #{parent,jdbcType=BIGINT},
+        #{agentId,jdbcType=BIGINT},
+        #{agentRewardRatio,jdbcType=DECIMAL},
+        #{referralRewardRatio,jdbcType=DECIMAL},
+        #{tradingAccount,jdbcType=BIGINT},
+        #{makerCommission,jdbcType=DECIMAL},
+        #{takerCommission,jdbcType=DECIMAL},
+        #{buyerCommission,jdbcType=DECIMAL},
+        #{sellerCommission,jdbcType=DECIMAL},
+        #{dailyWithdrawCap,jdbcType=DECIMAL},
+        #{dailyWithdrawCountLimit,jdbcType=INTEGER},
+        #{autoWithdrawAuditThreshold,jdbcType=DECIMAL},
+        #{nickName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+        #{trackSource,jdbcType=VARCHAR}, #{insertTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}, #{tradeLevel,jdbcType=INTEGER},#{marginUserId,jdbcType=BIGINT},#{fiatUserId,jdbcType=BIGINT},
+        #{dailyFiatWithdrawCap,jdbcType=DECIMAL},#{singleFiatWithdrawCap,jdbcType=DECIMAL},#{futureUserId,jdbcType=BIGINT},
+        #{meTradingAccount,jdbcType=BIGINT},#{miningUserId,jdbcType=BIGINT},#{deliveryTradingAccount,jdbcType=BIGINT},#{cardUserId,jdbcType=BIGINT},#{accountType,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.binance.account.data.entity.user.UserInfo">
+        insert into user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tradeLevel != null">
+                trade_level,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="parent != null">
+                parent,
+            </if>
+            <if test="agentId != null">
+                agent_id,
+            </if>
+            <if test="agentRewardRatio != null">
+                agent_reward_ratio,
+            </if>
+            <if test="referralRewardRatio != null">
+                referral_reward_ratio,
+            </if>
+            <if test="tradingAccount != null">
+                trading_account,
+            </if>
+            <if test="makerCommission != null">
+                maker_commission,
+            </if>
+            <if test="takerCommission != null">
+                taker_commission,
+            </if>
+            <if test="buyerCommission != null">
+                buyer_commission,
+            </if>
+            <if test="sellerCommission != null">
+                seller_commission,
+            </if>
+            <if test="dailyWithdrawCap != null">
+                daily_withdraw_cap,
+            </if>
+            <if test="dailyWithdrawCountLimit != null">
+                daily_withdraw_count_limit,
+            </if>
+            <if test="autoWithdrawAuditThreshold != null">
+                auto_withdraw_audit_threshold,
+            </if>
+            <if test="nickName != null">
+                nick_name,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="trackSource != null">
+                track_source,
+            </if>
+            <if test="marginUserId != null">
+                margin_user_id,
+            </if>
+            <if test="fiatUserId != null">
+                fiat_user_id,
+            </if>
+            <if test="dailyFiatWithdrawCap != null">
+                daily_fiat_withdraw_cap,
+            </if>
+            <if test="singleFiatWithdrawCap != null">
+                single_fiat_withdraw_cap,
+            </if>
+            <if test="futureUserId != null">
+                future_user_id,
+            </if>
+            <if test="meTradingAccount != null">
+                me_trading_account,
+            </if>
+            <if test="futureAgentId != null">
+                future_agent_id,
+            </if>
+            <if test="miningUserId != null">
+                mining_user_id,
+            </if>
+            <if test="deliveryTradingAccount != null">
+                delivery_trading_account,
+            </if>
+            <if test="cardUserId != null">
+                card_user_id,
+            </if>
+            <if test="accountType != null">
+                account_type,
+            </if>
+            insert_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tradeLevel != null">
+                #{tradeLevel,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="parent != null">
+                #{parent,jdbcType=BIGINT},
+            </if>
+            <if test="agentId != null">
+                #{agentId,jdbcType=BIGINT},
+            </if>
+            <if test="agentRewardRatio != null">
+                #{agentRewardRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="referralRewardRatio != null">
+                #{referralRewardRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="tradingAccount != null">
+                #{tradingAccount,jdbcType=BIGINT},
+            </if>
+            <if test="makerCommission != null">
+                #{makerCommission,jdbcType=DECIMAL},
+            </if>
+            <if test="takerCommission != null">
+                #{takerCommission,jdbcType=DECIMAL},
+            </if>
+            <if test="buyerCommission != null">
+                #{buyerCommission,jdbcType=DECIMAL},
+            </if>
+            <if test="sellerCommission != null">
+                #{sellerCommission,jdbcType=DECIMAL},
+            </if>
+            <if test="dailyWithdrawCap != null">
+                #{dailyWithdrawCap,jdbcType=DECIMAL},
+            </if>
+            <if test="dailyWithdrawCountLimit != null">
+                #{dailyWithdrawCountLimit,jdbcType=INTEGER},
+            </if>
+            <if test="autoWithdrawAuditThreshold != null">
+                #{autoWithdrawAuditThreshold,jdbcType=DECIMAL},
+            </if>
+            <if test="nickName != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="trackSource != null">
+                #{trackSource,jdbcType=VARCHAR},
+            </if>
+            <if test="marginUserId != null">
+                #{marginUserId,jdbcType=BIGINT},
+            </if>
+            <if test="dailyFiatWithdrawCap != null">
+                #{dailyFiatWithdrawCap,jdbcType=DECIMAL},
+            </if>
+            <if test="singleFiatWithdrawCap != null">
+                #{singleFiatWithdrawCap,jdbcType=DECIMAL},
+            </if>
+            <if test="futureUserId != null">
+                #{futureUserId,jdbcType=BIGINT},
+            </if>
+            <if test="meTradingAccount != null">
+                #{meTradingAccount,jdbcType=BIGINT},
+            </if>
+            <if test="futureAgentId != null">
+                #{futureAgentId,jdbcType=BIGINT},
+            </if>
+            <if test="miningUserId != null">
+                #{miningUserId,jdbcType=BIGINT},
+            </if>
+            <if test="deliveryTradingAccount != null">
+                #{deliveryTradingAccount,jdbcType=BIGINT},
+            </if>
+            <if test="cardUserId != null">
+                #{cardUserId,jdbcType=BIGINT},
+            </if>
+            <if test="accountType != null">
+                #{accountType,jdbcType=VARCHAR},
+            </if>
+            now()
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.user.UserInfo">
+        update user_info
+        <set>
+            <if test="tradeLevel != null">
+                trade_level = #{tradeLevel,jdbcType=INTEGER},
+            </if>
+            <if test="parent != null">
+                parent = #{parent,jdbcType=BIGINT},
+            </if>
+            <if test="agentId != null">
+                agent_id = #{agentId,jdbcType=BIGINT},
+            </if>
+            <if test="agentRewardRatio != null">
+                agent_reward_ratio =
+                #{agentRewardRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="referralRewardRatio != null">
+                referral_reward_ratio =
+                #{referralRewardRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="tradingAccount != null">
+                trading_account = #{tradingAccount,jdbcType=BIGINT},
+            </if>
+            <if test="makerCommission != null">
+                maker_commission = #{makerCommission,jdbcType=DECIMAL},
+            </if>
+            <if test="takerCommission != null">
+                taker_commission = #{takerCommission,jdbcType=DECIMAL},
+            </if>
+            <if test="buyerCommission != null">
+                buyer_commission = #{buyerCommission,jdbcType=DECIMAL},
+            </if>
+            <if test="sellerCommission != null">
+                seller_commission = #{sellerCommission,jdbcType=DECIMAL},
+            </if>
+            <if test="dailyWithdrawCap != null">
+                daily_withdraw_cap =
+                #{dailyWithdrawCap,jdbcType=DECIMAL},
+            </if>
+            <if test="dailyWithdrawCountLimit != null">
+                daily_withdraw_count_limit =
+                #{dailyWithdrawCountLimit,jdbcType=INTEGER},
+            </if>
+            <if test="autoWithdrawAuditThreshold != null">
+                auto_withdraw_audit_threshold =
+                #{autoWithdrawAuditThreshold,jdbcType=DECIMAL},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="nickColor != null">
+                nick_color = #{nickColor,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="trackSource != null">
+                track_source = #{trackSource,jdbcType=VARCHAR},
+            </if>
+            <if test="marginUserId != null">
+                margin_user_id = #{marginUserId,jdbcType=BIGINT},
+            </if>
+            <if test="fiatUserId != null">
+                fiat_user_id = #{fiatUserId,jdbcType=BIGINT},
+            </if>
+            <if test="dailyFiatWithdrawCap != null">
+                daily_fiat_withdraw_cap =
+                #{dailyFiatWithdrawCap,jdbcType=DECIMAL},
+            </if>
+            <if test="singleFiatWithdrawCap != null">
+                single_fiat_withdraw_cap =
+                #{singleFiatWithdrawCap,jdbcType=DECIMAL},
+            </if>
+            <if test="futureUserId != null">
+                future_user_id = #{futureUserId,jdbcType=BIGINT},
+            </if>
+            <if test="meTradingAccount != null">
+                me_trading_account = #{meTradingAccount,jdbcType=BIGINT},
+            </if>
+            <if test="orderConfirmStatus != null">
+                order_confirm_status = #{orderConfirmStatus,jdbcType=BIGINT},
+            </if>
+            <if test="futureAgentId != null">
+                future_agent_id = #{futureAgentId,jdbcType=BIGINT},
+            </if>
+            <if test="miningUserId != null">
+                mining_user_id = #{miningUserId,jdbcType=BIGINT},
+            </if>
+            <if test="deliveryTradingAccount != null">
+                delivery_trading_account = #{deliveryTradingAccount,jdbcType=BIGINT},
+            </if>
+            <if test="accountType != null">
+                account_type = #{accountType,jdbcType=VARCHAR},
+            </if>
+            <if test="cardUserId != null">
+                card_user_id = #{cardUserId,jdbcType=BIGINT},
+            </if>
+            update_time = now(),
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.user.UserInfo">
+        update user_info
+        set parent = #{parent,jdbcType=BIGINT},
+        agent_id =
+        #{agentId,jdbcType=BIGINT},
+        agent_reward_ratio =
+        #{agentRewardRatio,jdbcType=DECIMAL},
+         referral_reward_ratio =
+        #{referralRewardRatio,jdbcType=DECIMAL},
+        trading_account =
+        #{tradingAccount,jdbcType=BIGINT},
+        maker_commission =
+        #{makerCommission,jdbcType=DECIMAL},
+        taker_commission =
+        #{takerCommission,jdbcType=DECIMAL},
+        buyer_commission =
+        #{buyerCommission,jdbcType=DECIMAL},
+        seller_commission =
+        #{sellerCommission,jdbcType=DECIMAL},
+        daily_withdraw_cap =
+        #{dailyWithdrawCap,jdbcType=DECIMAL},
+        daily_withdraw_count_limit =
+        #{dailyWithdrawCountLimit,jdbcType=INTEGER},
+        auto_withdraw_audit_threshold =
+        #{autoWithdrawAuditThreshold,jdbcType=DECIMAL},
+        nick_name =
+        #{nickName,jdbcType=VARCHAR},
+        remark = #{remark,jdbcType=VARCHAR},
+        track_source = #{trackSource,jdbcType=VARCHAR},
+        update_time = now(), trade_level = #{tradeLevel,jdbcType=INTEGER},
+        margin_user_id =#{marginUserId,jdbcType=BIGINT},
+        fiat_user_id =#{fiatUserId,jdbcType=BIGINT},
+        daily_fiat_withdraw_cap =
+        #{dailyFiatWithdrawCap,jdbcType=DECIMAL},
+        single_fiat_withdraw_cap =
+        #{singleFiatWithdrawCap,jdbcType=DECIMAL},
+        future_user_id = #{futureUserId,jdbcType=BIGINT},
+         me_trading_account = #{meTradingAccount,jdbcType=BIGINT},
+         mining_user_id = #{miningUserId,jdbcType=BIGINT},
+         delivery_trading_account = #{deliveryTradingAccount,jdbcType=BIGINT},
+         card_user_id = #{cardUserId,jdbcType=BIGINT},
+         account_type = #{accountType,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <select id="queryUserId" parameterType="com.binance.account.data.entity.user.UserInfo" resultType="java.lang.Long">
+        select user_id from user_info
+        <where>
+            <trim prefixOverrides="and">
+                <if test="parent != null">
+                    and parent = #{parent,jdbcType=BIGINT}
+                </if>
+                <if test="agentId != null">
+                    and agent_id = #{agentId,jdbcType=BIGINT}
+                </if>
+                <if test="agentRewardRatio != null">
+                    and agent_reward_ratio = #{agentRewardRatio,jdbcType=DECIMAL}
+                </if>
+                <if test="tradingAccount != null">
+                    and trading_account = #{tradingAccount,jdbcType=BIGINT}
+                </if>
+                <if test="makerCommission != null">
+                    and maker_commission = #{makerCommission,jdbcType=DECIMAL}
+                </if>
+                <if test="takerCommission != null">
+                    and taker_commission = #{takerCommission,jdbcType=DECIMAL}
+                </if>
+                <if test="buyerCommission != null">
+                    and buyer_commission = #{buyerCommission,jdbcType=DECIMAL}
+                </if>
+                <if test="sellerCommission != null">
+                    and seller_commission = #{sellerCommission,jdbcType=DECIMAL}
+                </if>
+                <if test="dailyWithdrawCap != null">
+                    and daily_withdraw_cap = #{dailyWithdrawCap,jdbcType=DECIMAL}
+                </if>
+                <if test="dailyWithdrawCountLimit != null">
+                    and daily_withdraw_count_limit = #{dailyWithdrawCountLimit,jdbcType=INTEGER}
+                </if>
+                <if test="autoWithdrawAuditThreshold != null">
+                    and auto_withdraw_audit_threshold = #{autoWithdrawAuditThreshold,jdbcType=DECIMAL}
+                </if>
+                <if test="nickName != null">
+                    <![CDATA[
+						and instr(nick_name,#{nickName,jdbcType=VARCHAR})>0
+					]]>
+                </if>
+                <if test="remark != null">
+                    <![CDATA[
+						and instr(remark,#{remark,jdbcType=VARCHAR})>0
+					]]>
+                </if>
+                <if test="trackSource != null">
+                    and track_source = #{trackSource,jdbcType=VARCHAR}
+                </if>
+                <if test="marginUserId != null">
+                    and margin_user_id = #{marginUserId,jdbcType=BIGINT}
+                </if>
+                <if test="fiatUserId != null">
+                    and fiat_user_id = #{fiatUserId,jdbcType=BIGINT}
+                </if>
+                <if test="dailyFiatWithdrawCap != null">
+                    and daily_fiat_withdraw_cap = #{dailyFiatWithdrawCap,jdbcType=DECIMAL}
+                </if>
+                <if test="singleFiatWithdrawCap != null">
+                    and single_fiat_withdraw_cap = #{singleFiatWithdrawCap,jdbcType=DECIMAL}
+                </if>
+                <if test="futureUserId != null">
+                    and future_user_id = #{futureUserId,jdbcType=BIGINT}
+                </if>
+                <if test="meTradingAccount != null">
+                    and me_trading_account = #{meTradingAccount,jdbcType=BIGINT}
+                </if>
+                <if test="miningUserId != null">
+                    and mining_user_id = #{miningUserId,jdbcType=BIGINT}
+                </if>
+                <if test="deliveryTradingAccount != null">
+                    and delivery_trading_account = #{deliveryTradingAccount,jdbcType=BIGINT}
+                </if>
+                <if test="cardUserId != null">
+                    and card_user_id = #{cardUserId,jdbcType=BIGINT}
+                </if>
+                <if test="accountType != null">
+                    and account_type = #{accountType,jdbcType=VARCHAR}
+                </if>
+            </trim>
+        </where>
+    </select>
+    <select id="selectPhishingCode" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT anti_phishing_code FROM `user_security` where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <select id="fuzzyQueryByRemark" parameterType="java.util.List" resultType="java.lang.Long">
+        select user_id from user_info
+        <![CDATA[
+            where instr(remark,#{remark,jdbcType=VARCHAR})> 0
+
+        ]]>
+    </select>
+
+    <select id="getEmptyAccount" resultMap="BaseResultMap">
+        SELECT ui.user_id,ui.agent_id,
+        ui.buyer_commission,ui.seller_commission,ui.taker_commission,
+        ui.maker_commission,
+        ui.nick_name FROM `user` u INNER JOIN `user_info` ui ON u.user_id = ui.user_id WHERE ui.trading_account IS NULL AND
+        <![CDATA[ ui.insert_time < ADDDATE(NOW(),INTERVAL -10 MINUTE) ]]> AND <![CDATA[  u.status  & 1 =1
+        ]]>
+    </select>
+
+    <select id="selectAccountIdByUserId" parameterType="java.lang.Long" resultType="java.lang.Long">
+    	SELECT trading_account tradingAccount FROM `user_info` WHERE user_id =	#{userId,jdbcType=BIGINT}
+    </select>
+
+    <update id="updateByTradeLevel">
+        update user_info set
+        trade_level = #{tradeLevel,jdbcType=INTEGER},
+        update_time = now()
+        where user_id=#{userId}
+    </update>
+
+    <update id="updateTradeAutoStatus">
+        update user_info set
+            trade_auto_status = #{tradeAutoStatus,jdbcType=VARCHAR},
+            update_time = now()
+        where user_id=#{userId}
+    </update>
+
+      <select id="selectLatestUserConfig" parameterType="com.binance.account.data.entity.user.UserConfig"
+    		resultType="com.binance.account.data.entity.user.UserConfig">
+    	SELECT user_id userId,config_type configType,config_name configName,create_time createTime,update_time updateTime
+    	 FROM user_config WHERE user_id = #{userId,jdbcType=BIGINT}
+    	 AND config_type = #{configType,jdbcType=VARCHAR}
+		      ORDER BY update_time DESC LIMIT 1
+    </select>
+
+    <select id="selectUserConfigList" parameterType="java.util.Map"
+    		resultType="com.binance.account.data.entity.user.UserConfig">
+    	SELECT user_id userId,config_type configType,config_name configName,create_time createTime,update_time updateTime
+    	 FROM user_config WHERE user_id = #{userId,jdbcType=BIGINT}
+    	 <if test="configTypes!=null and configTypes.size()>0">
+    	 AND config_type in
+    	  <foreach collection="configTypes" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+         </foreach>
+         </if>
+         <if test="excludes!=null and excludes.size()>0">
+    	 AND config_type not in
+    	  <foreach collection="excludes" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+         </foreach>
+         </if>
+		      ORDER BY update_time DESC
+    </select>
+
+    <update id="updateUserConfig" parameterType="com.binance.account.data.entity.user.UserConfig">
+	    update user_config SET
+	        config_name = #{configName,jdbcType=VARCHAR},
+	        update_time = NOW()
+	    where user_id = #{userId,jdbcType=BIGINT} AND config_type = #{configType,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertUserConfig" parameterType="com.binance.account.data.entity.user.UserConfig">
+	    insert into user_config
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="userId != null" >
+	        user_id,
+	      </if>
+	      <if test="configType != null" >
+	        config_type,
+	      </if>
+	      <if test="configName != null" >
+	        config_name,
+	      </if>
+	      <if test="createTime != null" >
+	        create_time,
+	      </if>
+	      <if test="updateTime != null" >
+	        update_time,
+	      </if>
+	      <if test="description != null" >
+	        description,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="userId != null" >
+	        #{userId,jdbcType=BIGINT},
+	      </if>
+	      <if test="configType != null" >
+	        #{configType,jdbcType=VARCHAR},
+	      </if>
+	      <if test="configName != null" >
+	        #{configName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updateTime != null" >
+	        #{updateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="description != null" >
+	        #{description,jdbcType=VARCHAR},
+	      </if>
+	    </trim>
+  </insert>
+
+    <insert id="batchInsertIgnoreUserConfig" parameterType="java.util.List">
+        insert ignore into user_config (user_id, config_type, config_name) values
+        <foreach collection="list" item="item" separator="," index="index">
+            (
+            #{item.userId,jdbcType=BIGINT}, #{item.configType,jdbcType=VARCHAR}, #{item.configName,jdbcType=VARCHAR}
+            )
+        </foreach>    
+    </insert>
+
+
+    <insert id="insertOrUpdateUserConfig" parameterType="com.binance.account.data.entity.user.UserConfig">
+        insert into user_config
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                user_id,
+            </if>
+            <if test="configType != null" >
+                config_type,
+            </if>
+            <if test="configName != null" >
+                config_name,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+            <if test="description != null" >
+                description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="configType != null" >
+                #{configType,jdbcType=VARCHAR},
+            </if>
+            <if test="configName != null" >
+                #{configName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="description != null" >
+                #{description,jdbcType=VARCHAR},
+            </if>
+        </trim>
+        on duplicate key update config_name = VALUES(config_name),update_time = COALESCE( VALUES(update_time), now())
+    </insert>
+    
+    <update id="updateUserConfigToTrue" parameterType="java.util.Map">
+        update user_config
+        set config_name = 'true'
+        where user_id = #{userId,jdbcType=BIGINT} and config_type in
+        <foreach collection="configTypes" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>  
+    </update>
+
+ <select id="selectUserInfoList" parameterType="java.util.List" resultMap="BaseResultMap">
+    	 select
+        <include refid="Base_Column_List"/>
+        from user_info
+    	<if test="userIds != null and userIds.size() > 0">
+    		where user_id in
+    		<foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+	            #{userId}
+	        </foreach>
+    	</if>
+    </select>
+
+    <select id="getUserAgentRewardList" parameterType="java.util.Map" resultMap="UserAgentRewardMap">
+        select
+        <include refid="User_Agent_Rewar_List"/>,new_agent_reward_ratio agentRewardRatio
+        FROM user_agent_reward
+        <include refid="Agent_Reward_List" />
+        <choose>
+            <when test="sort != null and sort != '' and (sort == 'userId' or sort == 'updateTime')">
+                ORDER BY <include refid="Base_OrderBy_List" />
+            </when>
+            <otherwise>
+                ORDER BY update_time desc
+            </otherwise>
+        </choose>
+        <if test="limit>0">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="getUserAgentRewardCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(1) from user_agent_reward
+        <include refid="Agent_Reward_List" />
+    </select>
+
+    <select id="getUserInfoAgentList" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT ui.user_id,ui.agent_reward_ratio,ui.agent_id,ui.track_source,ui.update_time,ui.insert_time
+        FROM user_info ui
+        <include refid="User_Info_List" />
+        <choose>
+            <when test="sort != null and sort != '' and (sort == 'userId' or sort == 'insertTime')">
+                ORDER BY <include refid="Base_OrderBy_List" />
+            </when>
+            <otherwise>
+                ORDER BY update_time desc
+            </otherwise>
+        </choose>
+        <if test="limit>0">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="getEmailByUserIds" parameterType="java.util.List" resultType="java.util.Map">
+        select email,user_id userId
+        from `user`
+        <if test="userIds != null and userIds.size() > 0">
+            where user_id in
+            <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+                #{userId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getUserInfoRewardCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(1) from user_info
+        <include refid="User_Info_List" />
+    </select>
+
+    <select id="selectUserAgentRewardByUserId" parameterType="java.lang.Long" resultMap="UserAgentRewardMap">
+        select
+        <include refid="User_Agent_Rewar_List"/>,new_agent_reward_ratio newAgentRewardRatio
+        FROM user_agent_reward WHERE user_id = #{userId,jdbcType=BIGINT} and status = 0 ORDER BY update_time DESC limit 1
+    </select>
+
+    <update id="updateUserInfoAgentReward" parameterType="com.binance.account.data.entity.user.UserAgentReward">
+	    update user_info set  agent_reward_ratio=#{oldAgentRewardRatio,jdbcType=DECIMAL}
+	    	WHERE user_id = #{userId,jdbcType=BIGINT}
+	 </update>
+
+    <select id="countAgentNumber" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select count(1)
+        FROM user_info
+        WHERE agent_id = #{agentId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectUserInfoByAgentId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+        where agent_id = #{agentId}
+        <choose>
+            <when test="sort != null and sort != '' and order != null">
+                ORDER BY
+                <if test="sort == 'insert_time'" >
+                    <if test="order == 'desc'">
+                        user_id desc
+                    </if>
+                    <if test="order == 'asc'">
+                        user_id asc
+                    </if>
+                </if>
+                <if test="sort == 'update_time'" >
+                    <if test="order == 'desc'">
+                        update_time desc
+                    </if>
+                    <if test="order == 'asc'">
+                        update_time asc
+                    </if>
+                </if>
+            </when>
+            <otherwise>
+                ORDER BY user_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and rows != null and rows > 0">
+            LIMIT #{offset},#{rows}
+        </if>
+    </select>
+
+    <select id="countUserInfoByAgentIdAndReferral" parameterType="java.util.Map" resultType="java.lang.Long">
+        select
+        count(1)
+        from user_info
+        where agent_id = #{agentId}
+        <if test="rate != null">
+            and referral_reward_ratio= #{rate}
+        </if>
+    </select>
+
+    <select id="countOldAgentNum" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select
+        count(1)
+        from user_info
+        where agent_id = #{agentId} and referral_reward_ratio is null
+    </select>
+
+    <select id="selectOldAgentByAgentIdAndReferral" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+        where agent_id = #{agentId} and referral_reward_ratio is null
+        ORDER BY user_id desc
+        LIMIT #{start},#{offset}
+    </select>
+
+    <sql id="Base_OrderBy_List">
+        <if test="sort=='userId'" >
+            <if test="order =='desc'">
+                user_id desc
+            </if>
+            <if test="order =='asc'">
+                user_id asc
+            </if>
+        </if>
+        <if test="sort=='updateTime'" >
+            <if test="order =='desc'">
+                update_time desc
+            </if>
+            <if test="order =='asc'">
+                update_time asc
+            </if>
+        </if>
+    </sql>
+
+    <!-- ****************分页查询************************ -->
+    <sql id="Agent_Reward_List">
+        <where>
+            <if test="userId != null and userId != '' " >
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="email != null and email != '' " >
+                and email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="agentRewardRatio != null and agentRewardRatio != '' " >
+                and new_agent_reward_ratio = #{newAgentRewardRatio,jdbcType=DECIMAL}
+            </if>
+            <if test="trackSource != null and trackSource !=''" >
+                and track_source = #{trackSource,jdbcType=VARCHAR}
+            </if>
+            <if test="startExpectRestoreTime != null" >
+                and expect_restore_time &gt;= #{startExpectRestoreTime,jdbcType=TIMESTAMP}
+            </if>
+
+            <if test="endExpectRestoreTime != null" >
+                and expect_restore_time &lt;=#{endExpectRestoreTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="agentId != null">
+                and agent_id = #{agentId,jdbcType=BIGINT}
+            </if>
+            <if test="batchId != null and batchId !=''" >
+                and batch_id = #{batchId,jdbcType=VARCHAR}
+            </if>
+            <if test="isRestore != null and isRestore !=''" >
+                and is_restore = #{isRestore,jdbcType=VARCHAR}
+            </if>
+             <if test="reason != null and reason !=''" >
+                and reason  like concat(#{reason}, '%')
+            </if>
+            <if test="status != null and status != ''">
+            	and status = #{status,jdbcType=TINYINT}
+            </if>
+            <if test="excludeDefaultAgent != null and excludeDefaultAgent == 'true'.toString()">
+            	and agent_id != #{defaultAgent,jdbcType=BIGINT}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="User_Info_List">
+        <where>
+            <if test="userId != null and userId != '' " >
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="agentRewardRatio != null and agentRewardRatio != '' " >
+                and agent_reward_ratio = #{agentRewardRatio,jdbcType=DECIMAL}
+            </if>
+            <if test="agentId != null">
+                and agent_id = #{agentId,jdbcType=BIGINT}
+            </if>
+            <if test="trackSource != null and trackSource !=''" >
+                and track_source = #{trackSource,jdbcType=VARCHAR}
+            </if>
+            <if test="excludeDefaultAgent != null and excludeDefaultAgent == 'true'.toString()">
+                and agent_id != #{defaultAgent,jdbcType=BIGINT}
+            </if>
+            <if test="startTime != null">
+                and insert_time >= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                and insert_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectRootUserInfoByFutureUserId" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+        where future_user_id = #{futureUserId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectUSParentGroup" resultType="com.binance.account.data.entity.user.RelationUserInfo">
+        select parent parentUserId, user_id userId
+        from user_info
+        where parent is not null
+    </select>
+
+    <select id="selectUSMarginGroup" resultType="com.binance.account.data.entity.user.RelationUserInfo">
+        select user_id parentUserId, margin_user_id userId
+        from user_info
+        where margin_user_id is not null
+    </select>
+
+
+    <select id="queryUserInfoByUserId" parameterType="com.binance.account.data.entity.user.UserInfo" resultMap="BaseResultMap">
+        select  <include refid="Base_Column_List"/>
+        from user_info
+        <where>
+            <trim prefixOverrides="and">
+                <if test="parent != null">
+                    and parent = #{parent,jdbcType=BIGINT}
+                </if>
+                <if test="agentId != null">
+                    and agent_id = #{agentId,jdbcType=BIGINT}
+                </if>
+                <if test="agentRewardRatio != null">
+                    and agent_reward_ratio = #{agentRewardRatio,jdbcType=DECIMAL}
+                </if>
+                <if test="tradingAccount != null">
+                    and trading_account = #{tradingAccount,jdbcType=BIGINT}
+                </if>
+                <if test="makerCommission != null">
+                    and maker_commission = #{makerCommission,jdbcType=DECIMAL}
+                </if>
+                <if test="takerCommission != null">
+                    and taker_commission = #{takerCommission,jdbcType=DECIMAL}
+                </if>
+                <if test="buyerCommission != null">
+                    and buyer_commission = #{buyerCommission,jdbcType=DECIMAL}
+                </if>
+                <if test="sellerCommission != null">
+                    and seller_commission = #{sellerCommission,jdbcType=DECIMAL}
+                </if>
+                <if test="dailyWithdrawCap != null">
+                    and daily_withdraw_cap = #{dailyWithdrawCap,jdbcType=DECIMAL}
+                </if>
+                <if test="dailyWithdrawCountLimit != null">
+                    and daily_withdraw_count_limit = #{dailyWithdrawCountLimit,jdbcType=INTEGER}
+                </if>
+                <if test="autoWithdrawAuditThreshold != null">
+                    and auto_withdraw_audit_threshold = #{autoWithdrawAuditThreshold,jdbcType=DECIMAL}
+                </if>
+                <if test="nickName != null">
+                    <![CDATA[
+						and instr(nick_name,#{nickName,jdbcType=VARCHAR})>0
+					]]>
+                </if>
+                <if test="remark != null">
+                    <![CDATA[
+						and instr(remark,#{remark,jdbcType=VARCHAR})>0
+					]]>
+                </if>
+                <if test="trackSource != null">
+                    and track_source = #{trackSource,jdbcType=VARCHAR}
+                </if>
+                <if test="marginUserId != null">
+                    and margin_user_id = #{marginUserId,jdbcType=BIGINT}
+                </if>
+                <if test="fiatUserId != null">
+                    and fiat_user_id = #{fiatUserId,jdbcType=BIGINT}
+                </if>
+                <if test="dailyFiatWithdrawCap != null">
+                    and daily_fiat_withdraw_cap = #{dailyFiatWithdrawCap,jdbcType=DECIMAL}
+                </if>
+                <if test="singleFiatWithdrawCap != null">
+                    and single_fiat_withdraw_cap = #{singleFiatWithdrawCap,jdbcType=DECIMAL}
+                </if>
+                <if test="futureUserId != null">
+                    and future_user_id = #{futureUserId,jdbcType=BIGINT}
+                </if>
+                <if test="meTradingAccount != null">
+                    and me_trading_account = #{meTradingAccount,jdbcType=BIGINT}
+                </if>
+                <if test="miningUserId != null">
+                    and mining_user_id = #{miningUserId,jdbcType=BIGINT}
+                </if>
+                <if test="deliveryTradingAccount != null">
+                    and delivery_trading_account = #{deliveryTradingAccount,jdbcType=BIGINT}
+                </if>
+                <if test="cardUserId != null">
+                    and card_user_id = #{cardUserId,jdbcType=BIGINT}
+                </if>
+                <if test="accountType != null">
+                    and account_type = #{accountType,jdbcType=VARCHAR}
+                </if>
+            </trim>
+        </where>
+    </select>
+
+
+    <update id="resetMarginUserId" >
+        update user_info
+        set
+        margin_user_id = null
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="selectRootUserInfoByMarginUserId" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+        where margin_user_id = #{marginUserId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectRootUserInfoByCardUserId" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+        where card_user_id = #{cardUserId,jdbcType=BIGINT}
+    </select>
+
+
+
+    <update id="resetMarginUserIdByRootUserId" parameterType="com.binance.account.data.entity.user.UserInfo">
+        update user_info
+        set
+            margin_user_id = #{marginUserId,jdbcType=BIGINT},
+            update_time = now()
+
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteParentByUserId">
+        update user_info
+        set
+            parent = null,
+            update_time = now()
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectFixDeliveryUserIds" resultType="java.lang.Long">
+        select
+        user_id
+        from user_info
+        where future_user_id is not null
+    </select>
+
+</mapper>

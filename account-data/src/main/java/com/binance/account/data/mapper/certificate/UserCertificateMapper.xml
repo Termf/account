@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.UserCertificateMapper">
+    <resultMap id="BaseResultMap"
+               type="com.binance.account.data.entity.certificate.UserCertificate">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="front" jdbcType="VARCHAR" property="front"/>
+        <result column="back" jdbcType="VARCHAR" property="back"/>
+        <result column="hand" jdbcType="VARCHAR" property="hand"/>
+        <result column="first_name" jdbcType="VARCHAR" property="firstName"/>
+        <result column="last_name" jdbcType="VARCHAR" property="lastName"/>
+        <result column="message" jdbcType="VARCHAR" property="message"/>
+        <result column="last_auditor" jdbcType="VARCHAR" property="lastAuditor"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="number" jdbcType="VARCHAR" property="number"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        user_id, front, back, hand, first_name, last_name, message, last_auditor,
+        status,
+        number, type, sex, country, version, update_time, insert_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_certificate
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from user_certificate
+        where user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert"
+            parameterType="com.binance.account.data.entity.certificate.UserCertificate">
+        insert into user_certificate (user_id, front, back,
+        hand, first_name, last_name,
+        message, last_auditor, status,
+        number, type, sex,
+        country, version, update_time,
+        insert_time)
+        values (#{userId,jdbcType=BIGINT}, #{front,jdbcType=VARCHAR},
+        #{back,jdbcType=VARCHAR},
+        #{hand,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR},
+        #{message,jdbcType=VARCHAR}, #{lastAuditor,jdbcType=VARCHAR},
+        #{status,jdbcType=TINYINT},
+        #{number,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER},
+        #{country,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER},
+        #{updateTime,jdbcType=TIMESTAMP},
+        #{insertTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertIgnore"
+            parameterType="com.binance.account.data.entity.certificate.UserCertificate">
+        insert ignore into user_certificate (user_id, front, back,
+        hand, first_name, last_name,
+        message, last_auditor, status,
+        number, type, sex,
+        country, version, update_time,
+        insert_time)
+        values (#{userId,jdbcType=BIGINT}, #{front,jdbcType=VARCHAR},
+        #{back,jdbcType=VARCHAR},
+        #{hand,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR},
+        #{message,jdbcType=VARCHAR}, #{lastAuditor,jdbcType=VARCHAR},
+        #{status,jdbcType=TINYINT},
+        #{number,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER},
+        #{country,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER},
+        #{updateTime,jdbcType=TIMESTAMP},
+        #{insertTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective"
+            parameterType="com.binance.account.data.entity.certificate.UserCertificate">
+        insert into user_certificate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="front != null">
+                front,
+            </if>
+            <if test="back != null">
+                back,
+            </if>
+            <if test="hand != null">
+                hand,
+            </if>
+            <if test="firstName != null">
+                first_name,
+            </if>
+            <if test="lastName != null">
+                last_name,
+            </if>
+            <if test="message != null">
+                message,
+            </if>
+            <if test="lastAuditor != null">
+                last_auditor,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="number != null">
+                number,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="insertTime != null">
+                insert_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="front != null">
+                #{front,jdbcType=VARCHAR},
+            </if>
+            <if test="back != null">
+                #{back,jdbcType=VARCHAR},
+            </if>
+            <if test="hand != null">
+                #{hand,jdbcType=VARCHAR},
+            </if>
+            <if test="firstName != null">
+                #{firstName,jdbcType=VARCHAR},
+            </if>
+            <if test="lastName != null">
+                #{lastName,jdbcType=VARCHAR},
+            </if>
+            <if test="message != null">
+                #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="lastAuditor != null">
+                #{lastAuditor,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="number != null">
+                #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="insertTime != null">
+                #{insertTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.binance.account.data.entity.certificate.UserCertificate">
+        update user_certificate
+        <set>
+            <if test="front != null">
+                front = #{front,jdbcType=VARCHAR},
+            </if>
+            <if test="back != null">
+                back = #{back,jdbcType=VARCHAR},
+            </if>
+            <if test="hand != null">
+                hand = #{hand,jdbcType=VARCHAR},
+            </if>
+            <if test="firstName != null">
+                first_name = #{firstName,jdbcType=VARCHAR},
+            </if>
+            <if test="lastName != null">
+                last_name = #{lastName,jdbcType=VARCHAR},
+            </if>
+            <if test="message != null">
+                message = #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="lastAuditor != null">
+                last_auditor = #{lastAuditor,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="number != null">
+                number = #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="insertTime != null">
+                insert_time = #{insertTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.binance.account.data.entity.certificate.UserCertificate">
+        update user_certificate
+        set front = #{front,jdbcType=VARCHAR},
+        back = #{back,jdbcType=VARCHAR},
+        hand = #{hand,jdbcType=VARCHAR},
+        first_name = #{firstName,jdbcType=VARCHAR},
+        last_name = #{lastName,jdbcType=VARCHAR},
+        message = #{message,jdbcType=VARCHAR},
+        last_auditor = #{lastAuditor,jdbcType=VARCHAR},
+        status = #{status,jdbcType=TINYINT},
+        number = #{number,jdbcType=VARCHAR},
+        type = #{type,jdbcType=INTEGER},
+        sex = #{sex,jdbcType=INTEGER},
+        country = #{country,jdbcType=VARCHAR},
+        version = #{version,jdbcType=INTEGER},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        insert_time = #{insertTime,jdbcType=TIMESTAMP}
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+	<select id="getListCount" resultType="java.lang.Integer">
+        SELECT count(*) from user_certificate 
+      <where>
+            <if test="userId != null">
+                and user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+           <!--  <if test="email != null">
+                and email = #{email,jdbcType=VARCHAR}
+            </if> -->
+            <if test="firstName != null">
+                and first_name = #{firstName,jdbcType=VARCHAR}
+            </if>
+            <if test="lastName != null">
+                and last_name = #{lastName,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+                and status = #{status,jdbcType=TINYINT}
+            </if>
+            <if test="number != null">
+                and number = #{number,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null">
+                and type = #{type,jdbcType=INTEGER}
+            </if>
+            <if test="country != null">
+                and country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="startCreateTime != null">
+            	<![CDATA[and insert_time >= #{startCreateTime,jdbcType=TIMESTAMP}]]>
+            </if>
+            <if test="endCreateTime != null">
+                <![CDATA[and insert_time <= #{endCreateTime,jdbcType=TIMESTAMP}]]>
+            </if>
+      </where>
+    </select>
+    
+    
+    <select id="selectByPage" resultMap="BaseResultMap">
+        select
+    	<include refid="Base_Column_List" />
+    	from user_certificate
+    	<where>
+      		<if test="userId != null">
+                and user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+           <!--  <if test="email != null">
+                and email = #{email,jdbcType=VARCHAR}
+            </if> -->
+            <if test="firstName != null">
+                and first_name = #{firstName,jdbcType=VARCHAR}
+            </if>
+            <if test="lastName != null">
+                and last_name = #{lastName,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null">
+                and status = #{status,jdbcType=TINYINT}
+            </if>
+            <if test="number != null">
+                and number = #{number,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null">
+                and type = #{type,jdbcType=INTEGER}
+            </if>
+            <if test="country != null">
+                and country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="startCreateTime != null">
+            	<![CDATA[and insert_time >= #{startCreateTime,jdbcType=TIMESTAMP}]]>
+            </if>
+            <if test="endCreateTime != null">
+                <![CDATA[and insert_time <= #{endCreateTime,jdbcType=TIMESTAMP}]]>
+            </if>
+    	</where>
+         ORDER BY insert_time desc
+        <if test="start!=null">
+            LIMIT #{start},#{rows}
+        </if>
+    </select>
+
+</mapper>

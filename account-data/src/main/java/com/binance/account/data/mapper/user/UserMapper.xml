@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.user.UserMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.user.User">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="salt" jdbcType="VARCHAR" property="salt"/>
+        <result column="status" jdbcType="BIGINT" property="status"/>
+        <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="safe_password" jdbcType="VARCHAR" property="safePassword"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+        user_id, email, password, salt, status, insert_time,
+        update_time,safe_password
+    </sql>
+    <insert id="insert" parameterType="com.binance.account.data.entity.user.User">
+        insert into user (user_id,
+        email, password,
+        salt, status, insert_time,safe_password)
+        values
+        (#{userId,jdbcType=BIGINT}, #{email,jdbcType=VARCHAR},
+        #{password,jdbcType=VARCHAR},
+        #{salt,jdbcType=VARCHAR},
+        #{status,jdbcType=BIGINT}, now(),#{safePassword,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertIgnore" parameterType="com.binance.account.data.entity.user.User">
+        insert ignore into user
+        (user_id, email, password,
+        salt, status, insert_time,
+        update_time,safe_password)
+        values (#{userId,jdbcType=BIGINT}, #{email,jdbcType=VARCHAR},
+        #{password,jdbcType=VARCHAR},
+        #{salt,jdbcType=VARCHAR},
+        #{status,jdbcType=BIGINT}, #{insertTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP},#{safePassword,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.binance.account.data.entity.user.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="salt != null">
+                salt,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="safePassword != null">
+                safe_password,
+            </if>
+            insert_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=BIGINT},
+            </if>
+            <if test="safePassword != null">
+                #{safePassword,jdbcType=VARCHAR},
+            </if>
+            now()
+        </trim>
+    </insert>
+    <select id="queryByEmail" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where email = #{email,jdbcType=VARCHAR}
+    </select>
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <select id="queryByExistentEmail" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where email = #{email,jdbcType=VARCHAR}
+        <![CDATA[ AND `status` & 524288 =0 ]]>
+    </select>
+    <update id="updateByEmail" parameterType="com.binance.account.data.entity.user.User">
+        update user
+        <set>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=BIGINT},
+            </if>
+            <if test="safePassword != null">
+                safe_password = #{safePassword,jdbcType=VARCHAR},
+            </if>
+            update_time = now()
+        </set>
+        where email = #{email,jdbcType=VARCHAR}
+    </update>
+
+
+    <update id="updateByEmailAndClearSafePassword" parameterType="com.binance.account.data.entity.user.User">
+        update user
+        <set>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=BIGINT},
+            </if>
+            safe_password = null,
+            update_time = now()
+        </set>
+        where email = #{email,jdbcType=VARCHAR}
+    </update>
+
+    <select id="queryUserStatusByEmail" resultType="java.lang.Long">
+        select status
+        from user where email = #{email}
+    </select>
+    <update id="updateUserStatusByEmail" parameterType="com.binance.account.data.entity.user.User">
+        update user
+        set status = #{status}, update_time = now() where email = #{email}
+    </update>
+    <update id="updateByEmailSelective" parameterType="com.binance.account.data.entity.user.User">
+        update user
+        <set>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=BIGINT},
+            </if>
+            update_time = now(),
+        </set>
+        where email = #{email,jdbcType=VARCHAR}
+    </update>
+    <select id="queryUserId" resultType="java.lang.Long">
+        select
+        user_id
+        from user
+        <where>
+            <trim prefixOverrides="and">
+            	<if test="emails != null and emails.size() > 0">
+            		AND email in
+            		 <foreach collection="emails" item="email" open="(" close=")" separator=",">
+            		 	#{email}
+            		 </foreach>
+            	</if>
+                <if test="status != null">
+                    <![CDATA[
+						and status & #{mask,jdbcType=BIGINT} = #{status,jdbcType=BIGINT}
+					]]>
+                </if>
+                <if test="email != null and canEmailLike == true">
+                    <![CDATA[
+						and instr(email,#{email,jdbcType=VARCHAR})>0
+					]]>
+                </if>
+                <if test="email != null and canEmailLike == false">
+                    and email = #{param.email,jdbcType=VARCHAR}
+                </if>
+
+                <if test="startTime != null">
+                    <![CDATA[
+						and insert_time >= #{startTime,jdbcType=TIMESTAMP}
+					]]>
+                </if>
+                <if test="endTime != null">
+                    <![CDATA[
+						and insert_time < #{endTime,jdbcType=TIMESTAMP}
+					]]>
+                </if>
+            </trim>
+        </where>
+    </select>
+    <select id="queryUserIdPage" resultType="java.lang.Long">
+        select
+        user_id
+        from user
+        order by user_id asc
+    </select>
+    <select id="queryUserIdPageCount" resultType="java.lang.Long">
+        select
+        count(user_id)
+        from user
+    </select>
+    <select id="queryUserByHavingStatusPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where status &amp; #{status,jdbcType=BIGINT} != 0
+        order by user_id
+    </select>
+    <select id="queryUserByHavingStatusCount" resultType="java.lang.Long">
+        select
+        count(user_id)
+        from user
+        where status &amp; #{status,jdbcType=BIGINT} != 0
+    </select>
+    <delete id="deleteByEmail" parameterType="java.lang.String">
+        delete from user
+        where email = #{email,jdbcType=VARCHAR}
+    </delete>
+    <select id="selectByUserIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        <if test="userIds != null and userIds.size() > 0">
+            where user_id in
+            <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+                #{userId}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="selectByEmails" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        <if test="emails != null and emails.size() > 0">
+            where email in
+            <foreach collection="emails" item="email" open="(" close=")" separator=",">
+                #{email}
+            </foreach>
+        </if>
+    </select>
+    <select id="getTodayRegist" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+        SELECT
+        count(1)
+        FROM
+        user t1
+        <where>
+            <if test="startTime!=null">
+                and insert_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime!=null">
+                and insert_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectUserByUserIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        <where>
+            <if test="userIds != null and userIds.size() > 0">
+                AND user_id in
+                <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+                    #{userId}
+                </foreach>
+                AND <![CDATA[ status & 256 = 256 ]]>
+            </if>
+            <if test="email != null and email != '' ">
+                AND email = #{email}
+            </if>
+            <if test="isSubUserEnabled != null and isSubUserEnabled == 1">
+                <![CDATA[
+						AND status & 1048576 = 1048576
+				]]>
+            </if>
+            <if test="isSubUserEnabled != null and isSubUserEnabled == 0">
+                <![CDATA[
+						AND status & 1048576 = 0
+				]]>
+            </if>
+        </where>
+        ORDER BY insert_time DESC
+        <if test="limit>0">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="selectCountSubUserIds" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM user
+        <where>
+            <if test="userIds != null and userIds.size() > 0">
+                AND user_id in
+                <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+                    #{userId}
+                </foreach>
+                AND <![CDATA[ status & 256 = 256 ]]>
+            </if>
+            <if test="email != null and email != '' ">
+                AND email like CONCAT(#{email,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="isSubUserEnabled != null and isSubUserEnabled == 1">
+                <![CDATA[
+						AND status & 1048576 = 1048576
+				]]>
+            </if>
+            <if test="isSubUserEnabled != null and isSubUserEnabled == 0">
+                <![CDATA[
+						AND status & 1048576 = 0
+				]]>
+            </if>
+        </where>
+    </select>
+
+  <insert id="saveRecaptcha" parameterType="com.binance.account.data.entity.user.ReCaptcha" >
+        insert into re_captcha
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                user_id,
+            </if>
+            <if test="email != null" >
+                email,
+            </if>
+            <if test="score != null" >
+                score,
+            </if>
+            <if test="success != null" >
+                success,
+            </if>
+            <if test="challengeTs != null" >
+                challenge_ts,
+            </if>
+            <if test="action != null" >
+                action,
+            </if>
+            <if test="errorCodes != null" >
+                error_codes,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="email != null" >
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="score != null" >
+                #{score,jdbcType=VARCHAR},
+            </if>
+            <if test="success != null" >
+                #{success,jdbcType=VARCHAR},
+            </if>
+            <if test="challengeTs != null" >
+                #{challengeTs,jdbcType=TIMESTAMP},
+            </if>
+            <if test="action != null" >
+                #{action,jdbcType=VARCHAR},
+            </if>
+            <if test="errorCodes != null" >
+                #{errorCodes,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <select id="selectBindMobileUserList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where   <![CDATA[
+						 status & 64 = 64
+				]]>
+    </select>
+
+
+    <select id="getAllSubAccount" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user
+        where
+       <![CDATA[  status & 256 = 256
+        ]]>
+    </select>
+
+
+    <select id="getAllSubAccountLastOneHour" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user
+        where
+        <![CDATA[ insert_time < NOW() ]]> AND
+        <![CDATA[ insert_time > ADDDATE(NOW(),INTERVAL -1 HOUR ) ]]> AND <![CDATA[  status  & 256 =256
+        ]]>
+    </select>
+
+
+
+    <select id="selectUserPageByUserIds" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        <if test="userIds != null and userIds.size() > 0">
+            where user_id in
+            <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+                #{userId}
+            </foreach>
+        </if>
+        <choose>
+            <when test="sort != null and sort != '' and order != null">
+                ORDER BY
+                <if test="sort == 'insert_time'" >
+                    <if test="order == 'desc'">
+                        user_id desc
+                    </if>
+                    <if test="order == 'asc'">
+                        user_id asc
+                    </if>
+                </if>
+                <if test="sort == 'update_time'" >
+                    <if test="order == 'desc'">
+                        update_time desc
+                    </if>
+                    <if test="order == 'asc'">
+                        update_time asc
+                    </if>
+                </if>
+            </when>
+            <otherwise>
+                ORDER BY user_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and rows != null and rows > 0">
+            LIMIT #{offset},#{rows}
+        </if>
+    </select>
+
+    <select id="selectSpecialUserId" resultType="java.lang.Long">
+        select user_id from user where status &amp; 8 = 8
+    </select>
+
+    <select id="selectBrokerSubUserId" resultType="java.lang.Long">
+        select user_id from user where status &amp; 268435456 = 268435456
+    </select>
+
+
+    <select id="getAllParentAccount" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user
+        where
+        <![CDATA[  status & 2048 = 2048
+        ]]>
+    </select>
+
+
+    <select id="countSubMarginUser" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM user
+        <where>
+            <if test="userIds != null and userIds.size() > 0">
+                AND user_id in
+                <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+                    #{userId}
+                </foreach>
+                AND <![CDATA[ status & 256 = 256 ]]>
+            </if>
+            <![CDATA[
+                AND status & 1048576 = 1048576
+                AND status & 4194304 = 4194304
+            ]]>
+
+        </where>
+    </select>
+
+    <select id="getNeedFixMarginUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+         from user where
+        <![CDATA[
+           status & 2097152 = 2097152
+        and insert_time>='2020-04-01 00:00:00'
+        and insert_time<='2020-04-01 11:00:00'
+            ]]>
+
+
+    </select>
+    
+    <select id="selectAllLVTSignedUser" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        <![CDATA[ 
+        from user where (status&(2<<47)) = (2<<47)    
+        ]]>
+    </select>
+
+    <select id="selectAllOneButtonUser" resultType="java.lang.Long">
+        select
+        user_id
+        <![CDATA[ 
+        from user where (status&(2<<48)) = (2<<48)    
+        ]]>
+    </select>
+
+    <update id="enableStatus">
+        update user
+        set status = status|#{statusBit}, update_time = now() where email = #{email}
+    </update>
+
+
+    <update id="enableStatusOptimisticLockUpdate">
+        update user
+        set status = status|#{statusBit}, update_time = now()
+          <![CDATA[
+         where email = #{email} and status !=#{statusBit}
+        ]]>
+    </update>
+</mapper>

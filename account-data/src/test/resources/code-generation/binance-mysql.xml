@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <!-- jar 不要用6.x版本的生成会有问题 -->
+    <classPathEntry
+            location="D:\work\apache-maven-3.5.3\repository\mysql\mysql-connector-java\5.1.44\mysql-connector-java-5.1.44.jar"/>
+    <context id="context" targetRuntime="MyBatis3">
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 去除自动生成的注释 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://dev-account-cluster.cluster-ct1wbptr1zqn.ap-northeast-1.rds.amazonaws.com:3306/account?useUnicode=true&amp;characterEncoding=UTF-8"
+                        userId="bijiedev" password="wenfax123"/>
+
+        <javaTypeResolver>
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- javabeen生成的地方 -->
+        <javaModelGenerator targetPackage="com.binance.account.data.entity.withdraw" targetProject="account-data">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- mapper.xml生成的地方 -->
+        <sqlMapGenerator targetPackage="com.binance.account.data.mapper.withdraw" targetProject="account-data">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+        <!-- mapper接口 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.binance.account.data.mapper.withdraw"
+                             targetProject="account-data">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- 表名和生成的实体名 -->
+        <table tableName="user_withdraw_property" domainObjectName="UserWithdrawProperty" enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <!-- <table tableName="synchron_task" domainObjectName="SynchronTask" enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+        <table tableName="company_certificate" domainObjectName="CompanyCertificate" enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" />
+        <table tableName="user_certificate_index" domainObjectName="UserCertificateIndex" enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" />
+        <table tableName="user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" />
+        <table tableName="user_operation_log" domainObjectName="UserOperationLog" enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" />
+        <table tableName="user_disable_code" domainObjectName="UserDisableCode" enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" />
+        <table tableName="user_index" domainObjectName="UserIndex" enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" />
+        <table tableName="user_info" domainObjectName="UserInfo" enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" />
+        <table tableName="user_ip" domainObjectName="UserIp" enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" />
+        <table tableName="user_trading_account" domainObjectName="UserTradingAccount" enableCountByExample="false" enableUpdateByExample="false"
+        enableDeleteByExample="false" enableSelectByExample="false"
+        selectByExampleQueryId="false" /> -->
+    </context>
+</generatorConfiguration>

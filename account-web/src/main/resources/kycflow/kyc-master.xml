@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<processFlow>
+	<compose name="base-info-submit">
+		<executors>
+			<executor name="baseInfoSubmitExecutor" />
+			<!-- <executor name="uploadThirdPardRiskCheck" /> -->
+		</executors>
+	</compose>
+
+<!-- 	<atom name="base-info-submit" executor="baseInfoSubmitExecutor" />
+ -->
+	<!-- 最终全部迁入到 jumioInitExecutor <atom name="kyc-jumio-init" executor="jumioInitMasterExecutor"
+		/> -->
+
+	<compose name="kyc-jumio-init">
+		<executors>
+			<executor name="jumioSkipMasterExecutor" />
+			<executor name="jumioInitMasterExecutor" />
+			<executor name="faceInitExecutor" />
+		</executors>
+	</compose>
+
+	<atom name="face-ocr-submit" executor="faceOcrSubmitExecutor" />
+
+	<compose name="base-info-submit-with-jumio">
+		<executors>
+			<executor name="baseInfoSubmitExecutor" />
+			<executor name="jumioInitMasterExecutor" />
+			<!-- <executor name="uploadThirdPardRiskCheck" /> -->
+		</executors>
+	</compose>
+
+	<atom name="kyc-face-init" executor="faceInitExecutor" />
+
+	<atom name="jumio-auth-result" executor="jumioAuthResultExecutor" />
+
+	<atom name="current-kyc-status"
+		executor="currentKycStatusExecutor" run-global-end="false" />
+
+	<atom name="kyc-face-auth-result"
+		executor="faceAuthResultExecutor" />
+
+	<atom name="google-form-audit" executor="googleFormAuditExecutor" />
+
+
+	<compose name="face-ocr-audit">
+		<executors>
+			<executor name="faceOcrAuditExecutor" />
+			<!-- <executor name="uploadThirdPardRiskCheck" /> -->
+		</executors>
+	</compose>
+
+	<atom name="address-info-submit"
+		executor="addressInfoSubmitMasterExecutor" run-global-end="false" />
+
+	<atom name="address-auth-result"
+		executor="addressAuthResultMasterExecutor" run-global-end="false" />
+
+	<global-end isSync="true">
+		<executors>
+			<executor name="masterDegradeEndHandler" />
+			<executor name="masterEqualExchangeEndHandler" />
+			<executor name="masterUpgradeEndHandler" />
+			<executor name="masterUpgradeCheckOutUploadWckHandler" />
+		</executors>
+	</global-end>
+</processFlow>

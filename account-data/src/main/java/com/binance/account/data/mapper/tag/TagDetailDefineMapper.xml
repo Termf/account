@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.tag.TagDetailDefineMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.tag.TagDetailDefine">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="tag_id" property="tagId" jdbcType="BIGINT"/>
+        <result column="f0_name" property="f0Name" jdbcType="VARCHAR"/>
+        <result column="f0_type" property="f0Type" jdbcType="VARCHAR"/>
+        <result column="f0_range" property="f0Range" jdbcType="VARCHAR"/>
+        <result column="f0_must" property="f0Must" jdbcType="VARCHAR"/>
+        <result column="f1_name" property="f1Name" jdbcType="VARCHAR"/>
+        <result column="f1_type" property="f1Type" jdbcType="VARCHAR"/>
+        <result column="f1_range" property="f1Range" jdbcType="VARCHAR"/>
+        <result column="f1_must" property="f1Must" jdbcType="VARCHAR"/>
+        <result column="f2_name" property="f2Name" jdbcType="VARCHAR"/>
+        <result column="f2_type" property="f2Type" jdbcType="VARCHAR"/>
+        <result column="f2_range" property="f2Range" jdbcType="VARCHAR"/>
+        <result column="f2_must" property="f2Must" jdbcType="VARCHAR"/>
+        <result column="f3_name" property="f3Name" jdbcType="VARCHAR"/>
+        <result column="f3_type" property="f3Type" jdbcType="VARCHAR"/>
+        <result column="f3_range" property="f3Range" jdbcType="VARCHAR"/>
+        <result column="f3_must" property="f3Must" jdbcType="VARCHAR"/>
+        <result column="f4_name" property="f4Name" jdbcType="VARCHAR"/>
+        <result column="f4_type" property="f4Type" jdbcType="VARCHAR"/>
+        <result column="f4_range" property="f4Range" jdbcType="VARCHAR"/>
+        <result column="f4_must" property="f4Must" jdbcType="VARCHAR"/>
+        <result column="f5_name" property="f5Name" jdbcType="VARCHAR"/>
+        <result column="f5_type" property="f5Type" jdbcType="VARCHAR"/>
+        <result column="f5_range" property="f5Range" jdbcType="VARCHAR"/>
+        <result column="f5_must" property="f5Must" jdbcType="VARCHAR"/>
+        <result column="f6_name" property="f6Name" jdbcType="VARCHAR"/>
+        <result column="f6_type" property="f6Type" jdbcType="VARCHAR"/>
+        <result column="f6_range" property="f6Range" jdbcType="VARCHAR"/>
+        <result column="f6_must" property="f6Must" jdbcType="VARCHAR"/>
+        <result column="f7_name" property="f7Name" jdbcType="VARCHAR"/>
+        <result column="f7_type" property="f7Type" jdbcType="VARCHAR"/>
+        <result column="f7_range" property="f7Range" jdbcType="VARCHAR"/>
+        <result column="f7_must" property="f7Must" jdbcType="VARCHAR"/>
+        <result column="f8_name" property="f8Name" jdbcType="VARCHAR"/>
+        <result column="f8_type" property="f8Type" jdbcType="VARCHAR"/>
+        <result column="f8_range" property="f8Range" jdbcType="VARCHAR"/>
+        <result column="f8_must" property="f8Must" jdbcType="VARCHAR"/>
+        <result column="f9_name" property="f9Name" jdbcType="VARCHAR"/>
+        <result column="f9_type" property="f9Type" jdbcType="VARCHAR"/>
+        <result column="f9_range" property="f9Range" jdbcType="VARCHAR"/>
+        <result column="f9_must" property="f9Must" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,tag_id,
+        f0_name, f0_range, f0_type, f0_must,
+        f1_name, f1_range, f1_type, f1_must,
+        f2_name, f2_range, f2_type, f2_must,
+        f3_name, f3_range, f3_type, f3_must,
+        f4_name, f4_range, f4_type, f4_must,
+        f5_name, f5_range, f5_type, f5_must,
+        f6_name, f6_range, f6_type, f6_must,
+        f7_name, f7_range, f7_type, f7_must,
+        f8_name, f8_range, f8_type, f8_must,
+        f9_name, f9_range, f9_type, f9_must
+    </sql>
+
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.binance.account.data.entity.tag.TagDetailDefine">
+        insert into tag_detail_define
+        (
+            tag_id,
+            f0_name, f0_range, f0_type, f0_must,
+            f1_name, f1_range, f1_type, f1_must,
+            f2_name, f2_range, f2_type, f2_must,
+            f3_name, f3_range, f3_type, f3_must,
+            f4_name, f4_range, f4_type, f4_must,
+            f5_name, f5_range, f5_type, f5_must,
+            f6_name, f6_range, f6_type, f6_must,
+            f7_name, f7_range, f7_type, f7_must,
+            f8_name, f8_range, f8_type, f8_must,
+            f9_name, f9_range, f9_type, f9_must
+        )
+        values
+        (
+          #{tagId},
+          #{f0Name}, #{f0Range}, #{f0Type}, #{f0Must},
+          #{f1Name}, #{f1Range}, #{f1Type}, #{f1Must},
+          #{f2Name}, #{f2Range}, #{f2Type}, #{f2Must},
+          #{f3Name}, #{f3Range}, #{f3Type}, #{f3Must},
+          #{f4Name}, #{f4Range}, #{f4Type}, #{f4Must},
+          #{f5Name}, #{f5Range}, #{f5Type}, #{f5Must},
+          #{f6Name}, #{f6Range}, #{f6Type}, #{f6Must},
+          #{f7Name}, #{f7Range}, #{f7Type}, #{f7Must},
+          #{f8Name}, #{f8Range}, #{f8Type}, #{f8Must},
+          #{f9Name}, #{f9Range}, #{f9Type}, #{f9Must}
+        )
+    </insert>
+
+    <delete id="deleteByTagId" parameterType="java.lang.Long">
+      delete from tag_detail_define where tag_id = #{tagId}
+    </delete>
+
+    <select id="selectByTagId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from tag_detail_define
+        where tag_id = #{tagId}
+    </select>
+</mapper>

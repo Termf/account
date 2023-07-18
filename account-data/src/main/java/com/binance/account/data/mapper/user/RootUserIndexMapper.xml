@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.user.RootUserIndexMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.user.RootUserIndex">
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="root_user_id" jdbcType="BIGINT" property="rootUserId" />
+    <result column="account_type" jdbcType="VARCHAR" property="accountType" />
+    <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, root_user_id, account_type, insert_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from root_user_index
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByUserIds" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from root_user_index
+    where user_id in
+    <foreach collection="list" item="userId" open="(" close=")" separator=",">
+      #{userId}
+    </foreach>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from root_user_index
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.user.RootUserIndex">
+    insert into root_user_index (user_id, root_user_id, account_type,
+      insert_time, update_time)
+    values (#{userId,jdbcType=BIGINT}, #{rootUserId,jdbcType=BIGINT}, #{accountType,jdbcType=VARCHAR},
+      #{insertTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.user.RootUserIndex">
+    insert into root_user_index
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="rootUserId != null">
+        root_user_id,
+      </if>
+      <if test="accountType != null">
+        account_type,
+      </if>
+      <if test="insertTime != null">
+        insert_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="rootUserId != null">
+        #{rootUserId,jdbcType=BIGINT},
+      </if>
+      <if test="accountType != null">
+        #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="insertTime != null">
+        #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.user.RootUserIndex">
+    update root_user_index
+    <set>
+      <if test="rootUserId != null">
+        root_user_id = #{rootUserId,jdbcType=BIGINT},
+      </if>
+      <if test="accountType != null">
+        account_type = #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="insertTime != null">
+        insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.user.RootUserIndex">
+    update root_user_index
+    set root_user_id = #{rootUserId,jdbcType=BIGINT},
+      account_type = #{accountType,jdbcType=VARCHAR},
+      insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>

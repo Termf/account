@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.user.UserIpMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.user.UserIp">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <id column="ip" jdbcType="VARCHAR" property="ip"/>
+        <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="com.binance.account.data.entity.user.UserIp">
+        delete from user_ip
+        where user_id = #{userId,jdbcType=BIGINT}
+        and ip = #{ip,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.binance.account.data.entity.user.UserIp">
+        insert ignore into user_ip (user_id, ip)
+        values (#{userId,jdbcType=BIGINT}, #{ip,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.binance.account.data.entity.user.UserIp">
+        insert ignore into user_ip
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="queryByCount" resultType="java.lang.Long">
+        select count(1) from user_ip where
+        user_id = #{userId,jdbcType=BIGINT} and ip = #{ip,jdbcType=VARCHAR}
+    </select>
+    <insert id="insertIgnore" parameterType="com.binance.account.data.entity.user.UserIp">
+        insert ignore into user_ip (user_id, ip)
+        values (#{userId,jdbcType=BIGINT}, #{ip,jdbcType=VARCHAR})
+    </insert>
+    
+    <select id="getIpCount" resultType="java.lang.Integer" parameterType="com.binance.account.data.entity.user.UserIp">
+    	select count(1) from user_ip
+    	<where>
+            <if test="userId !=null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="ip != null">
+            	and ip = #{ip,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="getIpByUser" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from user_ip where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+</mapper>

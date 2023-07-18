@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.UserChannelRiskRatingMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.UserChannelRiskRating">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="channel_code" jdbcType="VARCHAR" property="channelCode" />
+    <result column="tier_level" jdbcType="VARCHAR" property="tierLevel" />
+    <result column="daily_limit" jdbcType="DECIMAL" property="dailyLimit" />
+    <result column="monthly_limit" jdbcType="DECIMAL" property="monthlyLimit" />
+    <result column="yearly_limit" jdbcType="DECIMAL" property="yearlyLimit" />
+    <result column="total_limit" jdbcType="DECIMAL" property="totalLimit" />
+    <result column="withdraw_Daily_limit" jdbcType="DECIMAL" property="withdrawDailyLimit" />
+    <result column="withdraw_monthly_limit" jdbcType="DECIMAL" property="withdrawMonthlyLimit" />
+    <result column="withdraw_yearly_limit" jdbcType="DECIMAL" property="withdrawYearlyLimit" />
+    <result column="withdraw_total_limit" jdbcType="DECIMAL" property="withdrawTotalLimit" />
+    <result column="limit_unit" jdbcType="VARCHAR" property="limitUnit" />
+    <result column="apply_amount" jdbcType="VARCHAR" property="applyAmount" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="birthday" jdbcType="VARCHAR" property="birthday" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
+    <result column="world_check_status" jdbcType="VARCHAR" property="worldCheckStatus" />
+    <result column="world_check_fail_reason" jdbcType="VARCHAR" property="worldCheckFailReason" />
+    <result column="regular_review_status" jdbcType="VARCHAR" property="regularReviewStatus" />
+    <result column="auditor_name" jdbcType="VARCHAR" property="auditorName" />
+    <result column="audit_time" jdbcType="TIMESTAMP" property="auditTime" />
+    <result column="audit_remark" jdbcType="VARCHAR" property="auditRemark" />
+    <result column="risk_rating_level" jdbcType="VARCHAR" property="riskRatingLevel" />
+    <result column="risk_rating_score" jdbcType="DECIMAL" property="riskRatingScore" />
+    <result column="citizenship_country" jdbcType="VARCHAR" property="citizenshipCountry" />
+    <result column="residence_country" jdbcType="VARCHAR" property="residenceCountry" />
+    <result column="card_country" jdbcType="VARCHAR" property="cardCountry" />
+    <result column="ip_address" jdbcType="VARCHAR" property="ipAddress" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, channel_code, tier_level, daily_limit, monthly_limit,yearly_limit, total_limit,withdraw_daily_limit,
+    withdraw_monthly_limit,withdraw_yearly_limit, withdraw_total_limit, limit_unit, apply_amount, name, birthday, status, world_check_status,
+    world_check_fail_reason, regular_review_status, fail_reason, auditor_name, audit_time, audit_remark, risk_rating_level,
+    risk_rating_score, citizenship_country, residence_country, card_country, ip_address,
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_channel_risk_rating
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_channel_risk_rating
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskRating" useGeneratedKeys="true" keyProperty="id">
+    insert into user_channel_risk_rating ( user_id, channel_code,
+      tier_level, daily_limit, monthly_limit, total_limit, limit_unit, apply_amount,
+      name, birthday, status, fail_reason, world_check_status, world_check_fail_reason,
+      regular_review_status, auditor_name, audit_time,
+      audit_remark, risk_rating_level, risk_rating_score,
+      citizenship_country, residence_country, card_country,
+      ip_address, create_time, update_time
+      )
+    values ( #{userId,jdbcType=BIGINT}, #{channelCode,jdbcType=VARCHAR},
+      #{tierLevel,jdbcType=VARCHAR}, #{dailyLimit,jdbcType=DECIMAL},  #{monthlyLimit,jdbcType=DECIMAL},  
+      #{totalLimit,jdbcType=DECIMAL}, #{limitUnit,jdbcType=VARCHAR}, #{applyAmount,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{failReason,jdbcType=VARCHAR}, #{worldCheckStatus,jdbcType=VARCHAR}, #{worldCheckFailReason,jdbcType=VARCHAR},
+      #{regularReviewStatus,jdbcType=VARCHAR}, #{auditorName,jdbcType=VARCHAR}, #{auditTime,jdbcType=TIMESTAMP},
+      #{auditRemark,jdbcType=VARCHAR}, #{riskRatingLevel,jdbcType=VARCHAR}, #{riskRatingScore,jdbcType=DECIMAL},
+      #{citizenshipCountry,jdbcType=VARCHAR}, #{residenceCountry,jdbcType=VARCHAR}, #{cardCountry,jdbcType=VARCHAR},
+      #{ipAddress,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskRating">
+    update user_channel_risk_rating
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="channelCode != null">
+        channel_code = #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="tierLevel != null">
+        tier_level = #{tierLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="dailyLimit != null">
+        daily_limit = #{dailyLimit,jdbcType=DECIMAL},
+      </if>
+      <if test="monthlyLimit != null">
+        monthly_limit = #{monthlyLimit,jdbcType=DECIMAL},
+      </if>
+      <if test="monthlyLimit != null">
+        total_limit = #{totalLimit,jdbcType=DECIMAL},
+      </if>
+      <if test="limitUnit != null">
+        limit_unit = #{limitUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="applyAmount != null">
+        apply_amount = #{applyAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        fail_reason = #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="worldCheckStatus != null">
+        world_check_status = #{worldCheckStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="worldCheckFailReason != null">
+        world_check_fail_reason = #{worldCheckFailReason,jdbcType=VARCHAR},
+      </if>
+      <if test="regularReviewStatus != null">
+        regular_review_status = #{regularReviewStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="auditorName != null">
+        auditor_name = #{auditorName,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTime != null">
+        audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditRemark != null">
+        audit_remark = #{auditRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="riskRatingLevel != null">
+        risk_rating_level = #{riskRatingLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="riskRatingScore != null">
+        risk_rating_score = #{riskRatingScore,jdbcType=DECIMAL},
+      </if>
+      <if test="citizenshipCountry != null">
+        citizenship_country = #{citizenshipCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="residenceCountry != null">
+        residence_country = #{residenceCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="cardCountry != null">
+        card_country = #{cardCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="ipAddress != null">
+        ip_address = #{ipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <sql id="get-page-query">
+    <if test="userId != null">
+      and user_id = #{userId,jdbcType=BIGINT}
+    </if>
+    <if test="channelCode != null and channelCode != ''">
+      and channel_code = #{channelCode,jdbcType=VARCHAR}
+    </if>
+    <if test="tierLevel != null and tierLevel != ''">
+      and tier_level = #{tierLevel,jdbcType=VARCHAR}
+    </if>
+    <if test="name != null and name != ''">
+        <bind name="nameValue" value="'%' + name + '%'"/>
+      and name = #{name,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null and status != ''">
+      and status = #{status,jdbcType=VARCHAR}
+    </if>
+    <if test="failReason != null and status != ''">
+      and fail_reason = #{failReason,jdbcType=VARCHAR}
+    </if>
+    <if test="worldCheckStatus != null and worldCheckStatus != ''">
+      and world_check_status = #{worldCheckStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="worldCheckFailReason != null">
+      and world_check_fail_reason = #{worldCheckFailReason,jdbcType=VARCHAR}
+    </if>
+    <if test="regularReviewStatus != null and regularReviewStatus != ''">
+      and regular_review_status = #{regularReviewStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="auditorName != null and auditorName != ''">
+      and auditor_name = #{auditorName,jdbcType=VARCHAR}
+    </if>
+    <if test="startAuditTime != null and startAuditTime != ''">
+      and audit_time >= #{startAuditTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endAuditTime != null and endAuditTime != ''">
+      and audit_time &lt;= #{endAuditTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="auditRemark != null and auditRemark != ''">
+        <bind name="auditRemarkValue" value="'% + auditRemark + '%''"/>
+      and audit_remark like #{auditRemarkValue,jdbcType=VARCHAR} 
+    </if>
+    <if test="riskRatingLevel != null and riskRatingLevel != ''">
+      and risk_rating_level = #{riskRatingLevel,jdbcType=VARCHAR}
+    </if>
+    <if test="citizenshipCountry != null and citizenshipCountry != ''">
+      and citizenship_country = #{citizenshipCountry,jdbcType=VARCHAR}
+    </if>
+    <if test="residenceCountry != null and residenceCountry != ''">
+      and residence_country = #{residenceCountry,jdbcType=VARCHAR}
+    </if>
+    <if test="cardCountry != null and cardCountry != null">
+      and card_country = #{cardCountry,jdbcType=VARCHAR}
+    </if>
+    <if test="startCreateTime != null and startCreateTime != ''">
+      and create_time >= #{startCreateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endCreateTime != null and endCreateTime != null">
+      and craete_time &lt;= #{endCreateTime,jdbcType=TIMESTAMP}
+    </if>
+  </sql>
+
+  <select id="getPageCount" parameterType="com.binance.account.common.query.UserChannelRiskRatingQuery" resultType="java.lang.Long">
+    select count(1) from user_channel_risk_rating
+    <where>
+      <include refid="get-page-query" />
+    </where>
+  </select>
+
+  <select id="getPageList" parameterType="com.binance.account.common.query.UserChannelRiskRatingQuery" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user_channel_risk_rating
+    <where>
+      <include refid="get-page-query" />
+    </where>
+    order by id desc
+    limit #{start}, #{rows}
+  </select>
+
+  <select id="selectByUk" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_channel_risk_rating
+    where user_id = #{userId,jdbcType=BIGINT} and channel_code = #{channelCode,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="resetTierLevel" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskRating">
+    update user_channel_risk_rating set world_check_status = #{worldCheckStatus,jdbcType=VARCHAR}, world_check_fail_reason = #{worldCheckFailReason,jdbcType=VARCHAR}, auditor_name = #{auditorName,jdbcType=VARCHAR},
+    audit_time = #{auditTime,jdbcType=TIMESTAMP},audit_remark = #{auditRemark,jdbcType=VARCHAR},
+    tier_level = #{tierLevel,jdbcType=VARCHAR},status = #{status,jdbcType=VARCHAR},fail_reason = #{failReason,jdbcType=VARCHAR},citizenship_country = #{citizenshipCountry,jdbcType=VARCHAR},residence_country = #{residenceCountry,jdbcType=VARCHAR},
+    name = #{name,jdbcType=VARCHAR},birthday = #{birthday,jdbcType=VARCHAR},risk_rating_level = #{riskRatingLevel,jdbcType=VARCHAR},risk_rating_score = #{riskRatingScore,jdbcType=DECIMAL},
+    daily_limit = #{dailyLimit,jdbcType=DECIMAL},monthly_limit = #{monthlyLimit,jdbcType=DECIMAL},total_limit = #{totalLimit,jdbcType=DECIMAL},
+    update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER} 
+  </update>
+  
+  <update id="auditWckPass" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskRating">
+    update user_channel_risk_rating set auditor_name = #{auditorName,jdbcType=VARCHAR},audit_time = #{auditTime,jdbcType=TIMESTAMP},audit_remark = #{auditRemark,jdbcType=VARCHAR},
+    world_check_status = #{worldCheckStatus,jdbcType=VARCHAR},world_check_fail_reason = #{worldCheckFailReason,jdbcType=VARCHAR},status = #{status,jdbcType=VARCHAR},fail_reason = #{failReason,jdbcType=VARCHAR},update_time = #{updateTime,jdbcType=TIMESTAMP},tier_level = #{tierLevel,jdbcType=VARCHAR},
+    citizenship_country = #{citizenshipCountry,jdbcType=VARCHAR},residence_country = #{residenceCountry,jdbcType=VARCHAR},name = #{name,jdbcType=VARCHAR},birthday = #{birthday,jdbcType=VARCHAR},
+    daily_limit = #{dailyLimit,jdbcType=DECIMAL},monthly_limit = #{monthlyLimit,jdbcType=DECIMAL},total_limit = #{totalLimit,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateRiskLevelScore" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskRating">
+    update user_channel_risk_rating set
+    status = #{status,jdbcType=VARCHAR},fail_reason = #{failReason,jdbcType=VARCHAR},risk_rating_score = #{riskRatingScore,jdbcType=DECIMAL},risk_rating_level = #{riskRatingLevel,jdbcType=VARCHAR},
+    update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_channel_risk_rating
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>	
+  
+  <update id="updateTierLevel" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskRating">
+    update user_channel_risk_rating set
+    status = #{status,jdbcType=VARCHAR},fail_reason = #{failReason,jdbcType=VARCHAR},tier_level = #{tierLevel,jdbcType=VARCHAR},
+    daily_limit = #{dailyLimit,jdbcType=DECIMAL},monthly_limit = #{monthlyLimit,jdbcType=DECIMAL},total_limit = #{totalLimit,jdbcType=DECIMAL},
+    update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateLimit" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskRating">
+    update user_channel_risk_rating set
+    daily_limit = #{dailyLimit,jdbcType=DECIMAL},monthly_limit = #{monthlyLimit,jdbcType=DECIMAL},total_limit = #{totalLimit,jdbcType=DECIMAL},
+    yearly_limit = #{yearlyLimit,jdbcType=DECIMAL}, withdraw_daily_limit = #{withdrawDailyLimit,jdbcType=DECIMAL},
+    withdraw_monthly_limit = #{withdrawMonthlyLimit,jdbcType=DECIMAL}, withdraw_yearly_limit=#{withdrawYearlyLimit,jdbcType=DECIMAL},
+    withdraw_total_limit = #{withdrawTotalLimit, jdbcType=DECIMAL}, update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="resetWckStatusByUserId" parameterType="java.lang.Long">
+    update user_channel_risk_rating set
+    world_check_status = null
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>

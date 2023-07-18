@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.datamigration.SynchronTaskMapper">
+    <resultMap id="BaseResultMap"
+               type="com.binance.account.data.entity.datamigration.SynchronTask">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="begin" jdbcType="BIGINT" property="begin"/>
+        <result column="end" jdbcType="BIGINT" property="end"/>
+        <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, begin, end, insert_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from synchron_task
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from
+        synchron_task
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert"
+            parameterType="com.binance.account.data.entity.datamigration.SynchronTask">
+        insert into synchron_task (id, begin, end,
+        insert_time,
+        update_time)
+        values (#{id,jdbcType=BIGINT}, #{begin,jdbcType=BIGINT},
+        #{end,jdbcType=BIGINT},
+        #{insertTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective"
+            parameterType="com.binance.account.data.entity.datamigration.SynchronTask">
+        insert into synchron_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="begin != null">
+                begin,
+            </if>
+            <if test="end != null">
+                end,
+            </if>
+            <if test="insertTime != null">
+                insert_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="begin != null">
+                #{begin,jdbcType=BIGINT},
+            </if>
+            <if test="end != null">
+                #{end,jdbcType=BIGINT},
+            </if>
+            <if test="insertTime != null">
+                #{insertTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.binance.account.data.entity.datamigration.SynchronTask">
+        update synchron_task
+        <set>
+            <if test="begin != null">
+                begin = #{begin,jdbcType=BIGINT},
+            </if>
+            <if test="end != null">
+                end = #{end,jdbcType=BIGINT},
+            </if>
+            <if test="insertTime != null">
+                insert_time = #{insertTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="com.binance.account.data.entity.datamigration.SynchronTask">
+        update synchron_task
+        set begin =
+        #{begin,jdbcType=BIGINT},
+        end = #{end,jdbcType=BIGINT},
+        insert_time =
+        #{insertTime,jdbcType=TIMESTAMP},
+        update_time =
+        #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="getFrontSynchronTask" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        <![CDATA[
+			from synchron_task
+			where update_time <= DATE_ADD(now(),INTERVAL #{minute,jdbcType=BIGINT} MINUTE)
+			order by id ASC
+			LIMIT 1
+		]]>
+    </select>
+    <update id="updateHeartbeat">
+        update synchron_task
+        set update_time =
+        #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="queryCount" resultType="java.lang.Long">
+        select count(1) from synchron_task
+    </select>
+    <delete id="deleteAll">
+        delete from
+        synchron_task
+    </delete>
+</mapper>

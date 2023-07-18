@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.oauth.OauthBindMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.oauth.OauthBind">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="client_id" property="clientId" jdbcType="VARCHAR"/>
+        <result column="oauth_user_id" property="oauthUserId" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <!--        <result column="db_create_time" property="dbCreateTime" jdbcType="TIMESTAMP"/>-->
+        <!--        <result column="db_modify_time" property="dbModifyTime" jdbcType="TIMESTAMP"/>-->
+    </resultMap>
+    <sql id="Base_Column_List">
+      id, user_id, client_id, oauth_user_id,status, db_create_time, db_modify_time
+    </sql>
+    <select id="selectByClientAndOauthUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from oauth_bind
+        where oauth_user_id = #{oauthUserId,jdbcType=VARCHAR} AND client_id = #{clientId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from oauth_bind
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.binance.account.data.entity.oauth.OauthBind">
+        insert into oauth_bind (user_id, client_id,
+          oauth_user_id,status
+          )
+        values ( #{userId,jdbcType=INTEGER}, #{clientId,jdbcType=VARCHAR},
+          #{oauthUserId,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR}
+          )
+    </insert>
+
+    <update id="bind" parameterType="java.lang.Integer">
+        update oauth_bind
+        set status = 'S'
+        where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

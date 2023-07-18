@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.withdraw.UserWithdrawPropertyMapper">
+	<resultMap id="BaseResultMap" type="com.binance.account.data.entity.withdraw.UserWithdrawProperty">
+		<id column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="withdraw_lock" jdbcType="DECIMAL" property="withdrawLock" />
+		<result column="withdraw_lock_manual" jdbcType="DECIMAL" property="withdrawLockManual" />
+		<result column="withdraw_max_asset_day" jdbcType="DECIMAL" property="withdrawMaxAssetDay" />
+		<result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		user_id, withdraw_lock, withdraw_lock_manual, withdraw_max_asset_day, insert_time, update_time
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_withdraw_property
+		where user_id = #{userId,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from user_withdraw_property
+		where user_id = #{userId,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="com.binance.account.data.entity.withdraw.UserWithdrawProperty">
+		insert into user_withdraw_property (user_id, withdraw_lock, withdraw_lock_manual, withdraw_max_asset_day,
+		insert_time, update_time)
+		values (#{userId,jdbcType=BIGINT}, #{withdrawLock,jdbcType=DECIMAL}, #{withdrawLockManual,jdbcType=DECIMAL}, #{withdrawMaxAssetDay,jdbcType=DECIMAL},
+		#{insertTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.binance.account.data.entity.withdraw.UserWithdrawProperty">
+		insert into user_withdraw_property
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="withdrawLock != null">
+				withdraw_lock,
+			</if>
+			<if test="withdrawLockManual != null">
+                withdraw_lock_manual,
+            </if>
+			<if test="withdrawMaxAssetDay != null">
+				withdraw_max_asset_day,
+			</if>
+			<if test="insertTime != null">
+				insert_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="withdrawLock != null">
+				#{withdrawLock,jdbcType=DECIMAL},
+			</if>
+			<if test="withdrawLockManual != null">
+                #{withdrawLockManual,jdbcType=DECIMAL},
+            </if>
+			<if test="withdrawMaxAssetDay != null">
+				#{withdrawMaxAssetDay,jdbcType=DECIMAL},
+			</if>
+			<if test="insertTime != null">
+				#{insertTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.withdraw.UserWithdrawProperty">
+		update user_withdraw_property
+		<set>
+			<if test="withdrawLock != null">
+				withdraw_lock = #{withdrawLock,jdbcType=DECIMAL},
+			</if>
+			<if test="withdrawLockManual != null">
+                withdraw_lock_manual = #{withdrawLockManual,jdbcType=DECIMAL},
+            </if>
+			<if test="withdrawMaxAssetDay != null">
+				withdraw_max_asset_day = #{withdrawMaxAssetDay,jdbcType=DECIMAL},
+			</if>
+			<if test="insertTime != null">
+				insert_time = #{insertTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where user_id = #{userId,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.withdraw.UserWithdrawProperty">
+		update user_withdraw_property
+		set withdraw_lock = #{withdrawLock,jdbcType=DECIMAL},
+		withdraw_lock_manual = #{withdrawLockManual,jdbcType=DECIMAL},
+		withdraw_max_asset_day = #{withdrawMaxAssetDay,jdbcType=DECIMAL},
+		insert_time = #{insertTime,jdbcType=TIMESTAMP},
+		update_time = #{updateTime,jdbcType=TIMESTAMP}
+		where user_id = #{userId,jdbcType=BIGINT}
+	</update>
+	<update id="updateWithdrawLock" parameterType="com.binance.account.data.entity.withdraw.UserWithdrawProperty">
+        update user_withdraw_property
+        <set>
+            <if test="withdrawLock != null">
+                withdraw_lock = withdraw_lock + #{withdrawLock,jdbcType=DECIMAL},
+            </if>
+            <if test="withdrawLockManual != null">
+                withdraw_lock_manual = withdraw_lock_manual + #{withdrawLockManual,jdbcType=DECIMAL},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+</mapper>

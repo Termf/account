@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.MessageMapMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.MessageMap">
+        <id column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="lang" jdbcType="VARCHAR" property="lang"/>
+        <result column="message" jdbcType="VARCHAR" property="message"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        code, lang, message
+    </sql>
+
+    <insert id="insert" parameterType="com.binance.account.data.entity.certificate.MessageMap">
+        insert into message_map (code, lang, message)
+        values (#{code,jdbcType=VARCHAR}, #{lang,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update" parameterType="com.binance.account.data.entity.certificate.MessageMap">
+        update message_map
+            set message = #{message,jdbcType=VARCHAR}
+        where code = #{code,jdbcType=VARCHAR} and #{lang,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from message_map;
+    </select>
+
+
+    <select id="getByCodeAndLang" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from message_map where code = #{code,jdbcType=VARCHAR} and lang = #{lang,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getByCode" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from message_map where code = #{code,jdbcType=VARCHAR}
+    </select>
+    
+	<insert id="batchInsert" parameterType="com.binance.account.data.entity.certificate.MessageMap">
+		insert into message_map (code, lang, message)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+		(#{item.code,jdbcType=VARCHAR}, #{item.lang,jdbcType=VARCHAR}, #{item.message,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+	<delete id="batchDelete">
+		delete from message_map where (code,lang) in (
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+			 (#{item.code,jdbcType=VARCHAR},#{item.lang,jdbcType=VARCHAR})
+		</foreach>)
+	</delete>
+
+	<select id="batchSelectByPk" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" /> FROM message_map WHERE (code,lang) IN (
+		<foreach collection="list" item="item" index="index" open="" close="" separator=",">
+		(#{item.code,jdbcType=VARCHAR},#{item.lang,jdbcType=VARCHAR})
+		</foreach>
+		)
+	</select>
+	<select id="fuzzySeach" resultMap="BaseResultMap">
+		SELECT <include refid="Base_Column_List" /> FROM message_map WHERE code like CONCAT('%',#{message},'%') or message like CONCAT('%',#{message},'%')
+	</select>
+</mapper>

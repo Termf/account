@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.user.UserEmailChangeMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.user.UserEmailChange">
+
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="flow_id" jdbcType="VARCHAR" property="flowId"/>
+        <result column="old_email" jdbcType="VARCHAR" property="oldEmail"/>
+        <result column="new_email" jdbcType="VARCHAR" property="newEmail"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="available_type" jdbcType="TINYINT" property="availableType"/>
+        <result column="created_at" jdbcType="TIMESTAMP" property="createdAt"/>
+        <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt"/>
+        <result column="user_remark" jdbcType="VARCHAR" property="userRemark"/>
+        <result column="withdrawal_remark" jdbcType="VARCHAR" property="withdrawalRemark"/>
+        <result column="fail_reason" jdbcType="VARCHAR" property="failReason"/>
+        <result column="pwd" jdbcType="VARCHAR" property="pwd"/>
+        <result column="new_safe_pwd" jdbcType="VARCHAR" property="newSafePwd"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+       id, user_id, flow_id, old_email, new_email, status,available_type,created_at,updated_at,user_remark,withdrawal_remark,fail_reason,pwd,new_safe_pwd
+    </sql>
+
+    <insert id="insertSelective" parameterType="com.binance.account.data.entity.user.UserEmailChange" useGeneratedKeys="true" keyProperty="id">
+        insert into user_email_change
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="flowId != null">
+                flow_id,
+            </if>
+            <if test="oldEmail != null">
+                old_email,
+            </if>
+            <if test="newEmail != null">
+                new_email,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+
+            <if test="availableType !=null">
+                available_type,
+            </if>
+
+            <if test="createdAt != null">
+                created_at,
+            </if>
+
+            <if test="updatedAt != null">
+                updated_at,
+            </if>
+
+            <if test="userRemark != null">
+                user_remark,
+            </if>
+
+            <if test="withdrawalRemark != null">
+                withdrawal_remark,
+            </if>
+
+            <if test="failReason != null">
+                fail_reason,
+            </if>
+
+            <if test="pwd != null">
+                pwd,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="flowId != null">
+                #{flowId},
+            </if>
+            <if test="oldEmail != null">
+                #{oldEmail},
+            </if>
+            <if test="newEmail != null">
+                #{newEmail},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="availableType !=null">
+                #{availableType}
+            </if>
+
+            <if test="createdAt != null">
+                #{createdAt},
+            </if>
+            <if test="updatedAt != null">
+                #{updatedAt},
+            </if>
+            <if test="userRemark != null">
+                #{userRemark},
+            </if>
+
+            <if test="withdrawalRemark != null">
+                #{withdrawalRemark},
+            </if>
+
+            <if test="failReason != null">
+                #{failReason},
+            </if>
+            <if test="pwd != null">
+                #{pwd},
+            </if>
+
+        </trim>
+    </insert>
+
+
+    <update id="updateUserEmailChangeByFlowId" parameterType="com.binance.account.data.entity.user.UserEmailChange">
+        update user_email_change
+        <set>
+            <if test="newEmail != null">
+                new_email = #{newEmail},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+
+            <if test="updatedAt != null">
+                updated_at = #{updatedAt},
+            </if>
+            <if test="userRemark != null">
+                user_remark = #{userRemark},
+            </if>
+            <if test="withdrawalRemark != null">
+                withdrawal_remark = #{withdrawalRemark},
+            </if>
+            <if test="failReason != null">
+                fail_reason = #{failReason},
+            </if>
+            <if test="pwd != null">
+                pwd = #{pwd},
+            </if>
+            <if test="newSafePwd !=null">
+                new_safe_pwd = #{newSafePwd},
+            </if>
+
+        </set>
+        where flow_id = #{flowId}
+    </update>
+
+
+    <select id="findByFlowId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_email_change
+        where flow_id = #{flowId}
+    </select>
+
+    <select id="findUndoneByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_email_change
+        <![CDATA[   where user_id = #{userId} and status <5  order by updated_at desc ]]>
+    </select>
+
+    <select id="findUndoneWithHours" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_email_change
+        <![CDATA[  where created_at <= DATE_SUB(NOW(),INTERVAL  #{hour} HOUR) and status <4 ]]>
+    </select>
+
+
+    <select id="countByUserIdAndStatus" resultType="java.lang.Integer">
+        select count(*)
+        from user_email_change
+        where user_id = #{userId} and status = #{status}
+    </select>
+
+    <select id="totalCount" resultType="java.lang.Integer">
+        select count(*)
+        from user_email_change
+        where 1=1
+        <if test="userId != null">
+            and user_id=#{userId}
+        </if>
+        <if test="flowId != null and flowId!=''">
+            and flow_id=#{flowId}
+        </if>
+        <if test="oldEmail != null">
+            and old_email=#{oldEmail}
+        </if>
+        <if test="newEmail != null">
+            and new_email=#{newEmail}
+        </if>
+        <if test="status != null">
+            and status=#{status}
+        </if>
+
+        <if test="start != null">
+            <![CDATA[ and updated_at >=#{start}]]>
+        </if>
+
+        <if test="end != null">
+            <![CDATA[ and updated_at < #{end}]]>
+        </if>
+
+    </select>
+
+
+    <select id="findList" resultMap="BaseResultMap">
+        select  <include refid="Base_Column_List"/>
+        from user_email_change
+        where 1=1
+        <if test="userId != null">
+            and user_id=#{userId}
+        </if>
+        <if test="flowId != null and flowId!=''">
+            and flow_id=#{flowId}
+        </if>
+        <if test="oldEmail != null">
+            and (old_email=#{oldEmail} or new_email=#{oldEmail})
+        </if>
+        <if test="newEmail != null">
+            and (old_email=#{newEmail} or new_email=#{newEmail})
+        </if>
+        <if test="status != null">
+            and status=#{status}
+        </if>
+
+        <if test="start != null">
+            <![CDATA[ and updated_at >=#{start}]]>
+        </if>
+
+        <if test="end != null">
+            <![CDATA[ and updated_at < #{end}]]>
+        </if>
+
+        order by updated_at desc limit #{offset},#{limit}
+    </select>
+
+
+
+    <update id="updateStatusCancelByHour">
+        update user_email_change
+        <set>
+            status=5,
+
+            <if test="updatedAt != null">
+                updated_at = #{updatedAt},
+            </if>
+
+        </set>
+        <![CDATA[ where created_at <= DATE_SUB(NOW(),INTERVAL  #{hour} HOUR)  and status <4]]>
+    </update>
+
+
+
+</mapper>

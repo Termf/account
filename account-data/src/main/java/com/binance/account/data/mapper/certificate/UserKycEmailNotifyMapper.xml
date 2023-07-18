@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.binance.account.data.mapper.certificate.UserKycEmailNotifyMapper">
+	<resultMap id="BaseResultMap"
+		type="com.binance.account.data.entity.certificate.UserKycEmailNotify">
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="type" jdbcType="VARCHAR" property="type" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
+		<result column="status" jdbcType="VARCHAR" property="status" />
+		<result column="fail_reason" jdbcType="VARCHAR"
+			property="failReason" />
+		<result column="execute_time" jdbcType="TIMESTAMP"
+			property="executeTime" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP"
+			property="updateTime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		user_id, type, email, status, fail_reason, execute_time, create_time,
+		update_time
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_kyc_email_notify
+		where user_id = #{userId,jdbcType=BIGINT} and type
+		=#{type,jdbcType=VARCHAR}
+	</select>
+	<insert id="insert"
+		parameterType="com.binance.account.data.entity.certificate.UserKycEmailNotify">
+		insert ignore into user_kyc_email_notify (user_id, type, email,
+		status, fail_reason, execute_time,
+		create_time, update_time)
+		values (#{userId,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR}, #{failReason,jdbcType=VARCHAR}, #{executeTime,jdbcType=TIMESTAMP},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.binance.account.data.entity.certificate.UserKycEmailNotify">
+		insert ignore into user_kyc_email_notify
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="failReason != null">
+				fail_reason,
+			</if>
+			<if test="executeTime != null">
+				execute_time,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="failReason != null">
+				#{failReason,jdbcType=VARCHAR},
+			</if>
+			<if test="executeTime != null">
+				#{executeTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.binance.account.data.entity.certificate.UserKycEmailNotify">
+		update user_kyc_email_notify
+		<set>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="failReason != null">
+				fail_reason = #{failReason,jdbcType=VARCHAR},
+			</if>
+			<if test="executeTime != null">
+				execute_time = #{executeTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where user_id = #{userId,jdbcType=BIGINT} and type
+		=#{type,jdbcType=VARCHAR}
+	</update>
+
+	<delete id="deleteByUserId" parameterType="java.lang.Long">
+		delete from user_kyc_email_notify
+		where user_id = #{userId,jdbcType=BIGINT}
+	</delete>
+
+	<select id="selectPage" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_kyc_email_notify
+		where status = #{status,jdbcType=VARCHAR}
+		<if test="startTime != null">
+			and execute_time >= #{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime != null">
+			and execute_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+		</if>
+		order by execute_time
+		limit #{start},#{rows}
+	</select>
+</mapper>

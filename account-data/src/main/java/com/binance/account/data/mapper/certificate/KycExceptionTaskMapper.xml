@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.certificate.KycExceptionTaskMapper" >
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.KycExceptionTask" >
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="task_type" property="taskType" jdbcType="VARCHAR" />
+    <result column="task_memo" property="taskMemo" jdbcType="VARCHAR" />
+    <result column="execute_param" property="executeParam" jdbcType="VARCHAR" />
+    <result column="execute_status" property="executeStatus" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="execute_time" property="executeTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List">
+		user_id, task_type, task_memo, execute_param, execute_status, create_time, update_time,
+		execute_time
+	</sql>
+  <insert id="insert" parameterType="com.binance.account.data.entity.certificate.KycExceptionTask" >
+    insert into kyc_exception_task (user_id, task_type, task_memo, 
+      execute_param, execute_status, create_time, 
+      update_time, execute_time)
+    values (#{userId,jdbcType=BIGINT}, #{taskType,jdbcType=VARCHAR}, #{taskMemo,jdbcType=VARCHAR}, 
+      #{executeParam,jdbcType=VARCHAR}, #{executeStatus,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{executeTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.certificate.KycExceptionTask" >
+    insert into kyc_exception_task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="taskType != null" >
+        task_type,
+      </if>
+      <if test="taskMemo != null" >
+        task_memo,
+      </if>
+      <if test="executeParam != null" >
+        execute_param,
+      </if>
+      <if test="executeStatus != null" >
+        execute_status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="executeTime != null" >
+        execute_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="taskType != null" >
+        #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="taskMemo != null" >
+        #{taskMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="executeParam != null" >
+        #{executeParam,jdbcType=VARCHAR},
+      </if>
+      <if test="executeStatus != null" >
+        #{executeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="executeTime != null" >
+        #{executeTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="selectPage" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from kyc_exception_task
+		where execute_status = #{status,jdbcType=VARCHAR}
+		<if test="startTime != null">
+			and execute_time >= #{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime != null">
+			and execute_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+		</if>
+		order by execute_time
+		limit #{start},#{rows}
+	</select>
+	
+	<select id="selectByUk" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from kyc_exception_task
+		where user_id = #{userId,jdbcType=BIGINT} and task_type = #{taskType,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteByUk">
+		delete from kyc_exception_task 	where user_id = #{userId,jdbcType=BIGINT} and task_type = #{taskType,jdbcType=VARCHAR}
+		
+	</delete>
+	
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.binance.account.data.entity.certificate.KycExceptionTask">
+		update kyc_exception_task 
+		<set>
+		   <if test="taskMemo != null" >
+        	task_memo = #{taskMemo,jdbcType=VARCHAR},
+	      </if>
+	      <if test="executeParam != null" >
+	        execute_param = #{executeParam,jdbcType=VARCHAR},
+	      </if>
+	      <if test="executeStatus != null" >
+	        execute_status = #{executeStatus,jdbcType=VARCHAR},
+	      </if>
+	      <if test="createTime != null" >
+	        create_time = #{createTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="updateTime != null" >
+	        update_time = #{updateTime,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="executeTime != null" >
+	       execute_time = #{executeTime,jdbcType=TIMESTAMP},
+	      </if>
+		</set>
+		where user_id = #{userId,jdbcType=BIGINT} and task_type = #{taskType,jdbcType=VARCHAR}
+	</update>
+</mapper>

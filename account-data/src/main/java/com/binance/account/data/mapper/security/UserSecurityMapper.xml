@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.security.UserSecurityMapper">
+    <resultMap id="BaseResultMap"
+               type="com.binance.account.data.entity.security.UserSecurity">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="anti_phishing_code" jdbcType="VARCHAR"
+                property="antiPhishingCode"/>
+        <result column="security_level" jdbcType="INTEGER" property="securityLevel"/>
+        <result column="mobile_code" jdbcType="VARCHAR" property="mobileCode"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="login_failed_num" jdbcType="INTEGER" property="loginFailedNum"/>
+        <result column="login_failed_time" jdbcType="TIMESTAMP"
+                property="loginFailedTime"/>
+        <result column="auth_key" jdbcType="VARCHAR" property="authKey"/>
+        <result column="disable_time" jdbcType="TIMESTAMP" property="disableTime"/>
+        <result column="unbind_time" jdbcType="TIMESTAMP" property="unbindTime"/>
+        <result column="deregister_yubikey_time" jdbcType="TIMESTAMP" property="deregisterYubikeyTime"/>
+        <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+        <result column="lock_end_time" jdbcType="TIMESTAMP" property="lockEndTime"/>
+        <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="withdraw_security_status" jdbcType="INTEGER" property="withdrawSecurityStatus"/>
+        <result column="withdraw_security_auto_status" jdbcType="INTEGER" property="withdrawSecurityAutoStatus"/>
+        <result column="withdraw_security_face_status" jdbcType="INTEGER" property="withdrawSecurityFaceStatus"/>
+		<result column="protected_status" jdbcType="TINYINT" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"
+				property="protectedStatus"/>
+        <result column="yubikey_enabled_scenarios" jdbcType="BIGINT" property="yubikeyEnabledScenarios"/>
+        <result column="fund_password" jdbcType="VARCHAR" property="fundPassword"/>
+        <result column="fund_password_failed_num" jdbcType="INTEGER" property="fundPasswordFailedNum"/>
+        <result column="fund_password_failed_time" jdbcType="TIMESTAMP" property="fundPasswordFailedTime"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+        user_id, email, anti_phishing_code, security_level, mobile_code, mobile,
+        login_failed_num, deregister_yubikey_time, yubikey_enabled_scenarios,
+        login_failed_time, auth_key, disable_time, unbind_time, last_login_time, lock_end_time,
+        insert_time, update_time,withdraw_security_status,withdraw_security_auto_status,
+        withdraw_security_face_status,protected_status,fund_password,fund_password_failed_num,fund_password_failed_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_security
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from user_security
+        where user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.binance.account.data.entity.security.UserSecurity">
+        insert into user_security (user_id, email, anti_phishing_code,
+        security_level, mobile_code, mobile,
+        login_failed_num, login_failed_time, auth_key,
+        disable_time, unbind_time, last_login_time,
+        lock_end_time, insert_time, update_time
+        )
+        values (#{userId,jdbcType=BIGINT}, #{email,jdbcType=VARCHAR},
+        #{antiPhishingCode,jdbcType=VARCHAR},
+        #{securityLevel,jdbcType=INTEGER}, #{mobileCode,jdbcType=VARCHAR},
+        #{mobile,jdbcType=VARCHAR},
+        #{loginFailedNum,jdbcType=INTEGER}, #{loginFailedTime,jdbcType=TIMESTAMP}, #{authKey,jdbcType=VARCHAR},
+        #{disableTime,jdbcType=TIMESTAMP}, #{unbindTime,jdbcType=TIMESTAMP},
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+        #{lockEndTime,jdbcType=TIMESTAMP}, #{insertTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertIgnore" parameterType="com.binance.account.data.entity.security.UserSecurity">
+        insert ignore into user_security (user_id, email, anti_phishing_code,
+        security_level, mobile_code, mobile,
+        login_failed_num, login_failed_time, auth_key,
+        disable_time, unbind_time, last_login_time,
+        lock_end_time, insert_time, update_time
+        )
+        values (#{userId,jdbcType=BIGINT}, #{email,jdbcType=VARCHAR},
+        #{antiPhishingCode,jdbcType=VARCHAR},
+        #{securityLevel,jdbcType=INTEGER}, #{mobileCode,jdbcType=VARCHAR},
+        #{mobile,jdbcType=VARCHAR},
+        #{loginFailedNum,jdbcType=INTEGER}, #{loginFailedTime,jdbcType=TIMESTAMP}, #{authKey,jdbcType=VARCHAR},
+        #{disableTime,jdbcType=TIMESTAMP}, #{unbindTime,jdbcType=TIMESTAMP},
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+        #{lockEndTime,jdbcType=TIMESTAMP}, #{insertTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.binance.account.data.entity.security.UserSecurity">
+        insert into user_security
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="antiPhishingCode != null">
+                anti_phishing_code,
+            </if>
+            <if test="securityLevel != null">
+                security_level,
+            </if>
+            <if test="mobileCode != null">
+                mobile_code,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="loginFailedNum != null">
+                login_failed_num,
+            </if>
+            <if test="loginFailedTime != null">
+                login_failed_time,
+            </if>
+            <if test="authKey != null">
+                auth_key,
+            </if>
+            <if test="disableTime != null">
+                disable_time,
+            </if>
+            <if test="unbindTime != null">
+                unbind_time,
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time,
+            </if>
+            <if test="lockEndTime != null">
+                lock_end_time,
+            </if>
+            <if test="insertTime != null">
+                insert_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="withdrawSecurityStatus != null">
+                withdraw_security_status,
+            </if>
+            <if test="withdrawSecurityAutoStatus != null">
+                withdraw_security_auto_status,
+            </if>
+            <if test="withdrawSecurityFaceStatus != null">
+                withdraw_security_face_status,
+            </if>
+			<if test="protectedStatus != null">
+				protected_status,
+			</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="antiPhishingCode != null">
+                #{antiPhishingCode,jdbcType=VARCHAR},
+            </if>
+            <if test="securityLevel != null">
+                #{securityLevel,jdbcType=INTEGER},
+            </if>
+            <if test="mobileCode != null">
+                #{mobileCode,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="loginFailedNum != null">
+                #{loginFailedNum,jdbcType=INTEGER},
+            </if>
+            <if test="loginFailedTime != null">
+                #{loginFailedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="authKey != null">
+                #{authKey,jdbcType=VARCHAR},
+            </if>
+            <if test="disableTime != null">
+                #{disableTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="unbindTime != null">
+                #{unbindTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastLoginTime != null">
+                #{lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lockEndTime != null">
+                #{lockEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="insertTime != null">
+                #{insertTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="withdrawSecurityStatus != null">
+                #{withdrawSecurityStatus,jdbcType=INTEGER},
+            </if>
+            <if test="withdrawSecurityAutoStatus != null">
+                #{withdrawSecurityAutoStatus,jdbcType=INTEGER},
+            </if>
+            <if test="withdrawSecurityFaceStatus != null">
+                #{withdrawSecurityFaceStatus,jdbcType=INTEGER},
+            </if>
+			<if test="resetFails != null">
+				#{resetFails,jdbcType=INTEGER},
+			</if>
+			<if test="protectedStatus != null">
+				#{protectedStatus,jdbcType=TINYINT,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.security.UserSecurity">
+        update user_security
+        <set>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="antiPhishingCode != null">
+                anti_phishing_code = #{antiPhishingCode,jdbcType=VARCHAR},
+            </if>
+            <if test="securityLevel != null">
+                security_level = #{securityLevel,jdbcType=INTEGER},
+            </if>
+            <if test="mobileCode != null">
+                mobile_code = #{mobileCode,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="loginFailedNum != null">
+                login_failed_num = #{loginFailedNum,jdbcType=INTEGER},
+            </if>
+            <if test="loginFailedTime != null">
+                login_failed_time = #{loginFailedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="authKey != null">
+                auth_key = #{authKey,jdbcType=VARCHAR},
+            </if>
+            <if test="disableTime != null">
+                disable_time = #{disableTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="unbindTime != null">
+                unbind_time = #{unbindTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lockEndTime != null">
+                lock_end_time = #{lockEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="withdrawSecurityStatus != null">
+                withdraw_security_status = #{withdrawSecurityStatus,jdbcType=INTEGER},
+            </if>
+            <if test="withdrawSecurityAutoStatus != null">
+                withdraw_security_auto_status = #{withdrawSecurityAutoStatus,jdbcType=INTEGER},
+            </if>
+            <if test="withdrawSecurityFaceStatus != null">
+                withdraw_security_face_status = #{withdrawSecurityFaceStatus,jdbcType=INTEGER},
+            </if>
+            <if test="protectedStatus != null">
+                protected_status = #{protectedStatus,jdbcType=TINYINT,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+            </if>
+            <if test="yubikeyEnabledScenarios != null">
+                yubikey_enabled_scenarios = #{yubikeyEnabledScenarios,jdbcType=BIGINT},
+            </if>
+            <if test="deregisterYubikeyTime != null">
+                deregister_yubikey_time = #{deregisterYubikeyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fundPassword != null">
+                fund_password = #{fundPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="fundPasswordFailedNum != null">
+                fund_password_failed_num = #{fundPasswordFailedNum,jdbcType=INTEGER},
+            </if>
+            <if test="fundPasswordFailedTime != null">
+                fund_password_failed_time = #{fundPasswordFailedTime,jdbcType=TIMESTAMP},
+            </if>
+
+            update_time = now()
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.security.UserSecurity">
+        update user_security
+        set email = #{email,jdbcType=VARCHAR},
+        anti_phishing_code = #{antiPhishingCode,jdbcType=VARCHAR},
+        security_level = #{securityLevel,jdbcType=INTEGER},
+        mobile_code = #{mobileCode,jdbcType=VARCHAR},
+        mobile = #{mobile,jdbcType=VARCHAR},
+        login_failed_num = #{loginFailedNum,jdbcType=INTEGER},
+        login_failed_time = #{loginFailedTime,jdbcType=TIMESTAMP},
+        auth_key = #{authKey,jdbcType=VARCHAR},
+        disable_time = #{disableTime,jdbcType=TIMESTAMP},
+        unbind_time = #{unbindTime,jdbcType=TIMESTAMP},
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+        lock_end_time = #{lockEndTime,jdbcType=TIMESTAMP},
+        insert_time = #{insertTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        protected_status = #{protectedStatus,jdbcType=TINYINT,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <update id="updateAuthKeyByEmail" parameterType="com.binance.account.data.entity.security.UserSecurity">
+        update user_security set unbind_time = now(), update_time = now(), auth_key = #{authKey}
+        where user_id = #{userId}
+    </update>
+
+    <update id="updateSecurityByUserId" parameterType="com.binance.account.data.entity.security.UserSecurity">
+    	update user_security set update_time = now(), auth_key = #{authKey}
+        where user_id = #{userId}
+    </update>
+    <update id="updateMobileByUserId" parameterType="com.binance.account.data.entity.security.UserSecurity">
+        update user_security set
+        unbind_time = now(), update_time = now(),
+        mobile = #{mobile}, mobile_code = #{mobileCode}
+        where user_id = #{userId}
+    </update>
+    <update id="updateDeregisterYubikeyTimeByUserId" parameterType="java.lang.Long">
+        update user_security set deregister_yubikey_time = now(), update_time = now()
+        where user_id = #{userId}
+    </update>
+    <update id="updateBindInfoByUserId" parameterType="com.binance.account.data.entity.security.UserSecurity">
+    	update user_security set update_time = now(),
+	       mobile = #{mobile}, mobile_code = #{mobileCode}
+	       where user_id = #{userId}
+    </update>
+    <update id="resetLoginFailedNum" parameterType="java.lang.Long">
+        update user_security set login_failed_num = 0, update_time = now()
+        where user_id = #{userId}
+    </update>
+    <select id="queryUserId" parameterType="com.binance.account.data.entity.security.UserSecurity"
+            resultType="java.lang.Long">
+        select user_id from user_security
+        <where>
+            <trim prefixOverrides="and">
+                <if test="userId != null">
+                    and user_id = #{userId}
+                </if>
+                <if test="email != null">
+                    and email = #{email,jdbcType=VARCHAR}
+                </if>
+                <if test="antiPhishingCode != null">
+                    and anti_phishing_code = #{antiPhishingCode,jdbcType=VARCHAR}
+                </if>
+                <if test="securityLevel != null">
+                    and security_level = #{securityLevel,jdbcType=INTEGER}
+                </if>
+                <if test="mobileCode != null">
+                    and mobile_code = #{mobileCode,jdbcType=VARCHAR}
+                </if>
+                <if test="mobile != null">
+                    and mobile = #{mobile,jdbcType=VARCHAR}
+                </if>
+                <if test="loginFailedNum != null">
+                    and login_failed_num = #{loginFailedNum,jdbcType=INTEGER}
+                </if>
+                <if test="loginFailedTime != null">
+                    and login_failed_time = #{loginFailedTime,jdbcType=TIMESTAMP}
+                </if>
+                <if test="authKey != null">
+                    and auth_key = #{authKey,jdbcType=VARCHAR}
+                </if>
+                <if test="disableTime != null">
+                    and disable_time = #{disableTime,jdbcType=TIMESTAMP}
+                </if>
+                <if test="unbindTime != null">
+                    and unbind_time = #{unbindTime,jdbcType=TIMESTAMP}
+                </if>
+                <if test="lastLoginTime != null">
+                    and last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP}
+                </if>
+                <if test="lockEndTime != null">
+                    and lock_end_time = #{lockEndTime,jdbcType=TIMESTAMP}
+                </if>
+            </trim>
+        </where>
+    </select>
+    <select id="selectAntiPhishingCode" parameterType="java.lang.Long" resultType="java.lang.String">
+    	select anti_phishing_code from user_security  where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <select id="selectMobileByUserId" parameterType="java.lang.Long" resultType="java.lang.String">
+        select mobile from user_security  where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <select id="selectUserIdByMobileCode" parameterType="java.lang.String"
+            resultType="java.lang.Long">
+        select user_id
+        from user_security
+        where mobile_code = #{mobileCode,jdbcType=VARCHAR}
+    </select>
+    <select id="queryByMobile" parameterType="java.lang.String" resultMap="BaseResultMap">
+	     select
+	     <include refid="Base_Column_List"/>
+	        from user_security
+	        where mobile = #{mobile,jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="queryByMobileAndMobileCode"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_security
+        where mobile = #{mobile,jdbcType=VARCHAR}
+        and mobile_code = #{mobileCode,jdbcType=VARCHAR}
+    </select>
+    <select id="selectUserSecurityList" parameterType="java.util.List" resultType="com.binance.account.data.entity.security.UserSecurity">
+    	SELECT user_id userId, email,mobile,mobile_code mobileCode FROM user_security
+    	<if test="userIds != null and userIds.size() > 0">
+    		where user_id in
+    		<foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+	            #{userId}
+	        </foreach>
+    	</if>
+    </select>
+
+    <select id="selectUserSecurityByUserIds" parameterType="java.util.List" resultMap="BaseResultMap">
+    	SELECT <include refid="Base_Column_List"/> FROM user_security
+    	<if test="userIds != null and userIds.size() > 0">
+    		where user_id in
+    		<foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+	            #{userId}
+	        </foreach>
+    	</if>
+    </select>
+
+    <update id="updateStatusByUserId" parameterType="java.util.Map">
+		UPDATE user_security
+		<set>
+			<if test="withdrawSecurityStatus != null">
+				withdraw_security_status = #{withdrawSecurityStatus,jdbcType=TINYINT},
+			</if>
+			<if test="withdrawSecurityAutoStatus != null">
+				withdraw_security_auto_status = #{withdrawSecurityAutoStatus,jdbcType=TINYINT},
+			</if>
+		</set>
+		WHERE user_id = #{userId,jdbcType=BIGINT}
+	</update>
+
+	<select id="selectRecentUpdateUserId"
+		resultType="java.lang.Long">
+		select user_id from user_security
+		where update_time &gt;= #{recentTime}
+	</select>
+
+	<update id="updateWithdrawSecurityFaceStatusByUserId"
+		parameterType="java.util.Map">
+		update user_security
+		set withdraw_security_face_status = #{toStatus,jdbcType=INTEGER},
+		update_time = now()
+		where user_id = #{userId,jdbcType=BIGINT}
+		<if test="fromStatus != null">
+			and withdraw_security_face_status = #{fromStatus,jdbcType=INTEGER}
+		</if>
+	</update>
+
+   <update id="updateProtectedMode" parameterType="java.util.Map">
+		update user_security
+		set
+			<if test="protectedStatus != null">
+				protected_status = #{protectedStatus,jdbcType=TINYINT},
+			</if>
+		  update_time = now()
+		where user_id = #{userId}
+	</update>
+
+
+	<select id="selectUserSecurityPageByUserIds"
+		parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM user_security
+		<if test="userIds != null and userIds.size() > 0">
+			where user_id in
+			<foreach collection="userIds" item="userId" open="("
+				close=")" separator=",">
+				#{userId}
+			</foreach>
+		</if>
+		<choose>
+			<when test="sort != null and sort != '' and order != null">
+				ORDER BY
+				<if test="sort == 'insert_time'">
+					<if test="order == 'desc'">
+						insert_time desc
+					</if>
+					<if test="order == 'asc'">
+						insert_time asc
+					</if>
+				</if>
+				<if test="sort == 'update_time'">
+					<if test="order == 'desc'">
+						update_time desc
+					</if>
+					<if test="order == 'asc'">
+						update_time asc
+					</if>
+				</if>
+			</when>
+			<otherwise>
+				ORDER BY insert_time desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and rows != null and rows > 0">
+			LIMIT #{offset},#{rows}
+		</if>
+	</select>
+
+    <select id="selectYubikeyEnabledScenarios"
+            resultType="java.lang.Long">
+		select yubikey_enabled_scenarios
+		  from user_security
+		 where user_id = #{user_id}
+	</select>
+
+
+    <select id="queryByEmail"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_security
+        where email = #{email,jdbcType=VARCHAR}
+    </select>
+
+
+    <update id="updateUnBindEmailByUserId" parameterType="com.binance.account.data.entity.security.UserSecurity">
+    	update user_security set update_time = now(),
+	       email = #{email}
+	       where user_id = #{userId}
+    </update>
+</mapper>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.broker.ApiAgentUserAliasMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.broker.ApiAgentUserAlias">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="agent_id" jdbcType="BIGINT" property="agentId" />
+    <result column="referee_id" jdbcType="BIGINT" property="refereeId" />
+    <result column="customer_id" jdbcType="VARCHAR" property="customerId" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, agent_id, referee_id, customer_id, email, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from apiagent_user_alias
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByAgentIdCustomerId" parameterType="com.binance.account.data.entity.broker.ApiAgentUserAlias" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from apiagent_user_alias
+    where agent_id = #{agentId,jdbcType=BIGINT} and customer_id = #{customerId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByAgentIdRefereeId" parameterType="com.binance.account.data.entity.broker.ApiAgentUserAlias" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from apiagent_user_alias
+    where agent_id = #{agentId,jdbcType=BIGINT} and referee_id = #{refereeId}
+  </select>
+
+  <select id="selectByAgentIdCustomerIdEmail" parameterType="com.binance.account.data.entity.broker.ApiAgentUserAlias" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from apiagent_user_alias
+    where agent_id = #{agentId,jdbcType=BIGINT}
+    <if test="customerId != null">
+      and customer_id = #{customerId,jdbcType=VARCHAR}
+    </if>
+    <if test="email != null">
+      and email = #{email,jdbcType=VARCHAR}
+    </if>
+    <if test="start != null and offset != null">
+      limit #{start},#{offset}
+    </if>
+  </select>
+
+  <select id="selectByEmails" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from apiagent_user_alias
+    where agent_id = #{agentId,jdbcType=BIGINT}
+    and email in
+    <foreach collection="emails" item="email" index="index" open="(" close=")" separator=",">
+      #{email}
+    </foreach>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from apiagent_user_alias
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.broker.ApiAgentUserAlias">
+    insert into apiagent_user_alias (id, agent_id, referee_id,
+      customer_id, email, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{agentId,jdbcType=BIGINT}, #{refereeId,jdbcType=BIGINT},
+      #{customerId,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.broker.ApiAgentUserAlias">
+    insert into apiagent_user_alias
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="agentId != null">
+        agent_id,
+      </if>
+      <if test="refereeId != null">
+        referee_id,
+      </if>
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="agentId != null">
+        #{agentId,jdbcType=BIGINT},
+      </if>
+      <if test="refereeId != null">
+        #{refereeId,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.broker.ApiAgentUserAlias">
+    update apiagent_user_alias
+    <set>
+      <if test="agentId != null">
+        agent_id = #{agentId,jdbcType=BIGINT},
+      </if>
+      <if test="refereeId != null">
+        referee_id = #{refereeId,jdbcType=BIGINT},
+      </if>
+      <if test="customerId != null">
+        customer_id = #{customerId,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.broker.ApiAgentUserAlias">
+    update apiagent_user_alias
+    set agent_id = #{agentId,jdbcType=BIGINT},
+      referee_id = #{refereeId,jdbcType=BIGINT},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

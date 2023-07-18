@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.user.FutureUserTradingAccountMapper">
+    <resultMap id="BaseResultMap"
+               type="com.binance.account.data.entity.user.FutureUserTradingAccount">
+        <id column="trading_account" jdbcType="BIGINT" property="tradingAccount"/>
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey"
+            parameterType="com.binance.account.data.entity.user.FutureUserTradingAccount">
+        delete from future_user_trading_account
+        where trading_account = #{tradingAccount,jdbcType=BIGINT}
+        and user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert"
+            parameterType="com.binance.account.data.entity.user.FutureUserTradingAccount">
+        insert into future_user_trading_account (trading_account, user_id)
+        values (#{tradingAccount,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertIgnore" parameterType="com.binance.account.data.entity.user.FutureUserTradingAccount">
+        insert ignore into future_user_trading_account (trading_account, user_id)
+        values (#{tradingAccount,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertSelective"
+            parameterType="com.binance.account.data.entity.user.FutureUserTradingAccount">
+        insert into future_user_trading_account
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tradingAccount != null">
+                trading_account,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tradingAccount != null">
+                #{tradingAccount,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <select id="queryUserIdByTradingAccount" resultType="java.lang.Long">
+        select user_id from future_user_trading_account where trading_account = #{tradingAccount,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryTradingAccountByUserId" resultType="java.lang.Long">
+        select trading_account from future_user_trading_account where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+</mapper>

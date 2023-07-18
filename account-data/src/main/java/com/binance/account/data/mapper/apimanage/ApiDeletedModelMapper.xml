@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.apimanage.ApiDeletedModelMapper">
+    <resultMap id="BaseResultMap"
+               type="com.binance.account.data.entity.apimanage.ApiDeletedModel">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <id column="original_id" property="originalId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="api_key" property="apiKey" jdbcType="VARCHAR"/>
+        <result column="key_id" property="keyId" jdbcType="INTEGER"/>
+        <result column="api_name" property="apiName" jdbcType="VARCHAR"/>
+        <result column="secret_key" property="secretKey"
+                jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="trade_ip" property="tradeIp" jdbcType="VARCHAR"/>
+        <result column="withdraw_ip" property="withdrawIp"
+                jdbcType="VARCHAR"/>
+        <result column="rule_id" property="ruleId" jdbcType="VARCHAR"/>
+        <result column="info" property="info" jdbcType="VARCHAR"/>
+        <result column="disable_status" property="disableStatus"
+                jdbcType="TINYINT"/>
+        <result column="delete_time" property="deleteTime"
+                jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime"
+                jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime"
+                jdbcType="TIMESTAMP"/>
+        <result column="enable_withdraw_status"
+                property="enableWithdrawStatus" jdbcType="TINYINT"/>
+        <result column="withdraw_verifycode"
+                property="withdrawVerifycode" jdbcType="VARCHAR"/>
+        <result column="withdraw_verifycode_time"
+                property="withdrawVerifycodeTime" jdbcType="TIMESTAMP"/>
+        <result column="api_email_verify" property="apiEmailVerify"
+                jdbcType="TIMESTAMP"/>
+        <result column="create_email_send_time"
+                property="createEmailSendTime" jdbcType="TIMESTAMP"/>
+        <result column="small_enforced_limit" property="smallEnforcedLimit" jdbcType="INTEGER" />
+        <result column="big_enforced_limit" property="bigEnforcedLimit" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_OrderBy_List">
+        <if test="sort=='userId'">
+            <if test="order =='desc'">
+                am.user_id desc
+            </if>
+            <if test="order =='asc'">
+                am.user_id asc
+            </if>
+        </if>
+        <if test="sort=='email'">
+            <if test="order =='desc'">
+                am.email desc
+            </if>
+            <if test="order =='asc'">
+                am.email asc
+            </if>
+        </if>
+        <if test="sort=='apiName'">
+            <if test="order =='desc'">
+                am.api_name desc
+            </if>
+            <if test="order =='asc'">
+                am.api_name asc
+            </if>
+        </if>
+        <if test="sort=='createTime'">
+            <if test="order =='desc'">
+                am.create_time desc
+            </if>
+            <if test="order =='asc'">
+                am.create_time asc
+            </if>
+        </if>
+        <if test="sort=='updateTime'">
+            <if test="order =='desc'">
+                am.update_time desc
+            </if>
+            <if test="order =='asc'">
+                am.update_time asc
+            </if>
+        </if>
+    </sql>
+    <insert id="insert" parameterType="com.binance.account.data.entity.apimanage.ApiDeletedModel">
+        insert into
+		api_manage_deleted(original_id,user_id,email,api_key,key_id,api_name,secret_key,rule_id,status,enable_withdraw_status,trade_ip,withdraw_ip,info,create_time,uuid,api_email_verify,create_email_send_time,small_enforced_limit,big_enforced_limit,type)
+		values(#{originalId,jdbcType=NUMERIC},#{userId,jdbcType=VARCHAR},#{email},#{apiKey,jdbcType=VARCHAR},#{keyId,jdbcType=INTEGER},#{apiName,jdbcType=VARCHAR},#{secretKey,jdbcType=VARCHAR},#{ruleId,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},#{enableWithdrawStatus},#{tradeIp,jdbcType=VARCHAR},#{withdrawIp,jdbcType=VARCHAR},#{info,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR}
+		,#{uuid,jdbcType=VARCHAR},#{apiEmailVerify},#{createEmailSendTime,jdbcType=TIMESTAMP},#{smallEnforcedLimit,jdbcType=INTEGER},#{bigEnforcedLimit,jdbcType=INTEGER},#{type,jdbcType=VARCHAR});
+    </insert>
+    <select id="loadByParams" resultMap="BaseResultMap">
+        select * from api_manage_deleted am
+        <where>
+            <if test="userId!=null and userId!=''">
+                and am.user_id=#{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != ''">
+                and am.email  like CONCAT(#{email},'%')
+            </if>
+            <if test="apiKey != null and apiKey != ''">
+                and am.api_key =#{apiKey,jdbcType=VARCHAR}
+            </if>
+            <if test="apiName != null and apiName != ''">
+                and am.api_name like CONCAT('%',#{apiName},'%')
+            </if>
+            <if test="ip != null and ip != ''">
+                and am.trade_ip like CONCAT('%',#{ip},'%')
+            </if>
+            <if test="ip != null and ip != ''">
+                and am.withdraw_ip like CONCAT('%',#{ip},'%')
+            </if>
+            <if test="ruleId != null and ruleId != ''">
+                and am.rule_id = #{ruleId}
+            </if>
+            <if test="startTime != null">
+                and am.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                and am.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if
+                    test="enableWithdrawStatus != null and enableWithdrawStatus != ''">
+                and am.enable_withdraw_status = #{enableWithdrawStatus}
+            </if>
+        </where>
+        <if test="offset>0">
+            LIMIT #{start},#{offset}
+        </if>
+    </select>
+    <select id="countByParams" resultType="_long">
+        select count(1) from api_manage_deleted am
+        <where>
+            <if test="userId!=null and userId!=''">
+                and am.user_id=#{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="email != null and email != ''">
+                and am.email  like CONCAT(#{email},'%')
+            </if>
+            <if test="apiKey != null and apiKey != ''">
+                and am.api_key =#{apiKey,jdbcType=VARCHAR}
+            </if>
+            <if test="apiName != null and apiName != ''">
+                and am.api_name like CONCAT('%',#{apiName},'%')
+            </if>
+            <if test="ip != null and ip != ''">
+                and am.trade_ip like CONCAT('%',#{ip},'%')
+            </if>
+            <if test="ip != null and ip != ''">
+                and am.withdraw_ip like CONCAT('%',#{ip},'%')
+            </if>
+            <if test="ruleId != null and ruleId != ''">
+                and am.rule_id = #{ruleId}
+            </if>
+            <if test="startTime != null">
+                and am.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime != null">
+                and am.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            <if
+                    test="enableWithdrawStatus != null and enableWithdrawStatus != ''">
+                and am.enable_withdraw_status = #{enableWithdrawStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="loadAllApikey" resultMap="BaseResultMap">
+		SELECT id, api_key  from api_manage_deleted
+	</select>
+
+    <update id="updateApikey" parameterType="com.binance.account.data.entity.apimanage.ApiDeletedModel">
+		UPDATE api_manage_deleted
+		SET
+		api_key=#{apiKey,jdbcType=VARCHAR}
+		WHERE
+		id = #{id,jdbcType=BIGINT}
+	</update>
+</mapper>

@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.user.UserAgentRewardMapper" >
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.user.UserAgentReward" >
+    	<id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="batch_id" property="batchId" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="old_agent_reward_ratio" property="oldAgentRewardRatio" jdbcType="DECIMAL" />
+        <result column="new_agent_reward_ratio" property="newAgentRewardRatio" jdbcType="DECIMAL" />
+        <result column="reason" property="reason" jdbcType="VARCHAR" />
+        <result column="is_restore" property="isRestore" jdbcType="VARCHAR" />
+        <result column="expect_restore_time" property="expectRestoreTime" jdbcType="TIMESTAMP" />
+        <result column="actual_restore_time" property="actualRestoreTime" jdbcType="TIMESTAMP" />
+        <result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+        <result column="apply_name" property="applyName" jdbcType="VARCHAR" />
+        <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+        <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+        <result column="operator_time" property="operatorTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="agent_id" property="agentId" jdbcType="BIGINT" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="track_source" property="trackSource" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id,user_id, batch_id, email, old_agent_reward_ratio, new_agent_reward_ratio, reason,
+        is_restore, expect_restore_time, actual_restore_time, apply_id, apply_name, apply_time,
+        operator_id, operator_time, status, agent_id, track_source,update_time
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from user_agent_reward
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from user_agent_reward
+        where user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.binance.account.data.entity.user.UserAgentReward" >
+        insert into user_agent_reward (user_id, batch_id, email,
+        old_agent_reward_ratio, new_agent_reward_ratio,
+        reason, is_restore, expect_restore_time,
+        actual_restore_time, apply_id, apply_name,
+        apply_time, operator_id, operator_time,
+        status, agent_id, track_source
+        )
+        values (#{userId,jdbcType=BIGINT}, #{batchId,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+        #{oldAgentRewardRatio,jdbcType=DECIMAL}, #{newAgentRewardRatio,jdbcType=DECIMAL},
+        #{reason,jdbcType=VARCHAR}, #{isRestore,jdbcType=VARCHAR}, #{expectRestoreTime,jdbcType=TIMESTAMP},
+        #{actualRestoreTime,jdbcType=TIMESTAMP}, #{applyId,jdbcType=VARCHAR}, #{applyName,jdbcType=VARCHAR},
+        #{applyTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=VARCHAR}, #{operatorTime,jdbcType=TIMESTAMP},
+        #{status,jdbcType=TINYINT}, #{agentId,jdbcType=BIGINT}, #{trackSource,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="saveUserAgentReward" parameterType="java.util.Map" >
+        insert into user_agent_reward
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                user_id,
+            </if>
+            <if test="batchId != null" >
+                batch_id,
+            </if>
+            <if test="email != null" >
+                email,
+            </if>
+            <if test="oldAgentRewardRatio != null" >
+                old_agent_reward_ratio,
+            </if>
+            <if test="newAgentRewardRatio != null" >
+                new_agent_reward_ratio,
+            </if>
+            <if test="reason != null" >
+                reason,
+            </if>
+            <if test="isRestore != null" >
+                is_restore,
+            </if>
+            <if test="expectRestoreTime != null" >
+                expect_restore_time,
+            </if>
+            <if test="actualRestoreTime != null" >
+                actual_restore_time,
+            </if>
+            <if test="applyId != null" >
+                apply_id,
+            </if>
+            <if test="applyName != null" >
+                apply_name,
+            </if>
+            <if test="applyTime != null" >
+                apply_time,
+            </if>
+            <if test="operatorId != null" >
+                operator_id,
+            </if>
+            <if test="operatorTime != null" >
+                operator_time,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="agentId != null" >
+                agent_id,
+            </if>
+            <if test="trackSource != null" >
+                track_source,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="batchId != null" >
+                #{batchId,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="oldAgentRewardRatio != null" >
+                #{oldAgentRewardRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="newAgentRewardRatio != null" >
+                #{newAgentRewardRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="reason != null" >
+                #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="isRestore != null" >
+                #{isRestore,jdbcType=VARCHAR},
+            </if>
+            <if test="expectRestoreTime != null" >
+                #{expectRestoreTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualRestoreTime != null" >
+                #{actualRestoreTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="applyId != null" >
+                #{applyId,jdbcType=VARCHAR},
+            </if>
+            <if test="applyName != null" >
+                #{applyName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyTime != null" >
+                #{applyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorId != null" >
+                #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorTime != null" >
+                #{operatorTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="agentId != null" >
+                #{agentId,jdbcType=BIGINT},
+            </if>
+            <if test="trackSource != null" >
+                #{trackSource,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="java.util.Map" >
+        update user_agent_reward
+        <set >
+            <if test="batchId != null" >
+                batch_id = #{batchId,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="oldAgentRewardRatio != null" >
+                old_agent_reward_ratio = #{oldAgentRewardRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="newAgentRewardRatio != null" >
+                new_agent_reward_ratio = #{newAgentRewardRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="reason != null" >
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test='isRestore != null and isRestore == "n"' >
+                is_restore = 'n', expect_restore_time = NULL,
+            </if>
+            <if test='isRestore != null and isRestore == "y"' >
+                is_restore = 'y',
+            </if>
+            <if test="expectRestoreTime != null" >
+                expect_restore_time = #{expectRestoreTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualRestoreTime != null" >
+                actual_restore_time = #{actualRestoreTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="applyId != null" >
+                apply_id = #{applyId,jdbcType=VARCHAR},
+            </if>
+            <if test="applyName != null" >
+                apply_name = #{applyName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyTime != null" >
+                apply_time = #{applyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorId != null" >
+                operator_id = #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorTime != null" >
+                operator_time = #{operatorTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="agentId != null" >
+                agent_id = #{agentId,jdbcType=BIGINT},
+            </if>
+            <if test="trackSource != null" >
+                track_source = #{trackSource,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT} and status = 0
+    </update>
+    
+       <update id="updateAgentRewardByUserId" parameterType="java.util.Map" >
+        update user_agent_reward
+        <set >
+            <if test="batchId != null" >
+                batch_id = #{batchId,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="oldAgentRewardRatio != null" >
+                old_agent_reward_ratio = #{oldAgentRewardRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="newAgentRewardRatio != null" >
+                new_agent_reward_ratio = #{newAgentRewardRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="reason != null" >
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="isRestore != null" >
+                is_restore = #{isRestore,jdbcType=VARCHAR},
+            </if>
+            <if test="expectRestoreTime != null" >
+                expect_restore_time = #{expectRestoreTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualRestoreTime != null" >
+                actual_restore_time = #{actualRestoreTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="applyId != null" >
+                apply_id = #{applyId,jdbcType=VARCHAR},
+            </if>
+            <if test="applyName != null" >
+                apply_name = #{applyName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyTime != null" >
+                apply_time = #{applyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorId != null" >
+                operator_id = #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorTime != null" >
+                operator_time = #{operatorTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="agentId != null" >
+                agent_id = #{agentId,jdbcType=BIGINT},
+            </if>
+            <if test="trackSource != null" >
+                track_source = #{trackSource,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT} and status=0
+    </update>
+    
+      <update id="updateAgentStatusByBatchId" parameterType="java.util.Map" >
+        update user_agent_reward
+        <set >
+            <if test="batchId != null" >
+                batch_id = #{batchId,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="oldAgentRewardRatio != null" >
+                old_agent_reward_ratio = #{oldAgentRewardRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="newAgentRewardRatio != null" >
+                new_agent_reward_ratio = #{newAgentRewardRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="reason != null" >
+                reason = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="isRestore != null" >
+                is_restore = #{isRestore,jdbcType=VARCHAR},
+            </if>
+            <if test="expectRestoreTime != null" >
+                expect_restore_time = #{expectRestoreTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="actualRestoreTime != null" >
+                actual_restore_time = #{actualRestoreTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="applyId != null" >
+                apply_id = #{applyId,jdbcType=VARCHAR},
+            </if>
+            <if test="applyName != null" >
+                apply_name = #{applyName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyTime != null" >
+                apply_time = #{applyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorId != null" >
+                operator_id = #{operatorId,jdbcType=VARCHAR},
+            </if>
+            <if test="operatorTime != null" >
+                operator_time = #{operatorTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="agentId != null" >
+                agent_id = #{agentId,jdbcType=BIGINT},
+            </if>
+            <if test="trackSource != null" >
+                track_source = #{trackSource,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where batch_id = #{batchId,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.user.UserAgentReward" >
+        update user_agent_reward
+        set batch_id = #{batchId,jdbcType=VARCHAR},
+        email = #{email,jdbcType=VARCHAR},
+        old_agent_reward_ratio = #{oldAgentRewardRatio,jdbcType=DECIMAL},
+        new_agent_reward_ratio = #{newAgentRewardRatio,jdbcType=DECIMAL},
+        reason = #{reason,jdbcType=VARCHAR},
+        is_restore = #{isRestore,jdbcType=VARCHAR},
+        expect_restore_time = #{expectRestoreTime,jdbcType=TIMESTAMP},
+        actual_restore_time = #{actualRestoreTime,jdbcType=TIMESTAMP},
+        apply_id = #{applyId,jdbcType=VARCHAR},
+        apply_name = #{applyName,jdbcType=VARCHAR},
+        apply_time = #{applyTime,jdbcType=TIMESTAMP},
+        operator_id = #{operatorId,jdbcType=VARCHAR},
+        operator_time = #{operatorTime,jdbcType=TIMESTAMP},
+        status = #{status,jdbcType=TINYINT},
+        agent_id = #{agentId,jdbcType=BIGINT},
+        track_source = #{trackSource,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <select id="getLastBatchId" resultType="java.lang.String">
+        SELECT batch_id batchId FROM user_agent_reward ORDER BY create_time DESC LIMIT 1
+    </select>
+    
+     <select id="getAgentRewardList" parameterType="java.util.Map" resultMap="BaseResultMap">
+          <choose>
+            <when test="batch!=null">
+                select * from
+                (
+                    select <include refid="Base_Column_List"/>
+			        FROM user_agent_reward  <include refid="Agent_Reward_List" />
+                    order by status
+                ) t
+                group by batch_id
+                <choose>
+                    <when test="sort != null and sort != ''">
+                        ORDER BY <include refid="Agent_Reward_OrderBy_List" />
+                    </when>
+                    <otherwise>
+                        ORDER BY cast(batch_id as SIGNED INTEGER) DESC
+                    </otherwise>
+                </choose>
+                <if test="limit>0">
+ 					LIMIT #{offset},#{limit}
+			    </if>
+            </when>
+            <otherwise>
+                select <include refid="Base_Column_List"/>
+			        FROM user_agent_reward  <include refid="Agent_Reward_List" />
+                    <choose>
+                        <when test="sort != null and sort != ''">
+                            ORDER BY <include refid="Agent_Reward_OrderBy_List" />
+                        </when>
+                        <otherwise>
+                            ORDER BY cast(batch_id as SIGNED INTEGER) DESC
+                        </otherwise>
+                    </choose>
+			        <if test="limit>0">
+			            LIMIT #{offset},#{limit}
+			        </if>
+            </otherwise>
+        </choose>
+    </select>
+    
+    <select id="getUserAgentRewardNum" parameterType="java.util.Map" resultType="java.lang.Long">
+    	 <choose>
+            <when test="batch!=null and batch!=''">
+                select count(1) from
+                (
+                select <include refid="Base_Column_List"/>
+                from user_agent_reward
+                  <include refid="Agent_Reward_List"/>
+                order by status
+                ) t
+            </when>
+            <otherwise>
+                select count(1)
+			        FROM user_agent_reward  <include refid="Agent_Reward_List" />
+            </otherwise>
+        </choose>
+    </select>
+    
+    <select id="selectByUserIds" parameterType="java.util.List" resultMap="BaseResultMap">
+    	 SELECT temp.* FROM(
+        	SELECT <include refid="Base_Column_List"/> FROM user_agent_reward 
+	    	<if test="userIds != null and userIds.size() > 0">
+	            where user_id in
+	            <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+	                #{userId}
+	            </foreach>
+	        </if>
+			and `status`  <![CDATA[ <> ]]> 2
+			ORDER BY update_time DESC
+			) AS temp GROUP BY temp.user_id
+    </select>
+    
+    <select id="selectByBatchIds" parameterType="java.util.List" resultMap="BaseResultMap">
+    	SELECT <include refid="Base_Column_List"/> FROM user_agent_reward 
+    	<if test="batchIds != null and batchIds.size() > 0">
+            where batch_id in
+            <foreach collection="batchIds" item="batchId" open="(" close=")" separator=",">
+                #{batchId}
+            </foreach>
+            AND `status` = 0
+        </if>
+    </select>
+    
+    <select id="selectByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+    	SELECT <include refid="Base_Column_List"/> FROM user_agent_reward 
+    	<if test="ids != null and ids.size() > 0">
+            where id in
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+            AND `status` = 0
+        </if>
+    </select>
+    
+    <update id="updateExpectTime">
+    	UPDATE user_agent_reward SET update_time = NOW(),actual_restore_time = NOW() , is_restore = 'n'
+       		   WHERE status= 1 AND is_restore = 'y' AND expect_restore_time &lt;= NOW()
+    </update>
+
+ 	<select id="selectIsRestoreInfo" resultMap="BaseResultMap">
+    	SELECT user_id,old_agent_reward_ratio FROM user_agent_reward WHERE status = 1 AND is_restore = 'y' AND expect_restore_time &lt;= NOW()
+    </select>
+    
+    <!-- ****************分页查询************************ -->
+    <sql id="Agent_Reward_List">
+        <where>
+            <if test="userId != null and userId != '' " >
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="email != null and email != '' " >
+                and email = #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="batchId != null and batchId !=''" >
+                and batch_id = #{batchId,jdbcType=VARCHAR}
+            </if>
+            <if test="status != null" >
+                and status = #{status}
+            </if>
+            <if test="isRestore != null">
+            	and is_restore = #{isRestore}
+            </if>
+            <if test="startApplyTime != null">
+            	and apply_time  &gt;= #{startApplyTime}
+            </if>
+            <if test="endApplyTime != null">
+            	and apply_time  &lt;= #{endApplyTime}
+            </if>
+            <if test="startOperatorTime != null">
+            	and operator_time &gt;= #{startOperatorTime}
+            </if>
+            <if test="endOperatorTime != null">
+            	and operator_time &lt;= #{endOperatorTime}
+            </if>
+            <if test="reason != null and reason != ''">
+                and reason  like concat(#{reason}, '%')
+            </if>
+        </where>
+    </sql>
+    
+    <sql id="Agent_Reward_OrderBy_List">
+    	 <if test="sort=='batchId'" >
+            <if test="order =='desc'">
+                 cast(batch_id as SIGNED INTEGER) DESC
+            </if>
+            <if test="order =='asc'">
+                 cast(batch_id as SIGNED INTEGER) ASC
+            </if>
+        </if>
+        <if test="sort=='applyTimeStr' or sort=='applyTime'" >
+            <if test="order =='desc'">
+                apply_time desc
+            </if>
+            <if test="order =='asc'">
+                apply_time asc
+            </if>
+        </if>
+        <if test="sort=='operatorTimeStr' or sort=='operatorTime'" >
+            <if test="order =='desc'">
+                operator_time desc
+            </if>
+            <if test="order =='asc'">
+                operator_time asc
+            </if>
+        </if>
+    </sql>
+</mapper>

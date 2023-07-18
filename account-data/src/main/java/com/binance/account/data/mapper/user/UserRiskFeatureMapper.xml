@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.binance.account.data.mapper.user.UserRiskFeatureMapper">
+	<resultMap id="BaseResultMap"
+		type="com.binance.account.data.entity.user.UserRiskFeature">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="flow_id" jdbcType="VARCHAR" property="flowId" />
+		<result column="ip" jdbcType="VARCHAR" property="ip" />
+		<result column="status" jdbcType="TINYINT" property="status" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="risk_result" jdbcType="BIT" property="riskResult" />
+		<result column="features" jdbcType="VARCHAR" property="features" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,
+		user_id,
+		flow_id,
+		inet_ntoa(ip) as ip,
+		status,
+		risk_result,
+		features,
+		update_time,
+		create_time
+	</sql>
+
+	<update id="updateStatusFromTo" parameterType="java.util.Map">
+		UPDATE `user_flow_risk_feature`
+		<set>
+			STATUS = #{to},
+			<if test="sessionId != null">
+				session_id = #{sessionId,jdbcType=INTEGER},
+			</if>
+			update_time = NOW()
+		</set>
+		WHERE
+	    	update_time <![CDATA[ < ]]> NOW() + INTERVAL - #{minute} MINUTE
+		  AND STATUS = #{from} ;
+	</update>
+
+	<select id="getByUserId" resultMap="BaseResultMap"
+		parameterType="java.util.Map" useCache="false">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM `user_flow_risk_feature`
+		WHERE user_id = #{userId,jdbcType=BIGINT} AND flow_id = #{flowId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getBeforeMinutes" resultMap="BaseResultMap"
+		parameterType="java.util.Map" useCache="false">
+		SELECT
+		 <include refid="Base_Column_List" />
+		FROM `user_flow_risk_feature`
+		WHERE
+		  update_time <![CDATA[ < ]]> NOW() + INTERVAL - #{minute} MINUTE
+		AND status = #{status}
+		AND session_id = #{sessionId}
+	</select>
+
+	<insert id="insert"
+		parameterType="com.binance.account.data.entity.user.UserRiskFeature"
+		keyProperty="id" useGeneratedKeys="true" keyColumn="id">
+		INSERT INTO
+		`user_flow_risk_feature`
+		(
+		`user_id`,
+		`flow_id`,
+		`ip`,
+		`status`,
+		`risk_result`,
+		`features`,
+		`update_time`,
+		`create_time`
+		)
+		VALUES (
+		#{userId,jdbcType=BIGINT},
+		#{flowId,jdbcType=VARCHAR},
+		INET_ATON(#{ip}),
+		#{status,jdbcType=TINYINT,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+		#{riskResult,jdbcType=BIT},
+		#{features,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{createTime,jdbcType=TIMESTAMP}
+		);
+	</insert>
+
+	<update id="updateSelectiveInDoing"
+		parameterType="com.binance.account.data.entity.user.UserRiskFeature">
+		update `user_flow_risk_feature`
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=BIGINT},
+			</if>
+			<if test="flowId != null">
+				flow_id = #{flowId,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				ip = INET_ATON(#{ip}),
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			</if>
+			<if test="riskResult != null">
+				risk_result = #{riskResult,jdbcType=BIT},
+			</if>
+			<if test="features != null">
+				features = #{features,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT} AND status = 1;
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		DELETE FROM
+		 `user_flow_risk_feature`
+		WHERE
+		 id = #{id};
+	</delete>
+
+</mapper>

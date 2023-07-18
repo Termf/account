@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.binance.account.data.mapper.security.UserQuestionAnswerMapper">
+	<resultMap id="BaseResultMap"
+		type="com.binance.account.data.entity.security.UserQuestionAnswers">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="answer_id" jdbcType="BIGINT" property="answerId" />
+		<result column="flow_id" jdbcType="BIGINT" property="flowId" />
+		<result column="flow_type" jdbcType="VARCHAR" property="flowType" />
+		<result column="question_id" jdbcType="BIGINT" property="questionId" />
+		<result column="question_type" jdbcType="VARCHAR" property="questionType" />
+		<result column="answers" jdbcType="VARCHAR" property="answers" />
+		<result column="correct_answer" jdbcType="VARCHAR" property="correctAnswer" />
+		<result column="options" jdbcType="VARCHAR" property="options" />
+		<result column="score" jdbcType="INTEGER" property="score" />
+		<result column="point" jdbcType="INTEGER" property="point" />
+		<result column="status" jdbcType="INTEGER" property="status" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="new_device" jdbcType="BIT" property="newDevice" />
+		<result column="pass" jdbcType="BIT" property="pass" />
+	</resultMap>
+
+	<select id="selectByPrimaryKey" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT *
+		FROM `user_question_answers`
+		WHERE id =#{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT};
+	</select>
+	
+	
+	<select id="selectByKey" resultMap="BaseResultMap">
+		SELECT
+		 *
+        FROM
+         user_question_answers
+        WHERE
+	        user_id = #{userId,jdbcType=BIGINT}
+		<if test="answerId != null and answerId != ''">
+			AND answer_id = #{answerId,jdbcType=VARCHAR}
+		</if>
+	    <if test="flowId != null and flowId !=''">
+            AND flow_id =#{flowId,jdbcType=VARCHAR}
+        </if>
+        <if test="questionId != null">
+            AND question_id =#{questionId,jdbcType=BIGINT}
+        </if>
+	</select>
+
+	<select id="getListByUser" parameterType="com.binance.account.common.query.QuestionQuery" resultMap="BaseResultMap" >
+		SELECT
+		*
+		FROM
+		user_question_answers
+		<where>
+	    <if test="userId != null">
+			user_id = #{userId,jdbcType=BIGINT}
+		</if>
+		<if test="flowId != null and flowId !=''">
+			AND flow_id =#{flowId,jdbcType=VARCHAR}
+		</if>
+		<if test="answerId != null and answerId != ''">
+			AND answer_id = #{answerId,jdbcType=VARCHAR}
+		</if>
+		<if test="questionId != null">
+			AND question_id =#{questionId,jdbcType=BIGINT}
+		</if>
+		<if test="flowType != null and flowType != ''">
+			AND flow_type = #{flowType,jdbcType=VARCHAR}
+		</if>
+		<if test="startTime != null">
+			AND create_time >= #{startTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="endTime != null">
+			AND create_time <![CDATA[ < ]]> #{endTime,jdbcType=TIMESTAMP}
+		</if>
+		</where>
+		<if test="groupByFlowId != null and groupByFlowId==true ">
+			GROUP BY flow_id 
+		</if>
+		ORDER BY create_time DESC
+		<if test="offset != null and limit !=null">
+			LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+		DELETE FROM
+		`user_question_answers` WHERE id =#{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insert"
+		parameterType="com.binance.account.data.entity.security.UserQuestionAnswers"
+		keyProperty="id" useGeneratedKeys="true" keyColumn="id">
+		INSERT INTO `user_question_answers`
+		(`user_id`,
+		`answer_id`,
+		`flow_id`,
+		`flow_type`,
+		`answers`,
+		`question_id`,
+		`question_type`,
+		`create_time`,
+		`options`,
+		`status`,
+		`score`,
+		`point`,
+		`update_time`,
+		`correct_answer`, 
+		`new_device`,
+		`pass`)
+		VALUES (
+		#{userId,jdbcType=BIGINT},
+		#{answerId,jdbcType=BIGINT},
+		#{flowId,jdbcType=VARCHAR},
+		#{flowType,jdbcType=VARCHAR},
+		#{answers,jdbcType=VARCHAR},
+		#{questionId,jdbcType=BIGINT},
+		#{questionType,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{options,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+		#{score,jdbcType=INTEGER},
+		#{point,jdbcType=INTEGER},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{correctAnswer,jdbcType=VARCHAR},
+		#{newDevice,jdbcType=BIT},
+		#{pass,jdbcType=BIT}
+		);
+	</insert>
+
+	<update id="updateSelective" parameterType="com.binance.account.data.entity.security.UserQuestionAnswers">
+		update user_question_answers
+		<set>
+			<if test="answers != null">
+				answers = #{answers,jdbcType=VARCHAR},
+			</if>
+			<if test="correctAnswer != null">
+				correct_answer = #{correctAnswer,jdbcType=VARCHAR},
+			</if>
+			<if test="options != null">
+				options = #{options,jdbcType=VARCHAR},
+			</if>
+			<if test="score != null">
+				score = #{score,jdbcType=INTEGER},
+			</if>
+			<if test="point != null">
+				point = #{point,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status =
+				#{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+			</if>
+			<if test="newDevice != null">
+				new_device = #{newDevice, jdbcType=BIT},
+			</if>
+			<if test="pass != null">
+				pass = #{pass, jdbcType=BIT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+	</update>
+
+	<select id="getFlowCurrentAnswerTimes" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select COUNT(DISTINCT answer_id) as count from user_question_answers
+		where user_id = #{userId,jdbcType=BIGINT} and flow_id = #{flowId,jdbcType=VARCHAR};
+	</select>
+
+</mapper>

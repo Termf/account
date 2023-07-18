@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.security.UserSecurityResetFaceLogMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.security.UserSecurityResetFaceLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="reset_id" jdbcType="VARCHAR" property="resetId" />
+    <result column="reset_type" jdbcType="TINYINT" property="resetType" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="client_ip" jdbcType="VARCHAR" property="clientIp" />
+    <result column="biz_no" jdbcType="VARCHAR" property="bizNo" />
+    <result column="biz_id" jdbcType="VARCHAR" property="bizId" />
+    <result column="face_status" jdbcType="VARCHAR" property="faceStatus" />
+    <result column="face_confidence" jdbcType="VARCHAR" property="faceConfidence" />
+    <result column="face_action1" jdbcType="VARCHAR" property="faceAction1" />
+    <result column="face_action2" jdbcType="VARCHAR" property="faceAction2" />
+    <result column="face_action3" jdbcType="VARCHAR" property="faceAction3" />
+    <result column="face_best" jdbcType="VARCHAR" property="faceBest" />
+    <result column="face_env" jdbcType="VARCHAR" property="faceEnv" />
+    <result column="face_remark" jdbcType="VARCHAR" property="faceRemark" />
+    <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+    <result column="result_request_id" jdbcType="VARCHAR" property="resultRequestId" />
+    <result column="synthetic_face_confidence" jdbcType="DOUBLE" property="syntheticFaceConfidence" />
+    <result column="mask_confidence" jdbcType="DOUBLE" property="maskConfidence" />
+    <result column="screen_replay_confidence" jdbcType="DOUBLE" property="screenReplayConfidence" />
+    <result column="face_replaced" jdbcType="INTEGER" property="faceReplaced" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, user_id, reset_id, reset_type, create_time, update_time, client_ip, biz_no, biz_id, face_status,
+    face_confidence, face_action1, face_action2, face_action3, face_best, face_env, face_remark, uuid, result_request_id,
+    synthetic_face_confidence, mask_confidence, screen_replay_confidence, face_replaced
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_security_reset_face_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <insert id="insert" parameterType="com.binance.account.data.entity.security.UserSecurityResetFaceLog" keyProperty="id" useGeneratedKeys="true">
+    insert into user_security_reset_face_log (user_id, reset_id,
+      reset_type, create_time, update_time, 
+      client_ip, biz_no, biz_id, face_status,
+      face_confidence, face_action1, face_action2, 
+      face_action3, face_best, face_env, face_remark, uuid, result_request_id,
+      synthetic_face_confidence, mask_confidence, screen_replay_confidence, face_replaced
+      )
+    values (#{userId,jdbcType=BIGINT}, #{resetId,jdbcType=VARCHAR},
+      #{resetType,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{clientIp,jdbcType=VARCHAR}, #{bizNo,jdbcType=VARCHAR}, #{bizId,jdbcType=VARCHAR}, #{faceStatus, jdbcType=VARCHAR},
+      #{faceConfidence,jdbcType=VARCHAR}, #{faceAction1,jdbcType=VARCHAR}, #{faceAction2,jdbcType=VARCHAR}, 
+      #{faceAction3,jdbcType=VARCHAR}, #{faceBest,jdbcType=VARCHAR}, #{faceEnv,jdbcType=VARCHAR}, #{faceRemark,jdbcType=VARCHAR},
+      #{uuid,jdbcType=VARCHAR}, #{resultRequestId,jdbcType=VARCHAR},
+      #{syntheticFaceConfidence,jdbcType=DOUBLE},
+      #{maskConfidence,jdbcType=DOUBLE},
+      #{screenReplayConfidence,jdbcType=DOUBLE},  #{faceReplaced, jdbcType=INTEGER}
+      )
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.security.UserSecurityResetFaceLog">
+    update user_security_reset_face_log
+    <set>
+      <if test="resetId != null">
+        reset_id = #{resetId,jdbcType=VARCHAR},
+      </if>
+      <if test="resetType != null">
+        reset_type = #{resetType,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clientIp != null">
+        client_ip = #{clientIp,jdbcType=VARCHAR},
+      </if>
+      <if test="bizNo != null">
+        biz_no = #{bizNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bizId != null">
+        biz_id = #{bizId,jdbcType=VARCHAR},
+      </if>
+      <if test="faceStatus != null" >
+        face_status = #{faceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="faceConfidence != null">
+        face_confidence = #{faceConfidence,jdbcType=VARCHAR},
+      </if>
+      <if test="faceAction1 != null">
+        face_action1 = #{faceAction1,jdbcType=VARCHAR},
+      </if>
+      <if test="faceAction2 != null">
+        face_action2 = #{faceAction2,jdbcType=VARCHAR},
+      </if>
+      <if test="faceAction3 != null">
+        face_action3 = #{faceAction3,jdbcType=VARCHAR},
+      </if>
+      <if test="faceBest != null">
+        face_best = #{faceBest,jdbcType=VARCHAR},
+      </if>
+      <if test="faceEnv != null">
+        face_env = #{faceEnv,jdbcType=VARCHAR},
+      </if>
+      <if test="faceRemark != null">
+        face_remark = #{faceRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null" >
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="resultRequestId != null">
+        result_request_id = #{resultRequestId,jdbcType=VARCHAR},
+      </if>
+      <if test="syntheticFaceConfidence != null">
+        synthetic_face_confidence = #{syntheticFaceConfidence,jdbcType=DOUBLE},
+      </if>
+      <if test="maskConfidence != null">
+        mask_confidence = #{maskConfidence,jdbcType=DOUBLE},
+      </if>
+      <if test="screenReplayConfidence != null">
+        screen_replay_confidence = #{screenReplayConfidence,jdbcType=DOUBLE},
+      </if>
+      <if test="faceReplaced != null">
+        face_replaced = #{faceReplaced,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+      and user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.security.UserSecurityResetFaceLog">
+    update user_security_reset_face_log
+    set
+      reset_id = #{resetId,jdbcType=VARCHAR},
+      reset_type = #{resetType,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      client_ip = #{clientIp,jdbcType=VARCHAR},
+      biz_no = #{bizNo,jdbcType=VARCHAR},
+      biz_id = #{bizId,jdbcType=VARCHAR},
+      face_status = #{faceStatus,jdbcType=VARCHAR},
+      face_confidence = #{faceConfidence,jdbcType=VARCHAR},
+      face_action1 = #{faceAction1,jdbcType=VARCHAR},
+      face_action2 = #{faceAction2,jdbcType=VARCHAR},
+      face_action3 = #{faceAction3,jdbcType=VARCHAR},
+      face_best = #{faceBest,jdbcType=VARCHAR},
+      face_env = #{faceEnv,jdbcType=VARCHAR},
+      face_remark = #{faceRemark,jdbcType=VARCHAR},
+      uuid = #{uuid,jdbcType=VARCHAR},
+      result_request_id = #{resultRequestId,jdbcType=VARCHAR},
+      synthetic_face_confidence = #{syntheticFaceConfidence,jdbcType=DOUBLE},
+      mask_confidence = #{maskConfidence,jdbcType=DOUBLE},
+      screen_replay_confidence = #{screenReplayConfidence,jdbcType=DOUBLE},
+      face_replaced = #{faceReplaced,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+      and user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="saveFaceImage" parameterType="com.binance.account.data.entity.security.UserSecurityResetFaceLog">
+    update user_security_reset_face_log
+    <set>
+      <if test="faceAction1 != null">
+        face_action1 = #{faceAction1,jdbcType=VARCHAR},
+      </if>
+      <if test="faceAction2 != null">
+        face_action2 = #{faceAction2,jdbcType=VARCHAR},
+      </if>
+      <if test="faceAction3 != null">
+        face_action3 = #{faceAction3,jdbcType=VARCHAR},
+      </if>
+      <if test="faceBest != null">
+        face_best = #{faceBest,jdbcType=VARCHAR},
+      </if>
+      <if test="faceEnv != null">
+        face_env = #{faceEnv,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+      and user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <select id="getLogDailyTimes" parameterType="map" resultType="java.lang.Integer">
+    select count(1) from user_security_reset_face_log
+      where user_id = #{userId,jdbcType=BIGINT} and reset_type = #{resetType, jdbcType=TINYINT}
+        and UNIX_TIMESTAMP(create_time) &gt; UNIX_TIMESTAMP(date_sub(now(),interval 1 DAY))
+  </select>
+
+  <select id="selectByResetIdAndBizNo" parameterType="map" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from user_security_reset_face_log
+    where user_id = #{userId, jdbcType=BIGINT}
+      and reset_id = #{resetId,jdbcType=VARCHAR}
+      and biz_no = #{bizNo,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getByResetIdAndUserId" parameterType="map" resultMap="BaseResultMap">
+    select
+      <include refid="Base_Column_List"/>
+    from user_security_reset_face_log
+    where user_id = #{userId, jdbcType=BIGINT}
+      and reset_id = #{resetId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="checkFaceFailCount" parameterType="map" resultType="java.lang.Integer">
+    select count(1) from user_security_reset_face_log
+    where user_id = #{userId, jdbcType=BIGINT}
+      and reset_id = #{resetId,jdbcType=VARCHAR}
+      and face_status = #{faceStatus,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

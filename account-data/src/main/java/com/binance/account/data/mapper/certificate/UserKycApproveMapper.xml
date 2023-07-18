@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.certificate.UserKycApproveMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.UserKycApprove">
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="approve_time" property="approveTime" jdbcType="TIMESTAMP"/>
+        <result column="memo" property="memo" jdbcType="VARCHAR"/>
+        <result column="jumio_id" property="jumioId" jdbcType="VARCHAR"/>
+        <result column="scan_reference" property="scanReference" jdbcType="VARCHAR"/>
+        <result column="certificate_type" property="certificateType" jdbcType="INTEGER"/>
+        <result column="certificate_id" property="certificateId" jdbcType="BIGINT" />
+        <result column="certificate_first_name" property="certificateFirstName" jdbcType="VARCHAR" />
+        <result column="certificate_last_name" property="certificateLastName" jdbcType="VARCHAR" />
+        <result column="certificate_dob" property="certificateDob" jdbcType="VARCHAR" />
+        <result column="certificate_country" property="certificateCountry" jdbcType="VARCHAR" />
+        <result column="certificate_issuing_date" property="certificateIssuingDate" jdbcType="VARCHAR" />
+        <result column="move_msg" property="moveMsg" jdbcType="VARCHAR" />
+        <result column="face_check" property="faceCheck" jdbcType="VARCHAR" />
+
+        <result column="fill_first_name" property="baseInfo.firstName" jdbcType="VARCHAR"/>
+        <result column="fill_last_name" property="baseInfo.lastName" jdbcType="VARCHAR"/>
+        <result column="fill_middle_name" property="baseInfo.middleName" jdbcType="VARCHAR"/>
+        <result column="fill_dob" property="baseInfo.dob" jdbcType="TIMESTAMP"/>
+        <result column="fill_address" property="baseInfo.address" jdbcType="VARCHAR"/>
+        <result column="fill_postal_code" property="baseInfo.postalCode" jdbcType="VARCHAR"/>
+        <result column="fill_city" property="baseInfo.city" jdbcType="VARCHAR"/>
+        <result column="fill_country" property="baseInfo.country" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_SortByWhere_List">
+        <if test="sort =='approveTime'">
+            approve_time
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.binance.account.data.entity.certificate.UserKycApprove">
+		INSERT ignore INTO user_kyc_approve (user_id,approve_time,
+		fill_first_name,fill_middle_name,fill_last_name,fill_dob,fill_address,fill_postal_code,fill_city,fill_country,memo,jumio_id,
+		scan_reference, certificate_type, certificate_id, certificate_first_name, certificate_last_name, certificate_dob, certificate_country,certificate_issuing_date,
+      	move_msg, face_check)
+		VALUES (#{userId,jdbcType=BIGINT},#{approveTime,jdbcType=TIMESTAMP},
+		#{baseInfo.firstName,jdbcType=VARCHAR},#{baseInfo.middleName,jdbcType=VARCHAR},#{baseInfo.lastName,jdbcType=VARCHAR},#{baseInfo.dob,jdbcType=TIMESTAMP},#{baseInfo.address,jdbcType=VARCHAR},
+		#{baseInfo.postalCode,jdbcType=VARCHAR},#{baseInfo.city,jdbcType=VARCHAR},#{baseInfo.country,jdbcType=VARCHAR},#{memo,jdbcType=VARCHAR},#{jumioId,jdbcType=VARCHAR},
+		#{scanReference,jdbcType=VARCHAR}, #{certificateType,jdbcType=INTEGER}, #{certificateId,jdbcType=BIGINT}, #{certificateFirstName,jdbcType=VARCHAR}, #{certificateLastName,jdbcType=VARCHAR},
+		#{certificateDob,jdbcType=VARCHAR}, #{certificateCountry,jdbcType=VARCHAR},#{certificateIssuingDate,jdbcType=VARCHAR},
+      	#{moveMsg,jdbcType=VARCHAR}, #{faceCheck,jdbcType=VARCHAR})
+	</insert>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		SELECT * from user_kyc_approve where user_id = #{userId,jdbcType=BIGINT}
+	</select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from user_kyc_approve where user_id = #{userId,jdbcType=BIGINT}
+	</delete>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT * from user_kyc_approve t
+        left join jumio t1 on t.jumio_id=t1.id
+        <where>
+            <if test="userId !=null">
+                and t.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="id !=null">
+                and t.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="status !=null and status !=''">
+                and t.status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="firstName !=null and firstName !=''">
+                and (t.fill_first_name = #{firstName,jdbcType=VARCHAR}
+                or t1.first_name = #{firstName,jdbcType=VARCHAR})
+            </if>
+            <if test="lastName !=null and lastName !=''">
+                and (t.fill_last_name = #{lastName,jdbcType=VARCHAR}
+                or t1.last_name = #{lastName,jdbcType=VARCHAR})
+            </if>
+            <if test="country !=null and country !=''">
+                and t.fill_country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="issuingCountry !=null and issuingCountry !=''">
+                and t1.issuing_country = #{issuingCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="documentType !=null and documentType !=''">
+                and t1.document_type = #{documentType,jdbcType=VARCHAR}
+            </if>
+            <if test="source !=null and source !=''">
+                and t1.source = #{source,jdbcType=VARCHAR}
+            </if>
+            <if test="number !=null and number !=''">
+                and t1.number = #{number,jdbcType=VARCHAR}
+            </if>
+            <if test="startCreateTime!=null">
+                and t.approve_time &gt;= #{startCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endCreateTime!=null">
+                and t.approve_time &lt;=#{endCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="scanReference!=null and scanReference !=''">
+                and t1.scan_reference =#{scanReference,jdbcType=VARCHAR}
+            </if>
+        </where>
+        <if test="sort != null and sort != '' and order == 'desc'">
+            order by
+            <include refid="Base_SortByWhere_List"/>
+            desc
+        </if>
+        <if test="sort != null and sort != '' and order == 'asc'">
+            order by
+            <include refid="Base_SortByWhere_List"/>
+            asc
+        </if>
+        <if test="sort==null or sort==''">
+            ORDER BY t.approve_time desc
+        </if>
+        <if test="start!=null">
+            LIMIT #{start},#{rows}
+        </if>
+    </select>
+
+    <select id="getListCount" resultType="java.lang.Long">
+        SELECT count(*) from user_kyc_approve t
+        left join jumio t1 on t.jumio_id=t1.id
+        <where>
+            <if test="userId !=null">
+                and t.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="id !=null">
+                and t.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="status !=null and status !=''">
+                and t.status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="firstName !=null and firstName !=''">
+                and (t.fill_first_name = #{firstName,jdbcType=VARCHAR}
+                or t1.first_name = #{firstName,jdbcType=VARCHAR})
+            </if>
+            <if test="lastName !=null and lastName !=''">
+                and (t.fill_last_name = #{lastName,jdbcType=VARCHAR}
+                or t1.last_name = #{lastName,jdbcType=VARCHAR})
+            </if>
+            <if test="country !=null and country !=''">
+                and t.fill_country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="issuingCountry !=null and issuingCountry !=''">
+                and t1.issuing_country = #{issuingCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="documentType !=null and documentType !=''">
+                and t1.document_type = #{documentType,jdbcType=VARCHAR}
+            </if>
+            <if test="source !=null and source !=''">
+                and t1.source = #{source,jdbcType=VARCHAR}
+            </if>
+            <if test="number !=null and number !=''">
+                and t1.number = #{number,jdbcType=VARCHAR}
+            </if>
+            <if test="startCreateTime!=null">
+                and t.approve_time &gt;= #{startCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endCreateTime!=null">
+                and t.approve_time &lt;=#{endCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="scanReference!=null and scanReference !=''">
+                and t1.scan_reference =#{scanReference,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="getByJumioId" resultMap="BaseResultMap">
+	  	SELECT * from user_kyc_approve where user_id = #{userId,jdbcType=BIGINT} and jumio_id = #{jumioId,jdbcType=VARCHAR}
+	</select>
+
+    <update id="updateSelective" parameterType="com.binance.account.data.entity.certificate.UserKycApprove">
+        update user_kyc_approve
+        <set>
+            <if test="baseInfo.firstName !=null and baseInfo.firstName !=''">
+                fill_first_name = #{baseInfo.firstName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo.lastName !=null and baseInfo.lastName !=''">
+                fill_last_name = #{baseInfo.lastName,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo.country !=null and baseInfo.country !=''">
+                fill_country = #{baseInfo.country,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <select id="getUserKycApproveList" resultMap="BaseResultMap">
+        SELECT * from user_kyc_approve t
+        <where>
+            <if test="userId !=null">
+                and user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="userIds != null">
+            	and userId in
+            	<foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">
+            	#{item}
+            	</foreach>
+            </if>
+
+            <if test="baseInfo.firstName !=null and baseInfo.firstName !=''">
+                and fill_first_name = #{baseInfo.firstName,jdbcType=VARCHAR}
+            </if>
+            <if test="baseInfo.lastName !=null and baseInfo.lastName !=''">
+                and fill_last_name = #{baseInfo.lastName,jdbcType=VARCHAR}
+            </if>
+            <if test="baseInfo.country !=null and baseInfo.country !=''">
+                and fill_country = #{baseInfo.country,jdbcType=VARCHAR}
+            </if>
+			<if test="certificateType !=null">
+				and certificate_type = #{certificateType,jdbcType=SMALLINT}
+			</if>
+            <if test="startTime!=null">
+                and approve_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endTime!=null">
+                and approve_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+            </if>
+
+        </where>
+        <!-- <if test="sort != null and sort != '' and order == 'desc'">
+            order by
+            <include refid="Base_SortByWhere_List"/>
+            desc
+        </if>
+        <if test="sort != null and sort != '' and order == 'asc'">
+            order by
+            <include refid="Base_SortByWhere_List"/>
+            asc
+        </if>
+        <if test="sort==null or sort==''">
+            ORDER BY t.approve_time desc
+        </if>
+        <if test="start!=null">
+            LIMIT #{start},#{rows}
+        </if> -->
+    </select>
+
+    <update id="updateOcrResult" parameterType="com.binance.account.data.entity.certificate.UserKycApprove">
+        update user_kyc_approve
+        set
+                fill_first_name = #{baseInfo.firstName,jdbcType=VARCHAR},
+                fill_middle_name = #{baseInfo.middleName,jdbcType=VARCHAR},
+                fill_last_name = #{baseInfo.lastName,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateCertificateInfo" parameterType="com.binance.account.data.entity.certificate.UserKycApprove">
+        update user_kyc_approve
+        <set>
+            <if test="certificateFirstName !=null and certificateFirstName !=''">
+                certificate_first_name = #{certificateFirstName,jdbcType=VARCHAR},
+            </if>
+            <if test="certificateLastName !=null and certificateLastName !=''">
+                certificate_last_name = #{certificateLastName,jdbcType=VARCHAR},
+            </if>
+            <if test="certificateDob !=null and certificateDob !=''">
+                certificate_dob = #{certificateDob,jdbcType=VARCHAR},
+            </if>
+            <if test="certificateCountry !=null and certificateCountry !=''">
+                certificate_country = #{certificateCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="baseInfo !=null">
+                <if test="baseInfo.country !=null and baseInfo.country !=''">
+                    fill_country = #{baseInfo.country,jdbcType=VARCHAR},
+                </if>
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectUnFillCertificateInfoDataByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select * from user_kyc_approve
+        where certificate_first_name is null and certificate_last_name is null and certificate_dob is null and certificate_country is null
+        <if test="start != null and offset != null">
+            limit #{start},#{offset}
+        </if>
+    </select>
+
+     <update id="updateMoveMsg">
+        update user_kyc_approve set move_msg = #{moveMsg,jdbcType=VARCHAR} where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+	<select id = "selectKycDataMigration" resultMap="BaseResultMap">
+	select * from user_kyc_approve
+	<where>
+		<if test="moveMsg !=null">
+             and move_msg = #{moveMsg,jdbcType=VARCHAR}
+		</if>
+		<if test="moveMsg ==null">
+             and move_msg is null
+		</if>
+	</where>
+	limit #{start},#{rows}
+	</select>
+
+    <update id="updateFaceCheck" parameterType="java.util.Map">
+        update user_kyc_approve set face_check = #{faceCheck,jdbcType=VARCHAR} where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <select id = "selectFaceCheckList" resultMap="BaseResultMap">
+        select * from user_kyc_approve
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId, jdbcType=BIGINT}
+            </if>
+            <if test="faceCheck !=null">
+                and face_check = #{faceCheck,jdbcType=VARCHAR}
+            </if>
+            <if test="faceCheck ==null">
+                and face_check is null
+            </if>
+        </where>
+        limit #{start},#{rows}
+    </select>
+
+</mapper>

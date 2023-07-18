@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.agent.ApiAgentRewardConfigMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.agent.ApiAgentRewardConfig">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="agent_id" jdbcType="BIGINT" property="agentId" />
+    <result column="agent_reward_code" jdbcType="VARCHAR" property="agentRewardCode" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="new_user_ratio" jdbcType="DECIMAL" property="newUserRatio" />
+    <result column="old_user_ratio" jdbcType="DECIMAL" property="oldUserRatio" />
+    <result column="reward_to" jdbcType="INTEGER" property="rewardTo" />
+    <result column="del" jdbcType="INTEGER" property="del" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, agent_id, agent_reward_code, start_time, new_user_ratio, old_user_ratio, reward_to, del,
+    update_by, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from api_agent_reward_config
+    where id = #{id,jdbcType=BIGINT} and del = 0
+  </select>
+  <insert id="insert" parameterType="com.binance.account.data.entity.agent.ApiAgentRewardConfig">
+    insert into api_agent_reward_config (id, agent_id, agent_reward_code,
+      start_time, new_user_ratio, old_user_ratio, reward_to,
+      del, update_by, create_time,
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{agentId,jdbcType=BIGINT}, #{agentRewardCode,jdbcType=VARCHAR},
+      #{startTime,jdbcType=TIMESTAMP}, #{newUserRatio,jdbcType=DECIMAL}, #{oldUserRatio,jdbcType=DECIMAL}, #{rewardTo,jdbcType=INTEGER},
+      #{del,jdbcType=INTEGER}, #{updateBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.agent.ApiAgentRewardConfig">
+    insert into api_agent_reward_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="agentId != null">
+        agent_id,
+      </if>
+      <if test="agentRewardCode != null">
+        agent_reward_code,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="newUserRatio != null">
+        new_user_ratio,
+      </if>
+      <if test="oldUserRatio != null">
+        old_user_ratio,
+      </if>
+      <if test="rewardTo != null">
+        reward_to,
+      </if>
+      <if test="del != null">
+        del,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="agentId != null">
+        #{agentId,jdbcType=BIGINT},
+      </if>
+      <if test="agentRewardCode != null">
+        #{agentRewardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="newUserRatio != null">
+        #{newUserRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="oldUserRatio != null">
+        #{oldUserRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardTo != null">
+        #{rewardTo,jdbcType=INTEGER},
+      </if>
+      <if test="del != null">
+        #{del,jdbcType=INTEGER},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.agent.ApiAgentRewardConfig">
+    update api_agent_reward_config
+    <set>
+      <if test="agentId != null">
+        agent_id = #{agentId,jdbcType=BIGINT},
+      </if>
+      <if test="agentRewardCode != null">
+        agent_reward_code = #{agentRewardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="newUserRatio != null">
+        new_user_ratio = #{newUserRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="oldUserRatio != null">
+        old_user_ratio = #{oldUserRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="rewardTo != null">
+        reward_to = #{rewardTo,jdbcType=INTEGER},
+      </if>
+      <if test="del != null">
+        del = #{del,jdbcType=INTEGER},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.agent.ApiAgentRewardConfig">
+    update api_agent_reward_config
+    set agent_id = #{agentId,jdbcType=BIGINT},
+      agent_reward_code = #{agentRewardCode,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      new_user_ratio = #{newUserRatio,jdbcType=DECIMAL},
+      old_user_ratio = #{oldUserRatio,jdbcType=DECIMAL},
+      reward_to = #{rewardTo,jdbcType=INTEGER},
+      del = #{del,jdbcType=INTEGER},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="delete">
+    update api_agent_reward_config
+    set del = 1,
+    update_by = #{updateBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByAgentCode" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from api_agent_reward_config
+    where agent_reward_code = #{agentRewardCode,jdbcType=VARCHAR} and del = 0
+  </select>
+
+  <select id="selectByAgentId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from api_agent_reward_config
+    where  agent_id = #{agentId,jdbcType=BIGINT} and del = 0
+  </select>
+
+  <select id="selectPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from api_agent_reward_config
+    <where>
+      del = 0
+      <if test="agentId != null">
+        AND agent_id = #{agentId,jdbcType=BIGINT}
+      </if>
+      <if test="agentRewardCode != null and agentRewardCode != ''">
+        AND agent_reward_code = #{agentRewardCode,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
+  <select id="ifAgentCodeExist" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from api_agent_reward_config
+    where agent_reward_code = #{agentRewardCode,jdbcType=VARCHAR}
+  </select>
+</mapper>

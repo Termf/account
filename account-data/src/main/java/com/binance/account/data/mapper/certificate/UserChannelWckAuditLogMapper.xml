@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.UserChannelWckAuditLogMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.UserChannelWckAuditLog">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="case_id" jdbcType="VARCHAR" property="caseId" />
+        <result column="auditor_seq" jdbcType="INTEGER" property="auditorSeq" />
+        <result column="auditor_id" jdbcType="BIGINT" property="auditorId" />
+        <result column="is_valid" jdbcType="BIT" property="isValid" />
+        <result column="memo" jdbcType="VARCHAR" property="memo" />
+        <result column="is_pep" jdbcType="BIGINT" property="isPep" />
+        <result column="sanctions_hits" jdbcType="BIGINT" property="sanctionsHits" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, case_id, auditor_seq, auditor_id, is_valid, memo, create_time,is_pep,sanctions_hits,fail_reason
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_channel_wck_audit_log
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectByCaseIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_channel_wck_audit_log
+        <where>
+            case_id in
+            <foreach collection="caseIds" item="caseId" open="(" separator="," close=")">
+                #{caseId}
+            </foreach>
+        </where>
+    </select>
+    <select id="selectByAuditorId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_channel_wck_audit_log
+        <where>
+            <if test="auditorId != null">
+                and auditor_id = #{auditorId,jdbcType=BIGINT}
+            </if>
+            <if test="auditorSeq != null">
+                and auditor_seq = #{auditorSeq,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+    <insert id="insertSelective" parameterType="com.binance.account.data.entity.certificate.UserWckAuditLog">
+        insert into user_channel_wck_audit_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="caseId != null">
+                case_id,
+            </if>
+            <if test="auditorSeq != null">
+                auditor_seq,
+            </if>
+            <if test="auditorId != null">
+                auditor_id,
+            </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
+            <if test="memo != null">
+                memo,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="isPep != null">
+                is_pep,
+            </if>
+            <if test="sanctionsHits != null">
+                sanctions_hits,
+            </if>
+            <if test="failReason != null">
+                fail_reason,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="caseId != null">
+                #{caseId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorSeq != null">
+                #{auditorSeq,jdbcType=INTEGER},
+            </if>
+            <if test="auditorId != null">
+                #{auditorId,jdbcType=BIGINT},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=BIT},
+            </if>
+            <if test="memo != null">
+                #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isPep != null">
+                #{isPep,jdbcType=BIGINT},
+            </if>
+            <if test="sanctionsHits != null">
+                #{sanctionsHits,jdbcType=BIGINT},
+            </if>
+            <if test="failReason != null">
+                #{failReason,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.certificate.UserWckAuditLog">
+        update user_channel_wck_audit_log
+        <set>
+            <if test="caseId != null">
+                case_id = #{caseId,jdbcType=VARCHAR},
+            </if>
+            <if test="auditorSeq != null">
+                auditor_seq = #{auditorSeq,jdbcType=INTEGER},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId,jdbcType=BIGINT},
+            </if>
+            <if test="isValid != null">
+                is_valid = #{isValid,jdbcType=BIT},
+            </if>
+            <if test="memo != null">
+                memo = #{memo,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isPep != null">
+                is_pep = #{isPep,jdbcType=BIGINT},
+            </if>
+            <if test="sanctionsHits != null">
+                sanctions_hits = #{sanctionsHits,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <delete id="deleteByCaseId" parameterType="java.lang.String">
+      delete from user_channel_wck_audit_log
+      where case_id = #{caseId,jdbcType=VARCHAR}
+    </delete>
+</mapper>

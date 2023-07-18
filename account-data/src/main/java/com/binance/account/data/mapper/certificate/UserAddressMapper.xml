@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.UserAddressMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.UserAddress">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="status" property="status" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="approver" jdbcType="VARCHAR" property="approver"/>
+        <result column="approve_time" jdbcType="TIMESTAMP" property="approveTime"/>
+        <result column="day_submit_count" jdbcType="INTEGER" property="daySubmitCount"/>
+        <result column="check_first_name" jdbcType="VARCHAR" property="checkFirstName"/>
+        <result column="check_last_name" jdbcType="VARCHAR" property="checkLastName"/>
+        <result column="street_address" jdbcType="VARCHAR" property="streetAddress"/>
+        <result column="postal_code" jdbcType="VARCHAR" property="postalCode"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="address_file" jdbcType="VARCHAR" property="addressFile"/>
+        <result column="fail_reason" jdbcType="VARCHAR" property="failReason"/>
+        <result column="source_of_fund" jdbcType="VARCHAR" property="sourceOfFund"/>
+        <result column="est_trade_volume" jdbcType="VARCHAR" property="estimatedTradeVolume"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id, status, create_time, update_time, approver, approve_time, day_submit_count,
+        check_first_name, check_last_name, street_address, postal_code, city, country, address_file,
+        fail_reason, source_of_fund, est_trade_volume
+    </sql>
+
+    <select id="getLast" resultMap="BaseResultMap">
+        SELECT * from user_address
+        where user_id = #{userId,jdbcType=BIGINT}
+        <if test="status != null">
+            and status = #{status,jdbcType=TINYINT}
+        </if>
+        order by create_time desc limit 1
+    </select>
+
+    <select id="getById" resultMap="BaseResultMap">
+		SELECT * from user_address
+		where user_id = #{userId,jdbcType=BIGINT} and id = #{id,jdbcType=BIGINT}
+	</select>
+
+    <insert id="insert" parameterType="com.binance.account.data.entity.certificate.UserAddress" keyProperty="id"
+            useGeneratedKeys="true">
+    insert into user_address (user_id, status,
+      create_time, update_time, approver, 
+      approve_time, day_submit_count, check_first_name, 
+      check_last_name, street_address, postal_code, 
+      city, country, address_file, fail_reason, source_of_fund, est_trade_volume)
+    values (#{userId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{approver,jdbcType=VARCHAR}, 
+      #{approveTime,jdbcType=TIMESTAMP}, #{daySubmitCount,jdbcType=INTEGER}, #{checkFirstName,jdbcType=VARCHAR},
+      #{checkLastName,jdbcType=VARCHAR}, #{streetAddress,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{addressFile,jdbcType=VARCHAR}, 
+      #{failReason,jdbcType=VARCHAR}, #{sourceOfFund,jdbcType=VARCHAR}, #{estimatedTradeVolume,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateStatus" parameterType="com.binance.account.data.entity.certificate.UserAddress">
+		update user_address
+		set
+		  status=#{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+		  update_time=#{updateTime,jdbcType=TIMESTAMP},
+		  fail_reason=#{failReason,jdbcType=VARCHAR},
+		  approver = #{approver,jdbcType=VARCHAR},
+          approve_time = #{approveTime,jdbcType=TIMESTAMP}
+		where
+		  user_id = #{userId,jdbcType=BIGINT} and id = #{id,jdbcType=BIGINT}
+	</update>
+
+    <update id="cancelPendingAndPassedExcept">
+		update user_address
+		set
+		  status=4,
+		  update_time=CURRENT_TIMESTAMP
+		where
+		  user_id = #{userId,jdbcType=BIGINT} and id != #{id,jdbcType=BIGINT} and (status=0 or status=1)
+	</update>
+
+    <sql id="Base_SortByWhere_List">
+        <if test="sort == 'updateTime'">
+            update_time
+        </if>
+        <if test="sort == 'createTime'">
+            create_time
+        </if>
+        <if test="sort != 'updateTime' and sort != 'createTime'">
+            create_time
+        </if>
+    </sql>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT * from user_address t
+        <where>
+            <if test="userId !=null">
+                and t.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="userIds != null">
+                and t.user_id in
+                <foreach collection="userIds" item="userId" index="index" open="(" close=")" separator=",">
+                    #{userId,jdbcType=BIGINT}
+                </foreach>
+            </if>
+            <if test="id !=null">
+                and t.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="status !=null and status !=''">
+                and t.status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="firstName !=null and firstName !=''">
+                and t.check_first_name = #{firstName,jdbcType=VARCHAR}
+            </if>
+            <if test="lastName !=null and lastName !=''">
+                and t.check_last_name = #{lastName,jdbcType=VARCHAR}
+            </if>
+            <if test="country !=null and country !=''">
+                and t.country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="city !=null and city !=''">
+                and t.city = #{city,jdbcType=VARCHAR}
+            </if>
+            <if test="startCreateTime!=null">
+                and t.create_time &gt;= #{startCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endCreateTime!=null">
+                and t.create_time &lt;= #{endCreateTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        <if test="sort != null and sort != '' and order == 'desc'">
+            order by
+            <include refid="Base_SortByWhere_List"/>
+            desc
+        </if>
+        <if test="sort != null and sort != '' and order == 'asc'">
+            order by
+            <include refid="Base_SortByWhere_List"/>
+            asc
+        </if>
+        <if test="sort==null or sort==''">
+            ORDER BY t.create_time desc
+        </if>
+        <if test="start!=null">
+            LIMIT #{start},#{rows}
+        </if>
+    </select>
+
+    <select id="getListCount" resultType="java.lang.Integer">
+        SELECT count(*) from user_address t
+        <where>
+            <if test="userId !=null">
+                and t.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="userIds != null">
+                and t.user_id in
+                <foreach collection="userIds" item="userId" index="index" open="(" close=")" separator=",">
+                    #{userId,jdbcType=BIGINT}
+                </foreach>
+            </if>
+            <if test="id !=null">
+                and t.id = #{id,jdbcType=BIGINT}
+            </if>
+            <if test="status !=null and status !=''">
+                and t.status = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="firstName !=null and firstName !=''">
+                and t.check_first_name = #{firstName,jdbcType=VARCHAR}
+            </if>
+            <if test="lastName !=null and lastName !=''">
+                and t.check_last_name = #{lastName,jdbcType=VARCHAR}
+            </if>
+            <if test="country !=null and country !=''">
+                and t.country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="city !=null and city !=''">
+                and t.city = #{city,jdbcType=VARCHAR}
+            </if>
+            <if test="startCreateTime!=null">
+                and t.create_time &gt;= #{startCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endCreateTime!=null">
+                and t.create_time &lt;= #{endCreateTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+</mapper>

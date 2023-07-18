@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.tag.TagCategoryMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.tag.TagCategory">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="pid" property="pid" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id, pid, name, create_time, update_time
+  	</sql>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.binance.account.data.entity.tag.TagCategory">
+        insert into tag_category(pid, name)
+        values (#{pid}, #{name})
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from tag_category where id = #{id}
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.tag.TagCategory">
+        update tag_category set
+        pid = #{pid},
+        name = #{name}
+        where id = #{id}
+    </update>
+
+    <select id="selectByPid" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tag_category
+        where pid=#{pid}
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tag_category
+        where id=#{id}
+    </select>
+
+    <select id="getByPidAndName" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tag_category
+        where pid=#{pid} and name = #{name}
+    </select>
+
+    <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tag_category where name = #{name}
+    </select>
+
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.apimanage.OperateLogModelMapper">
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.binance.account.data.entity.apimanage.OperateLogModel">
+		insert into operate_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="userType != null">
+				user_type,
+			</if>
+			<if test="operateTime != null">
+				operate_time,
+			</if>
+			<if test="ipAddress != null">
+				ip_address,
+			</if>
+			<if test="operateType != null">
+				operate_type,
+			</if>
+			<if test="operateModel != null">
+				operate_model,
+			</if>
+			<if test="operateResult != null">
+				operate_result,
+			</if>
+			<if test="resInfo != null">
+				res_info,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="userType != null">
+				#{userType,jdbcType=VARCHAR},
+			</if>
+			<if test="operateTime != null">
+				#{operateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="ipAddress != null">
+				#{ipAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="operateType != null">
+				#{operateType,jdbcType=VARCHAR},
+			</if>
+			<if test="operateModel != null">
+				#{operateModel,jdbcType=VARCHAR},
+			</if>
+			<if test="operateResult != null">
+				#{operateResult,jdbcType=VARCHAR},
+			</if>
+			<if test="resInfo != null">
+				#{resInfo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+</mapper>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.UserChannelWckAuditMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.UserChannelWckAudit">
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="case_id" jdbcType="VARCHAR" property="caseId" />
+        <result column="case_system_id" jdbcType="VARCHAR" property="caseSystemId" />
+        <result column="origin" jdbcType="VARCHAR" property="origin" />
+        <result column="check_name" jdbcType="VARCHAR" property="checkName" />
+        <result column="birth_date" jdbcType="VARCHAR" property="birthDate" />
+        <result column="issuing_country" jdbcType="VARCHAR" property="issuingCountry" />
+        <result column="status" jdbcType="TINYINT" property="status" typeHandler="com.binance.account.data.entity.CodeEnumHandler"/>
+        <result column="first_auditor_id" jdbcType="BIGINT" property="firstAuditorId" />
+        <result column="second_auditor_id" jdbcType="BIGINT" property="secondAuditorId" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="is_del" jdbcType="BIT" property="isDel" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    user_id, case_id, case_system_id, origin, check_name, birth_date, issuing_country, status, first_auditor_id, second_auditor_id, create_time, update_time, is_del
+  </sql>
+    <insert id="insertSelective" parameterType="com.binance.account.data.entity.certificate.UserWckAudit">
+        insert into user_channel_wck_audit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="caseId != null">
+                case_id,
+            </if>
+            <if test="caseSystemId != null">
+                case_system_id,
+            </if>
+            <if test="origin != null">
+                origin,
+            </if>
+            <if test="checkName != null">
+                check_name,
+            </if>
+            <if test="birthDate != null">
+                birth_date,
+            </if>
+            <if test="issuingCountry != null">
+                issuing_country,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="isDel != null">
+                is_del,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="caseId != null">
+                #{caseId,jdbcType=VARCHAR},
+            </if>
+            <if test="caseSystemId != null">
+                #{caseSystemId,jdbcType=VARCHAR},
+            </if>
+            <if test="origin != null">
+                #{origin,jdbcType=VARCHAR},
+            </if>
+            <if test="checkName != null">
+                #{checkName,jdbcType=VARCHAR},
+            </if>
+            <if test="birthDate != null">
+                #{birthDate,jdbcType=VARCHAR},
+            </if>
+            <if test="issuingCountry != null">
+                #{issuingCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT,typeHandler=com.binance.account.data.entity.CodeEnumHandler},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDel != null">
+                #{isDel,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.certificate.UserChannelWckAudit">
+        update user_channel_wck_audit
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="caseSystemId != null">
+                case_system_id = #{caseSystemId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT,typeHandler=com.binance.account.data.entity.CodeEnumHandler},
+            </if>
+            <if test="firstAuditorId != null">
+                first_auditor_id = #{firstAuditorId,jdbcType=BIGINT},
+            </if>
+            <if test="secondAuditorId != null">
+                second_auditor_id = #{secondAuditorId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDel != null">
+                is_del = #{isDel,jdbcType=BIT},
+            </if>
+            <if test="issuingCountry != null and issuingCountry != ''">
+                issuing_country = #{issuingCountry,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where case_id = #{caseId,jdbcType=VARCHAR}
+    </update>
+
+
+    <select id="selectChannelWckAuditInfoByPage" parameterType="map" resultType="java.util.Map">
+        select
+        user_id, case_id, case_system_id, origin, check_name, birth_date, issuing_country, status, create_time, update_time
+        from user_channel_wck_audit
+        where is_del = false
+        <if test="status != null">
+            and status = #{status,jdbcType=TINYINT,typeHandler=com.binance.account.data.entity.CodeEnumHandler}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="country != null and country != ''">
+            and issuing_country = #{country,jdbcType=VARCHAR}
+        </if>
+        <if test="firstAuditorId != null">
+            and first_auditor_id = #{firstAuditorId,jdbcType=BIGINT}
+        </if>
+        <if test="secondAuditorId != null">
+            and second_auditor_id = #{secondAuditorId,jdbcType=BIGINT}
+        </if>
+        order by create_time desc
+        <if test="start != null and offset != null">
+            limit #{start},#{offset}
+        </if>
+    </select>
+
+    <select id="countChannelWckAuditInfo" parameterType="map"  resultType="java.lang.Integer">
+        select
+        count(*)
+        from user_channel_wck_audit
+        where is_del = false
+        <if test="status != null">
+            and status = #{status,jdbcType=TINYINT,typeHandler=com.binance.account.data.entity.CodeEnumHandler}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        <if test="country != null and country != ''">
+            and issuing_country = #{country,jdbcType=VARCHAR}
+        </if>
+        <if test="firstAuditorId != null">
+            and first_auditor_id = #{firstAuditorId,jdbcType=BIGINT}
+        </if>
+        <if test="secondAuditorId != null">
+            and second_auditor_id = #{secondAuditorId,jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_channel_wck_audit
+        where is_del = false and user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByCaseId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_channel_wck_audit
+        where case_id = #{caseId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectInitialRows" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_channel_wck_audit
+        where is_del=false and status = 1
+        <if test="createTimeStart">
+            and create_time &gt;= #{createTimeStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createTimeEnd">
+            and create_time &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+        </if>
+        limit 0, 1000
+    </select>
+
+    <select id="selectByUserIdAndStatusInPage" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_channel_wck_audit
+        where is_del = false
+        <if test="status != null">
+            and status = #{status,jdbcType=TINYINT,typeHandler=com.binance.account.data.entity.CodeEnumHandler}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=BIGINT}
+        </if>
+        order by create_time asc
+        <if test="start != null and offset != null">
+            limit #{start},#{offset}
+        </if>
+    </select>
+
+    <select id="countByUserIdAndStatus" parameterType="map" resultType="java.lang.Integer">
+        select
+        count(*)
+        from user_channel_wck_audit
+        where is_del = false
+        <if test="status != null">
+            and status = #{status,jdbcType=TINYINT,typeHandler=com.binance.account.data.entity.CodeEnumHandler}
+        </if>
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=BIGINT}
+        </if>
+    </select>
+</mapper>

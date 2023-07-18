@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.subuser.SubUserBindingMapper">
+    <resultMap id="BaseResultMap" type="com.binance.account.data.entity.subuser.SubUserBinding">
+        <id column="sub_user_id" property="subUserId" jdbcType="BIGINT"/>
+        <result column="parent_user_id" property="parentUserId" jdbcType="BIGINT"/>
+        <result column="broker_sub_account_id" property="brokerSubAccountId" jdbcType="BIGINT"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="insert_time" property="insertTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="margin_user_id" jdbcType="BIGINT" property="marginUserId"/>
+        <result column="fiat_user_id" jdbcType="BIGINT" property="fiatUserId"/>
+        <result column="future_user_id" jdbcType="BIGINT" property="futureUserId"/>
+        <result column="mining_user_id" jdbcType="BIGINT" property="miningUserId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    sub_user_id, parent_user_id, remark, insert_time, update_time,broker_sub_account_id
+    ,margin_user_id,fiat_user_id,future_user_id,mining_user_id
+    </sql>
+
+
+    <insert id="insert" parameterType="com.binance.account.data.entity.subuser.SubUserBinding">
+        insert into sub_user_binding (sub_user_id, parent_user_id,broker_sub_account_id, remark,
+          insert_time, update_time)
+        values (#{subUserId,jdbcType=BIGINT}, #{parentUserId,jdbcType=BIGINT}, #{brokerSubAccountId,jdbcType=BIGINT},#{remark,jdbcType=VARCHAR},
+          now(), now())
+    </insert>
+
+    <update id="updateBySubUserId" parameterType="com.binance.account.data.entity.subuser.SubUserBinding">
+        update sub_user_binding
+        set parent_user_id = #{parentUserId,jdbcType=BIGINT},
+        remark = #{remark,jdbcType=VARCHAR},
+        update_time = now()
+        where sub_user_id = #{subUserId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateBySubUserIdSelective" parameterType="com.binance.account.data.entity.subuser.SubUserBinding">
+        update sub_user_binding
+        <set>
+            <if test="parentUserId != null">
+                parent_user_id = #{parentUserId,jdbcType=BIGINT},
+            </if>
+            <if test="brokerSubAccountId != null">
+                broker_sub_account_id = #{brokerSubAccountId,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="marginUserId != null">
+                margin_user_id = #{marginUserId,jdbcType=BIGINT},
+            </if>
+            <if test="fiatUserId != null">
+                fiat_user_id = #{fiatUserId,jdbcType=BIGINT},
+            </if>
+            <if test="futureUserId != null">
+                future_user_id = #{futureUserId,jdbcType=BIGINT},
+            </if>
+            <if test="miningUserId != null">
+                mining_user_id = #{miningUserId,jdbcType=BIGINT},
+            </if>
+            update_time = now()
+        </set>
+        where sub_user_id = #{subUserId,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectBySubUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sub_user_binding
+        where sub_user_id = #{subUserId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getSubUserBindingsByParentUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sub_user_binding
+        where parent_user_id = #{parentUserId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getSubUserBindingsByPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sub_user_binding
+        where parent_user_id = #{parentUserId,jdbcType=BIGINT}
+        <if test="offset != null and limit != null">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="selectByParentUserIdAndSubUserIds" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from sub_user_binding
+        where parent_user_id = #{parentUserId,jdbcType=BIGINT} and sub_user_id in
+        <foreach collection="userIds" item="subUserId" index="index" open="(" close=")" separator=",">
+            #{subUserId}
+        </foreach>
+
+    </select>
+
+    <select id="countSubUsersByParentUserId" resultType="java.lang.Long">
+        select count(1) from sub_user_binding where parent_user_id = #{parentUserId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectSubUserIdsByParent" resultType="java.lang.Long" parameterType="java.lang.Long">
+        SELECT sub_user_id subUserId FROM sub_user_binding
+          WHERE parent_user_id  = #{parentUserId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByParentUserIdAndBrokerSubAccountId" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from sub_user_binding
+        where parent_user_id  = #{parentUserId,jdbcType=BIGINT}
+        and broker_sub_account_id  = #{brokerSubAccountId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByBrokerSubAccountId" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from sub_user_binding
+        where broker_sub_account_id  = #{brokerSubAccountId,jdbcType=BIGINT}
+    </select>
+
+
+    <select id="selectByParentUserIdAndSubUserId" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from sub_user_binding
+        where parent_user_id  = #{parentUserId,jdbcType=BIGINT}
+        and sub_user_id = #{subUserId,jdbcType=BIGINT}
+    </select>
+
+
+    <update id="updateRemarkByParentIdAndSubUserId" parameterType="com.binance.account.data.entity.subuser.SubUserBinding">
+        update sub_user_binding
+        <set>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            update_time = now()
+        </set>
+        where parent_user_id = #{parentUserId,jdbcType=BIGINT}
+        and sub_user_id = #{subUserId,jdbcType=BIGINT}
+    </update>
+
+    <delete id="deleteBySubUserIdAndParentUserId">
+        delete from sub_user_binding
+        where parent_user_id = #{parentUserId,jdbcType=BIGINT}
+        and sub_user_id = #{subUserId,jdbcType=BIGINT}
+    </delete>
+
+
+    <update id="updateSelectiveBySubUserIdAndParentUserId" parameterType="com.binance.account.data.entity.subuser.SubUserBinding">
+        update sub_user_binding
+        <set>
+            <if test="brokerSubAccountId != null">
+                broker_sub_account_id = #{brokerSubAccountId,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="marginUserId != null">
+                margin_user_id = #{marginUserId,jdbcType=BIGINT},
+            </if>
+            <if test="fiatUserId != null">
+                fiat_user_id = #{fiatUserId,jdbcType=BIGINT},
+            </if>
+            <if test="futureUserId != null">
+                future_user_id = #{futureUserId,jdbcType=BIGINT},
+            </if>
+            <if test="miningUserId != null">
+                mining_user_id = #{miningUserId,jdbcType=BIGINT},
+            </if>
+            update_time = now()
+        </set>
+        where  parent_user_id = #{parentUserId,jdbcType=BIGINT}
+        and sub_user_id = #{subUserId,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="countSubUsersBySelective" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(1) from sub_user_binding
+
+        <where>
+            <if test="parentUserId != null">
+                and  parent_user_id = #{parentUserId,jdbcType=BIGINT}
+            </if>
+            <if test="subUserId != null">
+                and  sub_user_id = #{subUserId,jdbcType=BIGINT}
+            </if>
+            <if test="brokerSubAccountId != null">
+              and  broker_sub_account_id = #{brokerSubAccountId,jdbcType=BIGINT}
+            </if>
+            <if test="remark != null">
+                and   remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="marginUserId != null">
+                and  margin_user_id = #{marginUserId,jdbcType=BIGINT}
+            </if>
+            <if test="fiatUserId != null">
+                and  fiat_user_id = #{fiatUserId,jdbcType=BIGINT}
+            </if>
+            <if test="futureUserId != null">
+                and  future_user_id = #{futureUserId,jdbcType=BIGINT}
+            </if>
+            <if test="miningUserId != null">
+                and  mining_user_id = #{miningUserId,jdbcType=BIGINT}
+            </if>
+        </where>
+    </select>
+
+    <select id="getBrokerSubbindingInfoByPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from sub_user_binding
+        <where>
+            <if test="parentUserId != null">
+                and  parent_user_id = #{parentUserId,jdbcType=BIGINT}
+            </if>
+            <if test="subUserId != null">
+                and  sub_user_id = #{subUserId,jdbcType=BIGINT}
+            </if>
+            <if test="brokerSubAccountId != null">
+                and  broker_sub_account_id = #{brokerSubAccountId,jdbcType=BIGINT}
+            </if>
+            <if test="remark != null">
+                and   remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="marginUserId != null">
+                and  margin_user_id = #{marginUserId,jdbcType=BIGINT}
+            </if>
+            <if test="fiatUserId != null">
+                and  fiat_user_id = #{fiatUserId,jdbcType=BIGINT}
+            </if>
+            <if test="futureUserId != null">
+                and  future_user_id = #{futureUserId,jdbcType=BIGINT}
+            </if>
+            <if test="miningUserId != null">
+                and  mining_user_id = #{miningUserId,jdbcType=BIGINT}
+            </if>
+        </where>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset},#{limit}
+        </if>
+
+    </select>
+
+    <select id="selectFutureSubUserByParent" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+         FROM sub_user_binding
+          WHERE parent_user_id  = #{parentUserId,jdbcType=BIGINT}
+          AND future_user_id is not null 
+    </select>
+
+</mapper>

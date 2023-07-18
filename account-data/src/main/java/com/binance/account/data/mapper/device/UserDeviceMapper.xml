@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.device.UserDeviceMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.device.UserDevice">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="agent_type" jdbcType="VARCHAR" property="agentType" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="active_time" jdbcType="TIMESTAMP" property="activeTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_del" jdbcType="TINYINT" property="isDel" />
+    <result column="status" property="status" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+    <result column="flow_id" jdbcType="VARCHAR" property="flowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, agent_type, source, content, active_time, create_time, update_time, is_del, status
+  </sql>
+
+  <select id="selectUserLastLoginDevice" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_device
+    where is_del=0 and user_id = #{userId}
+    order by update_time desc
+    limit 1
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_device
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user_device
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.device.UserDevice" keyProperty="id" useGeneratedKeys="true">
+    insert into user_device
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="agentType != null">
+        agent_type,
+      </if>
+      <if test="source != null">
+        source,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="activeTime != null">
+        active_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="flowId != null">
+        flow_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="agentType != null">
+        #{agentType,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="activeTime != null">
+        #{activeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      </if>
+      <if test="flowId != null">
+        #{flowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.device.UserDevice">
+    update user_device
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="agentType != null">
+        agent_type = #{agentType,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="activeTime != null">
+        active_time = #{activeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+      </if>
+      <if test="flowId != null">
+        flow_id = #{flowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByUserIdAndAgentType" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_device
+    where user_id = #{userId}
+    <if test="agentType != null">
+      and agent_type = #{agentType}
+    </if>
+    <if test="source != null">
+      and source = #{source}
+    </if>
+    <if test="excludeSource != null">
+      and source != #{excludeSource}
+    </if>
+    <if test="isDel != null">
+      and is_del = #{isDel}
+    </if>
+    <if test="status != null">
+      and status = #{status,jdbcType=TINYINT}
+    </if>
+    order by active_time desc
+    <if test="limit != null and limit>0">
+      LIMIT #{offset},#{limit}
+    </if>
+  </select>
+
+  <select id="countByUserIdAndAgentType" parameterType="java.util.Map" resultType="java.lang.Long">
+    select count(1) from user_device
+    where user_id = #{userId}
+    <if test="agentType != null">
+      and agent_type = #{agentType}
+    </if>
+    <if test="source != null">
+      and source = #{source}
+    </if>
+    <if test="excludeSource != null">
+      and source != #{excludeSource}
+    </if>
+    <if test="isDel != null">
+      and is_del = #{isDel}
+    </if>
+    <if test="status != null">
+      and status = #{status,jdbcType=TINYINT}
+    </if>
+  </select>
+
+  <select id="selectAuthorizedDevices" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_device
+    where is_del=0 and user_id = #{userId, jdbcType=BIGINT} and status=0
+    <if test="agentType != null">
+      and agent_type = #{agentType, jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectById" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_device
+    where is_del=0 and id = #{id}
+    <if test="userId != null">
+      and user_id = #{userId}
+    </if>
+  </select>
+
+</mapper>

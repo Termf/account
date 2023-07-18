@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.country.CountryBlacklistMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.country.CountryBlacklist">
+    <id column="country_code" jdbcType="CHAR" property="countryCode" />
+    <result column="is_active" jdbcType="BIT" property="isActive" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    country_code, is_active, memo, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from country_blacklist
+    where country_code = #{countryCode,jdbcType=CHAR}
+  </select>
+  <select id="selectAll" resultType="java.util.Map">
+    select
+      t1.country_code as countryCode,
+      t1.is_active as isActive,
+      t1.memo as memo,
+      t1.create_time as createTime,
+      t1.update_time as updateTime,
+      t2.code2 as countryCode3,
+      t2.mobile_code as mobileCode,
+      t2.cn as countryNameCn,
+      t2.en as countryNameEn
+    from country_blacklist t1 left join country t2 on t1.country_code = t2.code
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from country_blacklist
+    where country_code = #{countryCode,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.country.CountryBlacklist">
+    insert into country_blacklist (country_code, is_active, memo, 
+      create_time, update_time)
+    values (#{countryCode,jdbcType=CHAR}, #{isActive,jdbcType=BIT}, #{memo,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.country.CountryBlacklist">
+    insert into country_blacklist
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="countryCode != null">
+        country_code,
+      </if>
+      <if test="isActive != null">
+        is_active,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="countryCode != null">
+        #{countryCode,jdbcType=CHAR},
+      </if>
+      <if test="isActive != null">
+        #{isActive,jdbcType=BIT},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.country.CountryBlacklist">
+    update country_blacklist
+    <set>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=BIT},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where country_code = #{countryCode,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.country.CountryBlacklist">
+    update country_blacklist
+    set is_active = #{isActive,jdbcType=BIT},
+      memo = #{memo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where country_code = #{countryCode,jdbcType=CHAR}
+  </update>
+</mapper>

@@ -1,0 +1,9 @@
+CREATE TABLE `user_config` (
+  `user_id` BIGINT(20) DEFAULT NULL COMMENT '用户id',
+  `config_type` VARCHAR(255) DEFAULT NULL COMMENT '配置项类型名',
+  `config_name` VARCHAR(255) DEFAULT NULL COMMENT '配置项名称值',
+  `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `description` VARCHAR(255) DEFAULT NULL COMMENT '操作描述',
+ PRIMARY KEY (`user_id`,`config_type`) USING BTREE
+)ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT='用户默认配置表';

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.certificate.JumioMapper">
+    <resultMap id="BaseResultMap"
+               type="com.binance.account.data.entity.certificate.Jumio">
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="front" jdbcType="VARCHAR" property="front"/>
+        <result column="back" jdbcType="VARCHAR" property="back"/>
+        <result column="face" jdbcType="VARCHAR" property="face"/>
+        <result column="type" property="type" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="scan_reference" property="scanReference" jdbcType="VARCHAR"/>
+        <result column="auth_token" property="authToken" jdbcType="VARCHAR"/>
+
+        <result column="first_name" property="firstName" jdbcType="VARCHAR"/>
+        <result column="last_name" property="lastName" jdbcType="VARCHAR"/>
+        <result column="dob" property="dob" jdbcType="TIMESTAMP"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="postal_code" property="postalCode" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="issuing_country" property="issuingCountry" jdbcType="VARCHAR"/>
+        <result column="issuing_date" property="issuingDate" jdbcType="VARCHAR"/>
+        <result column="expiry_date" property="expiryDate" jdbcType="VARCHAR"/>
+        <result column="number" property="number" jdbcType="VARCHAR"/>
+        <result column="document_type" property="documentType" jdbcType="VARCHAR"/>
+        <result column="status" property="status" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
+        <result column="merchant_reference" property="merchantReference" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_SortByWhere_List">
+        <if test="sort =='updateTime'">
+            update_time
+        </if>
+        <if test="sort =='createTime'">
+            create_time
+        </if>
+    </sql>
+
+    <delete id="deleteByPrimaryKey">
+        delete from jumio
+        where user_id = #{userId,jdbcType=BIGINT} and id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+	<insert id="insert" parameterType="com.binance.account.data.entity.certificate.Jumio" useGeneratedKeys="true" keyProperty="id">
+        insert into jumio (user_id,front,back,face,type,create_time,update_time,auth_token,scan_reference,first_name, last_name, dob,address,
+        postal_code,city,issuing_country,expiry_date,number,document_type,status,source, merchant_reference)
+        values (#{userId,jdbcType=BIGINT},#{front,jdbcType=VARCHAR},#{back,jdbcType=VARCHAR},#{face,jdbcType=VARCHAR},#{type,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+        #{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP}, #{authToken,jdbcType=VARCHAR},#{scanReference,jdbcType=VARCHAR},
+        #{firstName,jdbcType=VARCHAR},#{lastName,jdbcType=VARCHAR},#{dob,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{postalCode,jdbcType=VARCHAR},
+        #{city,jdbcType=VARCHAR},#{issuingCountry,jdbcType=VARCHAR},#{expiryDate,jdbcType=VARCHAR},#{number,jdbcType=VARCHAR},#{documentType,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},#{source,jdbcType=VARCHAR},
+        #{merchantReference, jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.certificate.Jumio" >
+        update jumio
+        <set >
+            <if test="scanReference != null and scanReference != ''">
+                scan_reference = #{scanReference,jdbcType=VARCHAR},
+            </if>
+            <if test="front != null" >
+                front = #{front,jdbcType=VARCHAR},
+            </if>
+            <if test="back != null" >
+                back = #{back,jdbcType=VARCHAR},
+            </if>
+            <if test="face != null" >
+                face = #{face,jdbcType=VARCHAR},
+            </if>
+            <if test="firstName != null" >
+                first_name = #{firstName,jdbcType=VARCHAR},
+            </if>
+            <if test="lastName != null" >
+                last_name = #{lastName,jdbcType=BIT},
+            </if>
+            <if test="dob != null" >
+                dob = #{dob,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null" >
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="postalCode != null" >
+                postal_code = #{postalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null" >
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="issuingCountry != null" >
+                issuing_country = #{issuingCountry,jdbcType=VARCHAR},
+            </if>
+            <if test="expiryDate != null" >
+                expiry_date = #{expiryDate,jdbcType=VARCHAR},
+            </if>
+            <if test="number != null" >
+                number = #{number,jdbcType=VARCHAR},
+            </if>
+            <if test="documentType != null" >
+                document_type = #{documentType,jdbcType=VARCHAR},
+            </if>
+            <if test="status !=null">
+                status=#{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="source != null" >
+                source = #{source,jdbcType=VARCHAR},
+            </if>
+            <if test="merchantReference != null and merchantReference != ''">
+                merchant_reference = #{merchantReference,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT} and id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
+        select * from jumio
+        where user_id = #{userId,jdbcType=BIGINT} and id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getList" resultMap="BaseResultMap">
+        SELECT * from jumio t
+        <where>
+            <if test="userId !=null">
+                and t.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="status !=null">
+                and t.status = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+            </if>
+            <if test="firstName !=null and firstName !=''">
+                and t.first_name = #{firstName,jdbcType=VARCHAR}
+            </if>
+            <if test="lastName !=null and lastName !=''">
+                and t.last_name = #{lastName,jdbcType=VARCHAR}
+            </if>
+            <if test="country !=null and country !=''">
+                and t.country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="issuingCountry !=null and issuingCountry !=''">
+                and t.issuing_country = #{issuingCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="documentType !=null and documentType !=''">
+                and t.document_type = #{documentType,jdbcType=VARCHAR}
+            </if>
+            <if test="source !=null and source !=''">
+                and t.source = #{source,jdbcType=VARCHAR}
+            </if>
+            <if test="number !=null and number !=''">
+                and t.number = #{number,jdbcType=VARCHAR}
+            </if>
+            <if test="startCreateTime!=null">
+                and t.create_time &gt;= #{startCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endCreateTime!=null">
+                and t.create_time &lt;=#{endCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="scanReference!=null and scanReference !=''">
+                and t.scan_reference =#{scanReference,jdbcType=VARCHAR}
+            </if>
+        </where>
+        <if test="sort != null and sort != '' and order == 'desc'">
+            order by
+            <include refid="Base_SortByWhere_List"/>
+            desc
+        </if>
+        <if test="sort != null and sort != '' and order == 'asc'">
+            order by
+            <include refid="Base_SortByWhere_List"/>
+            asc
+        </if>
+        <if test="sort==null or sort==''">
+            ORDER BY t.create_time desc
+        </if>
+        <if test="start!=null">
+            LIMIT #{start},#{rows}
+        </if>
+    </select>
+
+    <select id="getListCount" resultType="java.lang.Long">
+        SELECT * from jumio t
+        <where>
+            <if test="userId !=null">
+                and t.user_id = #{userId,jdbcType=BIGINT}
+            </if>
+            <if test="status !=null">
+                and t.status = #{status,jdbcType=INTEGER,typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
+            </if>
+            <if test="firstName !=null and firstName !=''">
+                and t.first_name = #{firstName,jdbcType=VARCHAR}
+            </if>
+            <if test="lastName !=null and lastName !=''">
+                and t.last_name = #{lastName,jdbcType=VARCHAR}
+            </if>
+            <if test="country !=null and country !=''">
+                and t.country = #{country,jdbcType=VARCHAR}
+            </if>
+            <if test="issuingCountry !=null and issuingCountry !=''">
+                and t.issuing_country = #{issuingCountry,jdbcType=VARCHAR}
+            </if>
+            <if test="documentType !=null and documentType !=''">
+                and t.document_type = #{documentType,jdbcType=VARCHAR}
+            </if>
+            <if test="source !=null and source !=''">
+                and t.source = #{source,jdbcType=VARCHAR}
+            </if>
+            <if test="number !=null and number !=''">
+                and t.number = #{number,jdbcType=VARCHAR}
+            </if>
+            <if test="startCreateTime!=null">
+                and t.create_time &gt;= #{startCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endCreateTime!=null">
+                and t.create_time &lt;=#{endCreateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="scanReference!=null and scanReference !=''">
+                and t.scan_reference =#{scanReference,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <select id="getExpiredList" resultMap="BaseResultMap">
+		SELECT * from jumio where status is null
+		and UNIX_TIMESTAMP(date_sub(now(),interval 25 MINUTE)) &gt; UNIX_TIMESTAMP(update_time)
+	</select>
+
+    <select id="getDailySubmitCount" resultType="java.lang.Integer" >
+		SELECT count(*)
+		from jumio
+		where user_id = #{userId,jdbcType=BIGINT}
+		and type = #{type,jdbcType=INTEGER}
+		and UNIX_TIMESTAMP(date_sub(now(),interval 1 DAY)) &lt; UNIX_TIMESTAMP(update_time)
+	</select>
+
+    <select id="getExpiredDateErrorData" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select * from jumio
+        where create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+          and create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+          and scan_reference is not null
+          and (expiry_date is null or expiry_date &lt;= now())
+          and status in (0,1)
+    </select>
+
+    <update id="updateExpireDateError" parameterType="com.binance.account.data.entity.certificate.Jumio">
+        update jumio
+          set expiry_date = #{expiryDate,jdbcType=VARCHAR}
+        where id = #{id} and user_id = #{userId} and scan_reference = #{scanReference}
+    </update>
+    
+    <update id="updateOcrResult" parameterType="com.binance.account.data.entity.certificate.Jumio">
+        update jumio
+          set number = #{number,jdbcType=VARCHAR}
+        where id = #{id} and user_id = #{userId}
+    </update> 
+
+</mapper>

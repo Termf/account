@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.binance.account.data.mapper.certificate.UserChannelRiskCountryMapper" >
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.certificate.UserChannelRiskCountry" >
+    <id column="country_code" property="countryCode" jdbcType="VARCHAR" />
+    <id column="channel_code" property="channelCode" jdbcType="VARCHAR" />
+    <result column="risk_level" property="riskLevel" jdbcType="VARCHAR" />
+    <result column="risk_score" property="riskScore" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="auditor" property="auditor" jdbcType="VARCHAR" />
+    <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    country_code, channel_code, risk_level, risk_score, memo, auditor, audit_time, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from user_channel_risk_country
+    where country_code = #{countryCode,jdbcType=VARCHAR}
+      and channel_code = #{channelCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" >
+    delete from user_channel_risk_country
+    where country_code = #{countryCode,jdbcType=VARCHAR}
+      and channel_code = #{channelCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskCountry" >
+    insert into user_channel_risk_country (country_code, channel_code, risk_level, risk_score,
+      memo, auditor, audit_time,
+      create_time, update_time)
+    values (#{countryCode,jdbcType=VARCHAR}, #{channelCode,jdbcType=VARCHAR}, #{riskLevel,jdbcType=VARCHAR}, #{riskScore,jdbcType=VARCHAR},
+      #{memo,jdbcType=VARCHAR}, #{auditor,jdbcType=VARCHAR}, #{auditTime,jdbcType=TIMESTAMP},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskCountry" >
+    insert into user_channel_risk_country
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="countryCode != null" >
+        country_code,
+      </if>
+      <if test="channelCode != null" >
+        channel_code,
+      </if>
+      <if test="riskLevel != null" >
+        risk_level,
+      </if>
+      <if test="riskScore != null" >
+        risk_score,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="auditor != null" >
+        auditor,
+      </if>
+      <if test="auditTime != null" >
+        audit_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="countryCode != null" >
+        #{countryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelCode != null" >
+        #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="riskLevel != null" >
+        #{riskLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="riskScore != null" >
+        #{riskScore,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="auditor != null" >
+        #{auditor,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTime != null" >
+        #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskCountry" >
+    update user_channel_risk_country
+    <set >
+      <if test="riskLevel != null" >
+        risk_level = #{riskLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="riskScore != null" >
+        risk_score = #{riskScore,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="auditor != null" >
+        auditor = #{auditor,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTime != null" >
+        audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where country_code = #{countryCode,jdbcType=VARCHAR}
+      and channel_code = #{channelCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.certificate.UserChannelRiskCountry" >
+    update user_channel_risk_country
+    set risk_level = #{riskLevel,jdbcType=VARCHAR},
+    	risk_score = #{riskScore,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      auditor = #{auditor,jdbcType=VARCHAR},
+      audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where country_code = #{countryCode,jdbcType=VARCHAR}
+      and channel_code = #{channelCode,jdbcType=VARCHAR}
+  </update>
+
+  <sql id="queryWhere" >
+    <where>
+      <if test="channelCode != null and channelCode != ''">
+        and channel_code = #{channelCode,jdbcType=VARCHAR}
+      </if>
+      <if test="countryCode != null  and countryCode != ''">
+        and country_code = #{countryCode,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+
+  <select id="queryCount" parameterType="com.binance.account.common.query.UserChannelRiskCountryQuery" resultType="java.lang.Long">
+    select count(1) from user_channel_risk_country <include refid="queryWhere" />
+  </select>
+
+  <select id="query" parameterType="com.binance.account.common.query.UserChannelRiskCountryQuery" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user_channel_risk_country
+    <include refid="queryWhere" />
+    order by create_time desc
+    limit #{start}, #{rows}
+  </select>
+</mapper>

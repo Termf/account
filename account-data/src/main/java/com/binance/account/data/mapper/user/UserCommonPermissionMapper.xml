@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.binance.account.data.mapper.user.UserCommonPermissionMapper">
+  <resultMap id="BaseResultMap" type="com.binance.account.data.entity.user.UserCommonPermission">
+    <id column="user_type" jdbcType="VARCHAR" property="userType" />
+    <result column="enable_deposit" jdbcType="BIT" property="enableDeposit" />
+    <result column="enable_withdraw" jdbcType="BIT" property="enableWithdraw" />
+    <result column="enable_trade" jdbcType="BIT" property="enableTrade" />
+    <result column="enable_transfer" jdbcType="BIT" property="enableTransfer" />
+    <result column="enable_sub_transfer" jdbcType="BIT" property="enableSubTransfer" />
+    <result column="enable_create_apikey" jdbcType="BIT" property="enableCreateApikey" />
+    <result column="enable_login" jdbcType="BIT" property="enableLogin" />
+    <result column="enable_create_margin" jdbcType="BIT" property="enableCreateMargin" />
+    <result column="enable_create_futures" jdbcType="BIT" property="enableCreateFutures" />
+    <result column="enable_create_fiat" jdbcType="BIT" property="enableCreateFiat" />
+    <result column="enable_create_isolated_margin" jdbcType="BIT" property="enableCreateIsolatedMargin" />
+    <result column="enable_create_sub_account" jdbcType="BIT" property="enableCreateSubAccount" />
+    <result column="enable_parent_account" jdbcType="BIT" property="enableParentAccount" />
+    <result column="enable_broker_parent_account" jdbcType="BIT" property="enableBrokerParentAccount" />
+    <result column="enable_create_broker_sub_account" jdbcType="BIT" property="enableCreateBrokerSubAccount" />
+    <result column="insert_time" jdbcType="TIMESTAMP" property="insertTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_type, enable_deposit, enable_withdraw, enable_trade, enable_transfer, enable_sub_transfer, 
+    enable_create_apikey, enable_login, enable_create_margin, enable_create_futures, 
+    enable_create_fiat, enable_create_isolated_margin, enable_create_sub_account, enable_parent_account, 
+    enable_broker_parent_account, enable_create_broker_sub_account, insert_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_common_permission
+    where user_type = #{userType,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_common_permission
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user_common_permission
+    where user_type = #{userType,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.binance.account.data.entity.user.UserCommonPermission">
+    insert into user_common_permission (user_type, enable_deposit, enable_withdraw, 
+      enable_trade, enable_transfer, enable_sub_transfer, 
+      enable_create_apikey, enable_login, enable_create_margin, 
+      enable_create_futures, enable_create_fiat, enable_create_isolated_margin, 
+      enable_create_sub_account, enable_parent_account, enable_broker_parent_account, 
+      enable_create_broker_sub_account, insert_time, 
+      update_time)
+    values (#{userType,jdbcType=VARCHAR}, #{enableDeposit,jdbcType=BIT}, #{enableWithdraw,jdbcType=BIT}, 
+      #{enableTrade,jdbcType=BIT}, #{enableTransfer,jdbcType=BIT}, #{enableSubTransfer,jdbcType=BIT}, 
+      #{enableCreateApikey,jdbcType=BIT}, #{enableLogin,jdbcType=BIT}, #{enableCreateMargin,jdbcType=BIT}, 
+      #{enableCreateFutures,jdbcType=BIT}, #{enableCreateFiat,jdbcType=BIT}, #{enableCreateIsolatedMargin,jdbcType=BIT}, 
+      #{enableCreateSubAccount,jdbcType=BIT}, #{enableParentAccount,jdbcType=BIT}, #{enableBrokerParentAccount,jdbcType=BIT}, 
+      #{enableCreateBrokerSubAccount,jdbcType=BIT}, #{insertTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.binance.account.data.entity.user.UserCommonPermission">
+    insert into user_common_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="enableDeposit != null">
+        enable_deposit,
+      </if>
+      <if test="enableWithdraw != null">
+        enable_withdraw,
+      </if>
+      <if test="enableTrade != null">
+        enable_trade,
+      </if>
+      <if test="enableTransfer != null">
+        enable_transfer,
+      </if>
+      <if test="enableSubTransfer != null">
+        enable_sub_transfer,
+      </if>
+      <if test="enableCreateApikey != null">
+        enable_create_apikey,
+      </if>
+      <if test="enableLogin != null">
+        enable_login,
+      </if>
+      <if test="enableCreateMargin != null">
+        enable_create_margin,
+      </if>
+      <if test="enableCreateFutures != null">
+        enable_create_futures,
+      </if>
+      <if test="enableCreateFiat != null">
+        enable_create_fiat,
+      </if>
+      <if test="enableCreateIsolatedMargin != null">
+        enable_create_isolated_margin,
+      </if>
+      <if test="enableCreateSubAccount != null">
+        enable_create_sub_account,
+      </if>
+      <if test="enableParentAccount != null">
+        enable_parent_account,
+      </if>
+      <if test="enableBrokerParentAccount != null">
+        enable_broker_parent_account,
+      </if>
+      <if test="enableCreateBrokerSubAccount != null">
+        enable_create_broker_sub_account,
+      </if>
+      <if test="insertTime != null">
+        insert_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userType != null">
+        #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="enableDeposit != null">
+        #{enableDeposit,jdbcType=BIT},
+      </if>
+      <if test="enableWithdraw != null">
+        #{enableWithdraw,jdbcType=BIT},
+      </if>
+      <if test="enableTrade != null">
+        #{enableTrade,jdbcType=BIT},
+      </if>
+      <if test="enableTransfer != null">
+        #{enableTransfer,jdbcType=BIT},
+      </if>
+      <if test="enableSubTransfer != null">
+        #{enableSubTransfer,jdbcType=BIT},
+      </if>
+      <if test="enableCreateApikey != null">
+        #{enableCreateApikey,jdbcType=BIT},
+      </if>
+      <if test="enableLogin != null">
+        #{enableLogin,jdbcType=BIT},
+      </if>
+      <if test="enableCreateMargin != null">
+        #{enableCreateMargin,jdbcType=BIT},
+      </if>
+      <if test="enableCreateFutures != null">
+        #{enableCreateFutures,jdbcType=BIT},
+      </if>
+      <if test="enableCreateFiat != null">
+        #{enableCreateFiat,jdbcType=BIT},
+      </if>
+      <if test="enableCreateIsolatedMargin != null">
+        #{enableCreateIsolatedMargin,jdbcType=BIT},
+      </if>
+      <if test="enableCreateSubAccount != null">
+        #{enableCreateSubAccount,jdbcType=BIT},
+      </if>
+      <if test="enableParentAccount != null">
+        #{enableParentAccount,jdbcType=BIT},
+      </if>
+      <if test="enableBrokerParentAccount != null">
+        #{enableBrokerParentAccount,jdbcType=BIT},
+      </if>
+      <if test="enableCreateBrokerSubAccount != null">
+        #{enableCreateBrokerSubAccount,jdbcType=BIT},
+      </if>
+      <if test="insertTime != null">
+        #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.binance.account.data.entity.user.UserCommonPermission">
+    update user_common_permission
+    <set>
+      <if test="enableDeposit != null">
+        enable_deposit = #{enableDeposit,jdbcType=BIT},
+      </if>
+      <if test="enableWithdraw != null">
+        enable_withdraw = #{enableWithdraw,jdbcType=BIT},
+      </if>
+      <if test="enableTrade != null">
+        enable_trade = #{enableTrade,jdbcType=BIT},
+      </if>
+      <if test="enableTransfer != null">
+        enable_transfer = #{enableTransfer,jdbcType=BIT},
+      </if>
+      <if test="enableSubTransfer != null">
+        enable_sub_transfer = #{enableSubTransfer,jdbcType=BIT},
+      </if>
+      <if test="enableCreateApikey != null">
+        enable_create_apikey = #{enableCreateApikey,jdbcType=BIT},
+      </if>
+      <if test="enableLogin != null">
+        enable_login = #{enableLogin,jdbcType=BIT},
+      </if>
+      <if test="enableCreateMargin != null">
+        enable_create_margin = #{enableCreateMargin,jdbcType=BIT},
+      </if>
+      <if test="enableCreateFutures != null">
+        enable_create_futures = #{enableCreateFutures,jdbcType=BIT},
+      </if>
+      <if test="enableCreateFiat != null">
+        enable_create_fiat = #{enableCreateFiat,jdbcType=BIT},
+      </if>
+      <if test="enableCreateIsolatedMargin != null">
+        enable_create_isolated_margin = #{enableCreateIsolatedMargin,jdbcType=BIT},
+      </if>
+      <if test="enableCreateSubAccount != null">
+        enable_create_sub_account = #{enableCreateSubAccount,jdbcType=BIT},
+      </if>
+      <if test="enableParentAccount != null">
+        enable_parent_account = #{enableParentAccount,jdbcType=BIT},
+      </if>
+      <if test="enableBrokerParentAccount != null">
+        enable_broker_parent_account = #{enableBrokerParentAccount,jdbcType=BIT},
+      </if>
+      <if test="enableCreateBrokerSubAccount != null">
+        enable_create_broker_sub_account = #{enableCreateBrokerSubAccount,jdbcType=BIT},
+      </if>
+      <if test="insertTime != null">
+        insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_type = #{userType,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.binance.account.data.entity.user.UserCommonPermission">
+    update user_common_permission
+    set enable_deposit = #{enableDeposit,jdbcType=BIT},
+      enable_withdraw = #{enableWithdraw,jdbcType=BIT},
+      enable_trade = #{enableTrade,jdbcType=BIT},
+      enable_transfer = #{enableTransfer,jdbcType=BIT},
+      enable_sub_transfer = #{enableSubTransfer,jdbcType=BIT},
+      enable_create_apikey = #{enableCreateApikey,jdbcType=BIT},
+      enable_login = #{enableLogin,jdbcType=BIT},
+      enable_create_margin = #{enableCreateMargin,jdbcType=BIT},
+      enable_create_futures = #{enableCreateFutures,jdbcType=BIT},
+      enable_create_fiat = #{enableCreateFiat,jdbcType=BIT},
+      enable_create_isolated_margin = #{enableCreateIsolatedMargin,jdbcType=BIT},
+      enable_create_sub_account = #{enableCreateSubAccount,jdbcType=BIT},
+      enable_parent_account = #{enableParentAccount,jdbcType=BIT},
+      enable_broker_parent_account = #{enableBrokerParentAccount,jdbcType=BIT},
+      enable_create_broker_sub_account = #{enableCreateBrokerSubAccount,jdbcType=BIT},
+      insert_time = #{insertTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_type = #{userType,jdbcType=VARCHAR}
+  </update>
+</mapper>
